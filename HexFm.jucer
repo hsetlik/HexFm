@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="VAVR1Q" name="HexFm" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
+              headerPath="/Users/hayden/Desktop/Programming/JUCEProjects/HexFm/Source/Maximilian_bits/src"
+              pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
+  <MAINGROUP id="f8EfdE" name="HexFm">
+    <GROUP id="{DC7DA288-18E4-8EA7-1D3D-9542BABB314D}" name="Source">
+      <GROUP id="{F25732CB-E4A2-D63D-E685-8E36CA3B8BD8}" name="Maximilian_bits">
+        <GROUP id="{44547013-9D95-5806-3B24-01FB483423AC}" name="src">
+          <GROUP id="{A86FF8F0-8749-0A85-6FF9-971D6EC6955C}" name="libs">
+            <FILE id="mQMbhG" name="fft.cpp" compile="1" resource="0" file="Source/Maximilian_bits/src/libs/fft.cpp"/>
+            <FILE id="BDEDAA" name="fft.h" compile="0" resource="0" file="Source/Maximilian_bits/src/libs/fft.h"/>
+            <FILE id="sDMZBs" name="maxiFFT.cpp" compile="1" resource="0" file="Source/Maximilian_bits/src/libs/maxiFFT.cpp"/>
+            <FILE id="RxGpeg" name="maxiFFT.h" compile="0" resource="0" file="Source/Maximilian_bits/src/libs/maxiFFT.h"/>
+            <FILE id="FkQDtY" name="maxiMFCC.cpp" compile="1" resource="0" file="Source/Maximilian_bits/src/libs/maxiMFCC.cpp"/>
+            <FILE id="qvoq8r" name="maxiMFCC.h" compile="0" resource="0" file="Source/Maximilian_bits/src/libs/maxiMFCC.h"/>
+            <FILE id="I5ma4O" name="sineTable.h" compile="0" resource="0" file="Source/Maximilian_bits/src/libs/sineTable.h"/>
+          </GROUP>
+          <FILE id="T4kYW0" name="maximilian.cpp" compile="1" resource="0" file="Source/Maximilian_bits/src/maximilian.cpp"/>
+          <FILE id="vHxEkB" name="maximilian.h" compile="0" resource="0" file="Source/Maximilian_bits/src/maximilian.h"/>
+        </GROUP>
+      </GROUP>
+      <FILE id="yHslQq" name="AlgorithmProcessor.cpp" compile="1" resource="0"
+            file="Source/AlgorithmProcessor.cpp"/>
+      <FILE id="n2d1pN" name="AlgorithmProcessor.h" compile="0" resource="0"
+            file="Source/AlgorithmProcessor.h"/>
+      <FILE id="QgskjP" name="DAHDSR.cpp" compile="1" resource="0" file="Source/DAHDSR.cpp"/>
+      <FILE id="jcx3MR" name="DAHDSR.h" compile="0" resource="0" file="Source/DAHDSR.h"/>
+      <FILE id="JabjOg" name="DAHDSRGraph.cpp" compile="1" resource="0" file="Source/DAHDSRGraph.cpp"/>
+      <FILE id="UZUXjy" name="DAHDSRGraph.h" compile="0" resource="0" file="Source/DAHDSRGraph.h"/>
+      <FILE id="sasLiy" name="FmVoice.cpp" compile="1" resource="0" file="Source/FmVoice.cpp"/>
+      <FILE id="sbSxj2" name="FmVoice.h" compile="0" resource="0" file="Source/FmVoice.h"/>
+      <FILE id="ghBs0v" name="LayoutCreator.h" compile="0" resource="0" file="Source/LayoutCreator.h"/>
+      <FILE id="lshFoY" name="LfoComponent.cpp" compile="1" resource="0"
+            file="Source/LfoComponent.cpp"/>
+      <FILE id="f1iOzr" name="LfoComponent.h" compile="0" resource="0" file="Source/LfoComponent.h"/>
+      <FILE id="rNrIfi" name="LfoGroupComponent.cpp" compile="1" resource="0"
+            file="Source/LfoGroupComponent.cpp"/>
+      <FILE id="ncvimx" name="LfoGroupComponent.h" compile="0" resource="0"
+            file="Source/LfoGroupComponent.h"/>
+      <FILE id="bF33c4" name="LfoProcessor.cpp" compile="1" resource="0"
+            file="Source/LfoProcessor.cpp"/>
+      <FILE id="a0a4Me" name="LfoProcessor.h" compile="0" resource="0" file="Source/LfoProcessor.h"/>
+      <FILE id="mEGA6H" name="ModulationGrid.cpp" compile="1" resource="0"
+            file="Source/ModulationGrid.cpp"/>
+      <FILE id="d76xdN" name="ModulationGrid.h" compile="0" resource="0"
+            file="Source/ModulationGrid.h"/>
+      <FILE id="LlTmYE" name="OperatorComponent.cpp" compile="1" resource="0"
+            file="Source/OperatorComponent.cpp"/>
+      <FILE id="d4MnX8" name="OperatorComponent.h" compile="0" resource="0"
+            file="Source/OperatorComponent.h"/>
+      <FILE id="Mahz6M" name="OperatorProcessor.cpp" compile="1" resource="0"
+            file="Source/OperatorProcessor.cpp"/>
+      <FILE id="QKC4iu" name="OperatorProcessor.h" compile="0" resource="0"
+            file="Source/OperatorProcessor.h"/>
+      <FILE id="aI0xpg" name="PatchManagerComponent.cpp" compile="1" resource="0"
+            file="Source/PatchManagerComponent.cpp"/>
+      <FILE id="M0BSNb" name="PatchManagerComponent.h" compile="0" resource="0"
+            file="Source/PatchManagerComponent.h"/>
+      <FILE id="iViyxE" name="PatchSavingDialogBox.cpp" compile="1" resource="0"
+            file="Source/PatchSavingDialogBox.cpp"/>
+      <FILE id="iXSTku" name="PatchSavingDialogBox.h" compile="0" resource="0"
+            file="Source/PatchSavingDialogBox.h"/>
+      <FILE id="nshUUv" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="OJcAEK" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="W4vZj1" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="UmQWpA" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="P5pV0i" name="RGBColor.h" compile="0" resource="0" file="Source/RGBColor.h"/>
+      <FILE id="ocA900" name="SampleAndHoldOscillator.cpp" compile="1" resource="0"
+            file="Source/SampleAndHoldOscillator.cpp"/>
+      <FILE id="PTLgVH" name="SampleAndHoldOscillator.h" compile="0" resource="0"
+            file="Source/SampleAndHoldOscillator.h"/>
+      <FILE id="cVyIHF" name="SliderSubclasses.h" compile="0" resource="0"
+            file="Source/SliderSubclasses.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="HexFm"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="HexFm"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <OSX/>
+  </LIVE_SETTINGS>
+</JUCERPROJECT>
