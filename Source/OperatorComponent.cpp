@@ -98,6 +98,7 @@ void OperatorComponent::paint(juce::Graphics &g)
     int n = getWidth() / 24;
     auto iLabelBox = juce::Rectangle<int>{int(4.5 * n), int(4.5 * n), 6 * n, 2 * n};
     auto rLabelBox = juce::Rectangle<int>{int(11.5 * n), int(4.5 * n), 6 * n, 2 * n};
+    auto lLabelBox = juce::Rectangle<int>{19 * n, 6 * n, 4 * n, 2 * n};
     g.setFont(juce::Font("VCR OSD Mono", 15.0f, 0));
     g.setColour(juce::Colours::white);
     //g.fillRect(indexLabel.getBounds());
@@ -106,7 +107,9 @@ void OperatorComponent::paint(juce::Graphics &g)
     g.drawText(labelText, nameRect, juce::Justification::centred);
     auto iText = "INDEX";
     auto rText = "RATIO";
+    auto lText = "LEVEL";
     g.setFont(juce::Font("LCD", 11.0f, 0));
     g.drawText(iText, iLabelBox, juce::Justification::centredBottom);
     g.drawText(rText, rLabelBox, juce::Justification::centredBottom);
+    g.drawText(lText, lLabelBox, juce::Justification::centredBottom);
 }

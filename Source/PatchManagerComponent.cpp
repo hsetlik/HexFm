@@ -74,14 +74,17 @@ void PatchLoader::getPresetsFromFolder()
         {
             auto currentFile = files.getUnchecked(i);
             std::unique_ptr<juce::XmlElement> currentXml = juce::parseXML(currentFile);
-            if(currentXml->hasAttribute("HexFmPatchName"))
+            if(currentXml != nullptr)
             {
-                auto presetName = currentXml->getStringAttribute("HexFmPatchName");
-                patchNames.add(presetName);
-                patchSelector.addItem(presetName, 1 + i);
-                if(i == 0)
+                if(currentXml->hasAttribute("HexFmPatchName"))
                 {
-                    loadPreset(presetName);
+                    auto presetName = currentXml->getStringAttribute("HexFmPatchName");
+                    patchNames.add(presetName);
+                    patchSelector.addItem(presetName, 1 + i);
+                    if(i == 0)
+                    {
+                        loadPreset(presetName);
+                    }
                 }
             }
         }
@@ -126,13 +129,16 @@ void PatchLoader::loadPreset(juce::String presetName)
         {
             auto currentFile = presetFiles.getUnchecked(i);
             std::unique_ptr<juce::XmlElement> currentXml = juce::parseXML(currentFile);
-            if(currentXml->hasAttribute("HexFmPatchName"))
+            if(currentXml != nullptr)
             {
-                auto checkName = currentXml->getStringAttribute("HexFmPatchName");
-                if(checkName == presetName)
+                if(currentXml->hasAttribute("HexFmPatchName"))
                 {
-                    auto* vTree = &processor->tree;
-                    vTree->replaceState(juce::ValueTree::fromXml(*currentXml));
+                    auto checkName = currentXml->getStringAttribute("HexFmPatchName");
+                    if(checkName == presetName)
+                    {
+                        auto* vTree = &processor->tree;
+                        vTree->replaceState(juce::ValueTree::fromXml(*currentXml));
+                    }
                 }
             }
         }

@@ -79,8 +79,8 @@ public:
     }
     void resized() override
     {
-        auto rect = getLocalBounds();
-        slider.setBounds(rect);
+        auto n = getHeight() / 6;
+        slider.setBounds(0, n, getWidth(), 5 * n);
     }
     juce::Slider slider;
     juce::String idStr;
