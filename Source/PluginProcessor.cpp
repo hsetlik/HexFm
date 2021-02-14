@@ -230,55 +230,7 @@ bool HexFmAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) co
 
 void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    for(int voice = 0; voice < synth.getNumVoices(); ++ voice)
-    {
-        if((thisVoice =  dynamic_cast<FmVoice*>(synth.getVoice(voice))))
-        {
-            thisVoice->setRoutingFromGrid(&tree);
-            for(int n = 0; n < 4; ++n)
-            {
-                auto nStr = juce::String(n);
-                auto rateParam = "lfoRateParam" + nStr;
-                auto levelParam = "lfoLevelParam" + nStr;
-                auto waveParam = "lfoWaveParam" + nStr;
-                auto targetParam = "lfoTargetParam" + nStr;
-                
-                thisVoice->updateLfoRate(tree.getRawParameterValue(rateParam), n);
-                thisVoice->updateLfoLevel(tree.getRawParameterValue(levelParam), n);
-                thisVoice->updateLfoWave(tree.getRawParameterValue(waveParam), n);
-                thisVoice->updateLfoTarget(tree.getRawParameterValue(targetParam), n);
-            }
-            for(int i = 0; i < numOperators; ++i)
-            {
-                auto iStr = juce::String(i);
-                auto ratioId = "ratioParam" + iStr;
-                auto levelId = "levelParam" + iStr;
-                auto modIndexId = "indexParam" + iStr;
-                auto audibleId = "audibleParam" + iStr;
-                
-                auto delayId = "delayParam" + iStr;
-                auto attackId = "attackParam" + iStr;
-                auto holdId = "holdParam" + iStr;
-                auto decayId = "decayParam" + iStr;
-                auto sustainId = "sustainParam" + iStr;
-                auto releaseId = "releaseParam" + iStr;
-                
-                thisVoice->setParameters(i, tree.getRawParameterValue(ratioId),
-                                         tree.getRawParameterValue(levelId),
-                                         tree.getRawParameterValue(modIndexId),
-                                         tree.getRawParameterValue(audibleId),
-                                         tree.getRawParameterValue(delayId),
-                                         tree.getRawParameterValue(attackId),
-                                         tree.getRawParameterValue(holdId),
-                                         tree.getRawParameterValue(decayId),
-                                         tree.getRawParameterValue(sustainId),
-                                         tree.getRawParameterValue(releaseId)
-                                        );
-            }
-        }
-    }
-    buffer.clear();
-    synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+    
 }
 
 //==============================================================================
