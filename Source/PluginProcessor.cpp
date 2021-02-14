@@ -117,6 +117,29 @@ HexFmAudioProcessor::HexFmAudioProcessor()
     }
     synth.clearSounds();
     synth.addSound(new FmSound());
+    for(int i = 0; i < numOperators; ++i)
+    {
+        auto iStr = juce::String(i);
+        ratioIds.push_back("ratioParam" + iStr);
+        levelIds.push_back("levelParam" + iStr);
+        modIndexIds.push_back("indexParam" + iStr);
+        audibleIds.push_back("audibleParam" + iStr);
+        
+        delayIds.push_back("delayParam" + iStr);
+        attackIds.push_back("attackParam" + iStr);
+        holdIds.push_back("holdParam" + iStr);
+        decayIds.push_back("decayParam" + iStr);
+        sustainIds.push_back("sustainParam" + iStr);
+        releaseIds.push_back("releaseParam" + iStr);
+        std::vector<juce::String> routing;
+        for(int n = 0; n < numOperators; ++n)
+        {
+            auto nStr = juce::String(n);
+            routing.push_back(iStr + "to" + nStr + "Param");
+        }
+        routingIds.push_back(routing);
+        
+    }
 }
 
 //======================================================================
@@ -230,7 +253,26 @@ bool HexFmAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) co
 
 void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    
+    for(int voice = 0; voice < numVoices; ++voice)
+    {
+        thisVoice = dynamic_cast<FmVoice*>(synth.getVoice(voice));
+        for(int i = 0; i < numOperators; ++i)
+        {
+            thisVoice->setParameters(i, tree.getRawParameterValue(ratioIds[i]),
+                                     tree.getRawParameterValue(levelIds[i]),
+                                     tree.getRawParameterValue(modIndexIds[i]),
+                                     tree.getRawParameterValue(audibleIds[i]),
+                                     tree.getRawParameterValue(delayIds[i]),
+                                     tree.getRawParameterValue(attackIds[i]),
+                                     tree.getRawParameterValue(holdIds[i]),
+                                     tree.getRawParameterValue(decayIds[i]),
+                                     tree.getRawParameterValue(sustainIds[i]),
+                                     tree.getRawParameterValue(releaseIds[i])
+                                    );
+        }
+    }
+    buffer.clear();
+    synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
 
 //==============================================================================

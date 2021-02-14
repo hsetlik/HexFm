@@ -27,7 +27,25 @@ float lastSample = 0.0f;
 int numBuffers = 0;
 void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples)
 {
-    
+    for(int i = 0; i < numSamples; ++i)
+    {
+        applyModulations();
+        for(int lfo = 0; lfo < 4; ++ lfo)
+        {
+            applyLfo(lfo);
+        }
+        float sum = 0.0f;
+        for(int o = 0; o < operatorCount; ++o)
+        {
+            float newSample = operators[o]->sample(fundamental);
+            if(operators[o]->isAudible)
+                sum += newSample;
+        }
+        for(int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
+        {
+            outputBuffer.addSample(channel, i + startSample, sum);
+        }
+    }
 }
 
 void FmVoice::setRoutingFromGrid(juce::AudioProcessorValueTreeState *pTree)

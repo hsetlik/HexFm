@@ -62,6 +62,18 @@ public:
     juce::AudioProcessorValueTreeState tree;
     FmVoice* thisVoice;
 private:
+    std::vector<juce::String> ratioIds;
+    std::vector<juce::String> levelIds;
+    std::vector<juce::String> modIndexIds;
+    std::vector<juce::String> audibleIds;
+    
+    std::vector<juce::String> delayIds;
+    std::vector<juce::String> attackIds;
+    std::vector<juce::String> holdIds;
+    std::vector<juce::String> decayIds;
+    std::vector<juce::String> sustainIds;
+    std::vector<juce::String> releaseIds;
+    std::vector<std::vector<juce::String>> routingIds;
     juce::Synthesiser synth;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HexFmAudioProcessor)
