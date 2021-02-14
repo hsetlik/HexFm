@@ -27,24 +27,27 @@ float lastSample = 0.0f;
 int numBuffers = 0;
 void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples)
 {
-    for(int i = 0; i < numSamples; ++i)
+    for(int i = startSample; i < (startSample + numSamples); ++i)
     {
         applyModulations();
         for(int lfo = 0; lfo < 4; ++ lfo)
         {
             applyLfo(lfo);
         }
-        float sum = 0.0f;
+        opSum = 0.0f;
         for(int o = 0; o < operatorCount; ++o)
         {
-            float newSample = operators[o]->sample(fundamental);
+             opSample = operators[o]->sample(fundamental);
             if(operators[o]->isAudible)
-                sum += newSample;
+                opSum += opSample;
         }
         for(int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
         {
-            outputBuffer.addSample(channel, i + startSample, sum);
+            outputBuffer.addSample(channel, i, opSum);
         }
+        if(fabs(opSum - lastOpSample) > 0.2f)
+            ++numJumps;
+        lastOpSample = opSum;
     }
 }
 

@@ -36,6 +36,8 @@ public:
     void triggerOn()
     {
         trigger = true;
+        samplesInPhase = floor(delay * (sampleRate / 1000));
+        samplesIntoPhase = 0;
         currentPhase = delayPhase;
     }
     void triggerOff()
@@ -43,6 +45,8 @@ public:
         trigger = false;
         currentPhase = releasePhase;
         samplesIntoPhase = 0;
+        samplesInPhase = release * (sampleRate / 1000);
+        factor = 1.0 + (log(minLevel) - log(sustainLevel)) / (samplesInPhase);
     }
     //setters-- all time values are in ms
     void setSampleRate(double value) {sampleRate = value;}
@@ -64,7 +68,11 @@ public:
 private:
     //data
     envPhase currentPhase;
-    int samplesIntoPhase;
+    unsigned long long samplesIntoPhase;
+    unsigned long long samplesInPhase;
+    double output;
+    double factor;
+    float minLevel = 0.00001f;
     float delay;
     float attack;
     float hold;

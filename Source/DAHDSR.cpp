@@ -16,82 +16,99 @@ float DAHDSR::process(float input)
         {
             case delayPhase:
             {
-                if(decay != 0)
+                if(delay > 0)
                 {
-                    int samplesInPhase = floor(delay * (sampleRate / 1000));
+                    if(samplesIntoPhase == 0)
+                        samplesInPhase = floor(delay * (sampleRate / 1000));
                     samplesIntoPhase += 1;
-                    if(samplesIntoPhase > samplesInPhase)
+                    if(samplesIntoPhase >= samplesInPhase)
                     {
                         currentPhase = attackPhase;
                         samplesIntoPhase = 0;
+                        samplesInPhase = floor(attack * (sampleRate / 1000));
+                        factor = 1.0 + (log(1.0f) - log(minLevel)) / (samplesInPhase);
                     }
-                    return 0.0f * input;
+                    output = 0.0f;
                 }
                 else
+                {
                     currentPhase = attackPhase;
+                    samplesInPhase = floor(attack * (sampleRate / 1000));
+                    factor = 1.0 + (log(1.0f) - log(minLevel)) / (samplesInPhase);
+                    samplesIntoPhase = 0;
+                }
+                break;
             }
             case attackPhase:
             {
-                int samplesInPhase = floor(attack * (sampleRate / 1000));
-                auto sampleDelta = 1.0f / samplesInPhase;
-                auto factor = samplesIntoPhase * sampleDelta;
-                samplesIntoPhase += 1;
+                if(samplesIntoPhase == 0)
+                    output = minLevel;
+                output = output * factor;
+                samplesIntoPhase++;
                 if(samplesIntoPhase > samplesInPhase)
                 {
                     currentPhase = holdPhase;
                     samplesIntoPhase = 0;
+                    samplesInPhase = hold * (sampleRate / 1000);
                 }
-                return input * factor;
-                
+                break;
             }
             case holdPhase:
             {
                 if(hold != 0)
                 {
-                    int samplesInPhase = floor(hold * (sampleRate / 1000));
                     samplesIntoPhase += 1;
                     if(samplesIntoPhase > samplesInPhase)
                     {
                         currentPhase = decayPhase;
                         samplesIntoPhase = 0;
+                        samplesInPhase = decay * (sampleRate / 1000);
+                        factor = 1.0 + (log(sustainLevel) - log(1.0f)) / (samplesInPhase);
                     }
-                    return input;
+                    output = 1.0f;
                 }
                 else
+                {
                     currentPhase = decayPhase;
+                    samplesIntoPhase = 0;
+                    samplesInPhase = decay * (sampleRate / 1000);
+                    factor = 1.0 + (log(sustainLevel) - log(1.0f)) / (samplesInPhase);
+                }
+                break;
             }
             case decayPhase:
             {
-                int samplesInPhase = floor(decay * (sampleRate / 1000));
-                auto sampleDelta = (1.0f - sustainLevel) / samplesInPhase;
-                auto factor = 1.0f - (samplesIntoPhase * sampleDelta);
+                output = output * factor;
                 samplesIntoPhase += 1;
-                if(samplesIntoPhase > samplesInPhase)
+                if(samplesIntoPhase >= samplesInPhase)
                 {
                     currentPhase = sustainPhase;
                     samplesIntoPhase = 0;
+                    output = sustainLevel;
                 }
-                return (input * factor);
-                
+                break;
             }
             case sustainPhase:
             {
-                return input * sustainLevel;
+                output = sustainLevel;
+                break;
             }
             case releasePhase:
             {
-                int samplesInPhase = floor(release * (sampleRate / 1000));
-                auto sampleDelta = sustainLevel / samplesInPhase;
-                auto factor = sustainLevel - (sampleDelta * samplesIntoPhase);
+                output = output * factor;
                 samplesIntoPhase += 1;
                 if(samplesIntoPhase > samplesInPhase)
                     currentPhase = noteOff;
-                return input * factor;
+                break;
             }
             case noteOff:
             {
                 samplesIntoPhase = 0;
-                return 0.0f;
+                output = 0.0f;
+                break;
             }
+            default:
+                break;
         }
+    return input * output;
 }

@@ -142,4 +142,8 @@ public:
     float fundamental;
     juce::OwnedArray<LfoProcessor> lfoBank;
     juce::OwnedArray<Operator> operators;
+    
+    float opSample;
+    float opSum;
+    float lastOpSample;
 };
