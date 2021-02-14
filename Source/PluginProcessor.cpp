@@ -113,13 +113,10 @@ HexFmAudioProcessor::HexFmAudioProcessor()
 {
     for(int i = 0; i < numVoices; ++i)
     {
-        synth.addVoice(new FmVoice(numOperators));
+        synth.addVoice(new FmVoice(numOperators, i));
     }
     synth.clearSounds();
     synth.addSound(new FmSound());
-    
- 
-    
 }
 
 //======================================================================
@@ -280,6 +277,7 @@ void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
             }
         }
     }
+    buffer.clear();
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
 

@@ -14,7 +14,7 @@
 
 
 const int numOperators = 6;
-const int numVoices = 6;
+const int numVoices = 8;
 
 //==============================================================================
 class HexFmAudioProcessor  : public juce::AudioProcessor

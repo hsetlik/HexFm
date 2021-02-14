@@ -14,6 +14,7 @@
 
 class DAHDSR
 {
+public:
     enum envPhase
     {
         delayPhase,
@@ -24,7 +25,6 @@ class DAHDSR
         releasePhase,
         noteOff
     };
-public:
     //functions
     DAHDSR() : sampleRate(44100)
     {
@@ -60,6 +60,7 @@ public:
     float getDecay() {return decay;}
     float getSustain() {return sustainLevel;}
     float getRelease() {return release;}
+    envPhase getPhase() {return currentPhase;}
 private:
     //data
     envPhase currentPhase;

@@ -27,8 +27,22 @@ public:
 class FmVoice : public juce::SynthesiserVoice
 {
 public:
-    FmVoice(int numOperators);
-    
+    FmVoice(int numOperators, int index);
+    ~FmVoice()
+    {
+        printf("Voice #: %d -- %d total jumps\n", voiceIndex, numJumps);
+    }
+    bool isActive()
+    {
+        for(int i = 0; i < operators.size(); ++i)
+        {
+            if(operators[i]->envelope.getPhase() != DAHDSR::noteOff)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     bool canPlaySound(juce::SynthesiserSound* sound)
     {
         return dynamic_cast<FmSound*>(sound) != nullptr;
@@ -121,7 +135,9 @@ public:
     {
         
     }
+    int voiceIndex;
     bool routingParams[6][6];
+    int numJumps;
     int operatorCount;
     float fundamental;
     juce::OwnedArray<LfoProcessor> lfoBank;

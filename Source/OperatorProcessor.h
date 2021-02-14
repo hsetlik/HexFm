@@ -62,6 +62,13 @@ public:
     {
         amplitudeMod = newVal;
     }
+    bool isActive()
+    {
+        if(envelope.getPhase() == DAHDSR::noteOff)
+            return false;
+        else
+            return true;
+    }
     float sample(float fundamental);
     float lastOutputSample;
     bool isAudible = false;

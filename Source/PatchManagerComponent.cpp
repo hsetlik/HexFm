@@ -30,8 +30,8 @@ saveDialogComponent(patchDlg)
     }
     presetFolder = patchFolder;
     
-    auto fldr = presetFolder.getFileName().toUTF8();
-    printf("Presets are at: %s\n", fldr);
+    //auto fldr = presetFolder.getFileName().toUTF8();
+    //printf("Presets are at: %s\n", fldr);
     
     getPresetsFromFolder();
     addAndMakeVisible(&patchSelector);
@@ -47,8 +47,6 @@ saveDialogComponent(patchDlg)
     nextPatchButton.setButtonText(">");
     lastPatchButton.setButtonText("<");
     saveButton.setButtonText("Save");
-    
-    
 }
 
 void PatchLoader::resized()
@@ -145,8 +143,6 @@ void PatchLoader::loadPreset(juce::String presetName)
     }
 }
     
-
-
 void PatchLoader::comboBoxChanged(juce::ComboBox* box)
 {
     if(box == &patchSelector)
