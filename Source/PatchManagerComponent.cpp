@@ -34,6 +34,7 @@ saveDialogComponent(patchDlg)
     //printf("Presets are at: %s\n", fldr);
     
     getPresetsFromFolder();
+    
     addAndMakeVisible(&patchSelector);
     addAndMakeVisible(&nextPatchButton);
     addAndMakeVisible(&lastPatchButton);
@@ -79,16 +80,18 @@ void PatchLoader::getPresetsFromFolder()
                     auto presetName = currentXml->getStringAttribute("HexFmPatchName");
                     patchNames.add(presetName);
                     patchSelector.addItem(presetName, 1 + i);
-                    if(i == 0)
-                    {
-                        loadPreset(presetName);
-                    }
+                    
                 }
             }
-        }
-        
     }
-    
+    if(patchNames.size() > 0)
+    {
+        patchSelector.setSelectedId(1);
+        loadPreset(patchSelector.getText());
+        printf("%d available patches\n", patchNames.size());
+        printf("default patch found\n");
+    }
+}
 }
 void PatchLoader::savePreset(juce::String name)
 {
@@ -111,11 +114,6 @@ void PatchLoader::savePreset(juce::String name)
             patchNames.add(name);
             patchSelector.addItem(name, patchSelector.getNumItems() + 1);
         }
-    }
-    else
-    {
-        
-        
     }
 }
 void PatchLoader::loadPreset(juce::String presetName)

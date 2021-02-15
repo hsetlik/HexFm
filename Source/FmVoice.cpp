@@ -31,7 +31,6 @@ FmVoice::FmVoice(int numOperators, int index) :  voiceIndex(index), operatorCoun
         lfoBank.add(new LfoProcessor(n));
     }
 }
-
 float lastSample = 0.0f;
 int numBuffers = 0;
 int op1Index = 0;
