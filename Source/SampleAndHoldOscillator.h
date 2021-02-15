@@ -22,8 +22,8 @@ public:
     ~RandomOscillator() {}
     void hiResTimerCallback() override
     {
-        auto randVal = (float) rand() / RAND_MAX;
-        lastOutputValue = (randVal - 0.5f) * 2.0f;
+        lastRandom = (float) rand() / RAND_MAX;
+        lastOutputValue = (lastRandom - 0.5f) * 2.0f;
     }
     float sample(int msPerCycle)
     {
@@ -38,6 +38,7 @@ public:
             return lastOutputValue;
     }
 private:
+    float lastRandom;
     int lastRate = 1000;
     float lastOutputValue = 0.0f;
 };

@@ -34,9 +34,9 @@ public:
     }
     bool isActive()
     {
-        for(int i = 0; i < operators.size(); ++i)
+        for(Operator* i : operators)
         {
-            if(operators[i]->envelope.getPhase() != DAHDSR::noteOff)
+            if(i->envelope.getPhase() != DAHDSR::noteOff)
             {
                 return true;
             }
@@ -54,16 +54,16 @@ public:
                     int currentPitchWheelPosition)
     {
         fundamental = convert::mtof(midiNoteNumber);
-        for(int i = 0; i < operators.size(); ++i)
+        for(Operator* i : operators)
         {
-            operators[i]->envelope.triggerOn();
+            i->envelope.triggerOn();
         }
     }
     void stopNote (float velocity, bool allowTailOff)
     {
-        for(int i = 0; i < operators.size(); ++i)
+        for(Operator* i : operators)
         {
-            operators[i]->envelope.triggerOff();
+            i->envelope.triggerOff();
         }
         allowTailOff = true;
         if(velocity == 0)
@@ -113,7 +113,6 @@ public:
         operators[operatorIndex]->envelope.setSustain(*envSustain);
         operators[operatorIndex]->envelope.setRelease(*envRelease);
     }
-    void applyModulations();
     void setSampleRate(double newRate)
     {
         for(Operator* i : operators)

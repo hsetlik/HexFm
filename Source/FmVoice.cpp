@@ -78,25 +78,6 @@ void FmVoice::setRoutingFromGrid(juce::AudioProcessorValueTreeState *pTree, std:
     }
 }
 
-void FmVoice::applyModulations()
-{
-    /*
-    for(int source = 0; source < operatorCount; ++source)
-    {
-        Operator* sourceOp = operators[source];
-        sourceOp->cleanOffset();
-        for(int dest = 0; dest < operatorCount; ++dest)
-        {
-            Operator* destOp = operators[dest];
-            if(routingParams[source][dest])
-            {
-                destOp->modOffset += sourceOp->lastOutputSample;
-            }
-        }
-    }
-     */
-}
-
 void FmVoice::applyLfo(int index)
 {
     LfoProcessor* thisLfo = lfoBank[index];
