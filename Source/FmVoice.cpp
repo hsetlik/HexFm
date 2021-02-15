@@ -10,24 +10,7 @@
 
 #include "FmVoice.h"
 
-std::vector<float> FmSynthParams::opDelayTime(TOTAL_OPERATORS, 0.0f);
-std::vector<float> FmSynthParams::opAttackTime(TOTAL_OPERATORS, 0.0f);
-std::vector<float> FmSynthParams::opHoldTime(TOTAL_OPERATORS, 0.0f);
-std::vector<float> FmSynthParams::opDecayTime(TOTAL_OPERATORS, 0.0f);
-std::vector<float> FmSynthParams::opSustainLevel(TOTAL_OPERATORS, 0.0f);
-std::vector<float> FmSynthParams::opReleaseTime(TOTAL_OPERATORS, 0.0f);
 
-std::vector<float> FmSynthParams::opRatio(TOTAL_OPERATORS, 0.0f);
-std::vector<float> FmSynthParams::opLevel(TOTAL_OPERATORS, 0.0f);
-std::vector<float> FmSynthParams::opAmplitudeMod(TOTAL_OPERATORS, 0.0f);
-std::vector<float> FmSynthParams::opModIndex(TOTAL_OPERATORS, 0.0f);
-
-std::vector<std::vector<int>> FmSynthParams::opRouting = FmSynthParams::createOpRouting();
-
-std::vector<float> FmSynthParams::lfoRate(TOTAL_LFOS, 0.0f);
-std::vector<float> FmSynthParams::lfoLevel(TOTAL_LFOS, 0.0f);
-std::vector<int> FmSynthParams::lfoWave(TOTAL_LFOS, 0);
-std::vector<int> FmSynthParams::lfoTarget(TOTAL_LFOS, 0);
 
 FmVoice::FmVoice(int numOperators, int index) :  voiceIndex(index), operatorCount(numOperators), fundamental(0.0f)
 {
@@ -51,6 +34,8 @@ FmVoice::FmVoice(int numOperators, int index) :  voiceIndex(index), operatorCoun
 
 float lastSample = 0.0f;
 int numBuffers = 0;
+int op1Index = 0;
+int op2Index = 0;
 void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples)
 {
     for(int i = startSample; i < (startSample + numSamples); ++i)
@@ -62,48 +47,37 @@ void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startS
         opSum = 0.0f;
         for(Operator* op : operators)
             {op->cleanOffset();}
+        op1Index = 0;
         for(Operator* o : operators)
         {
+            op2Index = 0;
             for(Operator* d : operators)
             {
-                if(routingParams[o->getIndex()][d->getIndex()])
+                if(FmSynthParams::opRouting[op1Index][op2Index])
                     d->modOffset += o->lastOutputSample;
+                ++op2Index;
             }
-             opSample = o->sample(fundamental);
-            if(o->isAudible)
+            opSample = o->sample(fundamental);
+            if(FmSynthParams::opAudible[o->getIndex()])
                 opSum += opSample;
+            ++op1Index;
         }
         for(int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
         {
             outputBuffer.addSample(channel, i, opSum);
         }
+        
         if(fabs(opSum - lastOpSample) > 0.2f)
             ++numJumps;
         lastOpSample = opSum;
     }
 }
-
-void FmVoice::setRoutingFromGrid(juce::AudioProcessorValueTreeState *pTree, std::vector<std::vector<juce::String>> grid)
-{
-    for(Operator* i : operators)
-    {
-        for(Operator* n : operators)
-        {
-            if(*(pTree->getRawParameterValue(grid[i->getIndex()][n->getIndex()])) != 0.0f)
-                routingParams[i->getIndex()][n->getIndex()] = 1;
-            else
-                routingParams[i->getIndex()][n->getIndex()] = 0;
-        }
-    }
-}
-
 void FmVoice::applyLfo(int index)
 {
     LfoProcessor* thisLfo = lfoBank[index];
-    lfoTarget = thisLfo->currentTarget;
     lfoValue = thisLfo->getSampleValue();
-    if(lfoTarget > 0)
+    if(FmSynthParams::lfoTarget[index] > 0)
     {
-        operators[lfoTarget - 1]->setAmpMod((1.0f + lfoValue) / 2.0f);
+        operators[FmSynthParams::lfoTarget[index] - 1]->setAmpMod((1.0f + lfoValue) / 2.0f);
     }
 }

@@ -11,6 +11,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include <math.h>
+#include "ParameterStructure.h"
 
 class DAHDSR
 {
@@ -26,7 +27,7 @@ public:
         noteOff
     };
     //functions
-    DAHDSR() : sampleRate(44100)
+    DAHDSR(int ind) : sampleRate(44100), index(ind)
     {
         trigger = false;
         samplesIntoPhase = 0;
@@ -36,7 +37,7 @@ public:
     void triggerOn()
     {
         trigger = true;
-        samplesInPhase = floor(delay * (sampleRate / 1000));
+        samplesInPhase = floor(FmSynthParams::opDelayTime[index] * (sampleRate / 1000));
         samplesIntoPhase = 0;
         currentPhase = delayPhase;
     }
@@ -45,25 +46,11 @@ public:
         trigger = false;
         currentPhase = releasePhase;
         samplesIntoPhase = 0;
-        samplesInPhase = release * (sampleRate / 1000);
-        factor = exp((log(minLevel) - log(sustainLevel)) /samplesInPhase);
+        samplesInPhase = FmSynthParams::opReleaseTime[index] * (sampleRate / 1000);
+        factor = exp((log(minLevel) - log(FmSynthParams::opSustainLevel[index])) /samplesInPhase);
     }
-    //setters-- all time values are in ms
     void setSampleRate(double value) {sampleRate = value;}
-    void setDelay(float value) {delay = value;}
-    void setAttack(float value) {attack = value;}
-    void setHold(float value) {hold = value;}
-    void setDecay(float value) {decay = value;}
-    void setSustain(float value) {sustainLevel = value;}
-    void setRelease(float value) {release = value;}
-    //getters
     float process(float input);
-    float getDelay() {return delay;}
-    float getAttack() {return attack;}
-    float getHold() {return hold;}
-    float getDecay() {return decay;}
-    float getSustain() {return sustainLevel;}
-    float getRelease() {return release;}
     envPhase getPhase() {return currentPhase;}
 private:
     //data
@@ -73,12 +60,7 @@ private:
     double output;
     double factor;
     float minLevel = 0.00001f;
-    float delay;
-    float attack;
-    float hold;
-    float decay;
-    float sustainLevel;
-    float release;
     double sampleRate;
+    int index;
     bool trigger;
 };

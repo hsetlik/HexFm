@@ -16,34 +16,34 @@ LfoProcessor::LfoProcessor(int index) : lfoIndex(index)
 
 float LfoProcessor::getSampleValue()
 {
-    switch(currentWaveType)
+    switch(FmSynthParams::lfoWave[lfoIndex])
     {
         case 0:
         {
-            lastValue = (lfo_osc.sinebuf(currentRate));
+            lastValue = (lfo_osc.sinebuf(FmSynthParams::lfoRate[lfoIndex]));
             break;
         }
         case 1:
         {
-            lastValue = (lfo_osc.triangle(currentRate));
+            lastValue = (lfo_osc.triangle(FmSynthParams::lfoRate[lfoIndex]));
             break;
         }
         case 2:
         {
-            lastValue = (lfo_osc.square(currentRate));
+            lastValue = (lfo_osc.square(FmSynthParams::lfoRate[lfoIndex]));
             break;
         }
         case 3:
         {
-            lastValue = (lfo_osc.saw(currentRate));
+            lastValue = (lfo_osc.saw(FmSynthParams::lfoRate[lfoIndex]));
             break;
         }
         case 4:
         {
-            int msCycle = floor(1000 / (currentRate + 0.0001));
+            int msCycle = floor(1000 / (FmSynthParams::lfoRate[lfoIndex] + 0.0001));
             lastValue = randOsc.sample(msCycle);
             break;
         }
     }
-    return lastValue * currentLevel;
+    return lastValue * FmSynthParams::lfoLevel[lfoIndex];
 };

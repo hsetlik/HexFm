@@ -12,6 +12,7 @@
 
 float Operator::sample(float fundamental) 
 {
-    lastOutputSample = envelope.process(osc.sinebuf((fundamental * ratio) + (modOffset * modIndex)) * amplitudeMod);
+    rawSample = osc.sinebuf((fundamental * FmSynthParams::opRatio[index]) + (modOffset * FmSynthParams::opModIndex[index])); //* FmSynthParams::opAmplitudeMod[index];
+    lastOutputSample = envelope.process(rawSample);
     return lastOutputSample;
 }

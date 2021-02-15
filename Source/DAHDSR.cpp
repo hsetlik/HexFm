@@ -16,16 +16,16 @@ float DAHDSR::process(float input)
         {
             case delayPhase:
             {
-                if(delay > 0)
+                if(FmSynthParams::opDelayTime[index] > 0)
                 {
                     if(samplesIntoPhase == 0)
-                        samplesInPhase = floor(delay * (sampleRate / 1000));
+                        samplesInPhase = floor(FmSynthParams::opDelayTime[index] * (sampleRate / 1000));
                     samplesIntoPhase += 1;
                     if(samplesIntoPhase >= samplesInPhase)
                     {
                         currentPhase = attackPhase;
                         samplesIntoPhase = 0;
-                        samplesInPhase = floor(attack * (sampleRate / 1000));
+                        samplesInPhase = floor(FmSynthParams::opAttackTime[index] * (sampleRate / 1000));
                         factor = exp((log(1.0f) - log(minLevel)) /samplesInPhase);
                     }
                     output = 0.0f;
@@ -33,7 +33,7 @@ float DAHDSR::process(float input)
                 else
                 {
                     currentPhase = attackPhase;
-                    samplesInPhase = floor(attack * (sampleRate / 1000));
+                    samplesInPhase = floor(FmSynthParams::opAttackTime[index] * (sampleRate / 1000));
                     factor = exp((log(1.0f) - log(minLevel)) /samplesInPhase);
                     samplesIntoPhase = 0;
                 }
@@ -49,21 +49,21 @@ float DAHDSR::process(float input)
                 {
                     currentPhase = holdPhase;
                     samplesIntoPhase = 0;
-                    samplesInPhase = hold * (sampleRate / 1000);
+                    samplesInPhase = FmSynthParams::opHoldTime[index] * (sampleRate / 1000);
                 }
                 break;
             }
             case holdPhase:
             {
-                if(hold != 0)
+                if(FmSynthParams::opHoldTime[index] != 0)
                 {
                     samplesIntoPhase += 1;
                     if(samplesIntoPhase > samplesInPhase)
                     {
                         currentPhase = decayPhase;
                         samplesIntoPhase = 0;
-                        samplesInPhase = decay * (sampleRate / 1000);
-                        factor = exp((log(sustainLevel) - log(1.0f)) /samplesInPhase);
+                        samplesInPhase = FmSynthParams::opDecayTime[index] * (sampleRate / 1000);
+                        factor = exp((log(FmSynthParams::opSustainLevel[index]) - log(1.0f)) /samplesInPhase);
                     }
                     output = 1.0f;
                 }
@@ -71,8 +71,8 @@ float DAHDSR::process(float input)
                 {
                     currentPhase = decayPhase;
                     samplesIntoPhase = 0;
-                    samplesInPhase = decay * (sampleRate / 1000);
-                    factor = exp((log(sustainLevel) - log(1.0f)) /samplesInPhase);;
+                    samplesInPhase = FmSynthParams::opDecayTime[index] * (sampleRate / 1000);
+                    factor = exp((log(FmSynthParams::opSustainLevel[index]) - log(1.0f)) /samplesInPhase);;
                 }
                 break;
             }
@@ -84,13 +84,13 @@ float DAHDSR::process(float input)
                 {
                     currentPhase = sustainPhase;
                     samplesIntoPhase = 0;
-                    output = sustainLevel;
+                    output = FmSynthParams::opSustainLevel[index];
                 }
                 break;
             }
             case sustainPhase:
             {
-                output = sustainLevel;
+                output = FmSynthParams::opSustainLevel[index];
                 break;
             }
             case releasePhase:
@@ -110,5 +110,9 @@ float DAHDSR::process(float input)
             default:
                 break;
         }
+    /*
+    if(output > 0.0)
+        printf("envelope on\n");
+     */
     return input * output;
 }

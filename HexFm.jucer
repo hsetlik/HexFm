@@ -37,6 +37,10 @@
               file="Source/LfoGroupComponent.h"/>
       </GROUP>
       <GROUP id="{7E985CFD-2F8E-2A87-C0F5-C64EED65ED45}" name="Synthesis">
+        <FILE id="NMp3Vi" name="ParameterStructure.cpp" compile="1" resource="0"
+              file="Source/ParameterStructure.cpp"/>
+        <FILE id="SGsDK1" name="ParameterStructure.h" compile="0" resource="0"
+              file="Source/ParameterStructure.h"/>
         <FILE id="bF33c4" name="LfoProcessor.cpp" compile="1" resource="0"
               file="Source/LfoProcessor.cpp"/>
         <FILE id="a0a4Me" name="LfoProcessor.h" compile="0" resource="0" file="Source/LfoProcessor.h"/>

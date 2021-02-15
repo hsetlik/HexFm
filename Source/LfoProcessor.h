@@ -12,6 +12,7 @@
 #include <JuceHeader.h>
 #include "maximilian.h"
 #include "SampleAndHoldOscillator.h"
+#include "ParameterStructure.h"
 //const to set the synth's total availible number of LFOs
 /* GUIDE TO TARGET NUMBERS
     Operator : Parameter : id

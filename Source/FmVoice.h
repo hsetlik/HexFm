@@ -11,40 +11,6 @@
 #pragma once
 #include <JuceHeader.h>
 #include "AlgorithmProcessor.h"
-const int TOTAL_OPERATORS = 6;
-const int TOTAL_LFOS = 4;
-
-
-struct FmSynthParams
-{
-    static std::vector<float> opDelayTime;
-    static std::vector<float> opAttackTime;
-    static std::vector<float> opHoldTime;
-    static std::vector<float> opDecayTime;
-    static std::vector<float> opSustainLevel;
-    static std::vector<float> opReleaseTime;
-    
-    static std::vector<std::vector<int>> createOpRouting()
-    {
-        std::vector<std::vector<int>> vec;
-        for(int i = 0; i < TOTAL_OPERATORS; ++i)
-        {
-            std::vector<int> newVec(TOTAL_OPERATORS, 0);
-            vec.push_back(newVec);
-        }
-        return vec;
-    }
-    static std::vector<std::vector<int>> opRouting;
-    static std::vector<float> opRatio;
-    static std::vector<float> opAmplitudeMod;
-    static std::vector<float> opLevel;
-    static std::vector<float> opModIndex;
-    
-    static std::vector<float> lfoRate;
-    static std::vector<float> lfoLevel;
-    static std::vector<int> lfoTarget;
-    static std::vector<int> lfoWave;
-};
 
 class FmSound : public juce::SynthesiserSound
 {
@@ -88,6 +54,7 @@ public:
                     int currentPitchWheelPosition)
     {
         fundamental = convert::mtof(midiNoteNumber - 12);
+        //printf("Fundamental: %f\n", fundamental);
         for(Operator* i : operators)
         {
             i->envelope.triggerOn();
@@ -121,32 +88,6 @@ public:
     }
     void applyLfo(int index);
     void setRoutingFromGrid(juce::AudioProcessorValueTreeState* pTree, std::vector<std::vector<juce::String>> grid);
-    void setParameters
-                     (
-                     int operatorIndex,
-                     std::atomic<float>* ratio,
-                     std::atomic<float>* level,
-                     std::atomic<float>* modIndex,
-                     std::atomic<float>* isAudible,
-                     std::atomic<float>* envDelay,
-                     std::atomic<float>* envAttack,
-                     std::atomic<float>* envHold,
-                     std::atomic<float>* envDecay,
-                     std::atomic<float>* envSustain,
-                     std::atomic<float>* envRelease
-                     )
-    {
-        operators[operatorIndex]->setRatio(*ratio);
-        operators[operatorIndex]->setLevel(*level);
-        operators[operatorIndex]->setModIndex(*modIndex);
-        operators[operatorIndex]->setAudible(*isAudible);
-        operators[operatorIndex]->envelope.setDelay(*envDelay);
-        operators[operatorIndex]->envelope.setAttack(*envAttack);
-        operators[operatorIndex]->envelope.setHold(*envHold);
-        operators[operatorIndex]->envelope.setDecay(*envDecay);
-        operators[operatorIndex]->envelope.setSustain(*envSustain);
-        operators[operatorIndex]->envelope.setRelease(*envRelease);
-    }
     void setSampleRate(double newRate)
     {
         for(Operator* i : operators)

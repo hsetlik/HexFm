@@ -255,31 +255,31 @@ bool HexFmAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) co
 
 void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    for(juce::SynthesiserVoice* voice : *synth.voiceArray())
+    FmSynthParams::setRouting(&tree, routingIds);
+    lfoIndex = 0;
+     for(auto i : FmSynthParams::lfoLevel)
+     {
+         FmSynthParams::lfoTarget[lfoIndex] = *tree.getRawParameterValue(lfoTargetIds[lfoIndex]);
+         FmSynthParams::lfoWave[lfoIndex] = *tree.getRawParameterValue(lfoWaveIds[lfoIndex]);
+         FmSynthParams::lfoRate[lfoIndex] = *tree.getRawParameterValue(lfoRateIds[lfoIndex]);
+         FmSynthParams::lfoLevel[lfoIndex] = *tree.getRawParameterValue(lfoLevelIds[lfoIndex]);
+         ++lfoIndex;
+     }
+    opIndex = 0;
+    for(auto i : FmSynthParams::opRatio)
     {
-        thisVoice = dynamic_cast<FmVoice*>(voice);
-        for(int i = 0; i < numOperators; ++i)
-        {
-            for(LfoProcessor* lfo : thisVoice->lfoBank)
-            {
-                lfo->currentRate = *tree.getRawParameterValue(lfoRateIds[lfo->getIndex()]);
-                lfo->currentTarget = *tree.getRawParameterValue(lfoTargetIds[lfo->getIndex()]);
-                lfo->currentLevel = *tree.getRawParameterValue(lfoLevelIds[lfo->getIndex()]);
-                lfo->currentWaveType = *tree.getRawParameterValue(lfoWaveIds[lfo->getIndex()]);
-            }
-            thisVoice->setParameters(i, tree.getRawParameterValue(ratioIds[i]),
-                                     tree.getRawParameterValue(levelIds[i]),
-                                     tree.getRawParameterValue(modIndexIds[i]),
-                                     tree.getRawParameterValue(audibleIds[i]),
-                                     tree.getRawParameterValue(delayIds[i]),
-                                     tree.getRawParameterValue(attackIds[i]),
-                                     tree.getRawParameterValue(holdIds[i]),
-                                     tree.getRawParameterValue(decayIds[i]),
-                                     tree.getRawParameterValue(sustainIds[i]),
-                                     tree.getRawParameterValue(releaseIds[i])
-                                    );
-        }
-        thisVoice->setRoutingFromGrid(&tree, routingIds);
+        FmSynthParams::opRatio[opIndex] = *tree.getRawParameterValue(ratioIds[opIndex]);
+        FmSynthParams::opLevel[opIndex] = *tree.getRawParameterValue(levelIds[opIndex]);
+        FmSynthParams::opModIndex[opIndex] = *tree.getRawParameterValue(modIndexIds[opIndex]);
+        FmSynthParams::opAudible[opIndex] = *tree.getRawParameterValue(audibleIds[opIndex]);
+        
+        FmSynthParams::opDelayTime[opIndex] = *tree.getRawParameterValue(delayIds[opIndex]);
+        FmSynthParams::opAttackTime[opIndex] = *tree.getRawParameterValue(attackIds[opIndex]);
+        FmSynthParams::opHoldTime[opIndex] = *tree.getRawParameterValue(holdIds[opIndex]);
+        FmSynthParams::opDecayTime[opIndex] = *tree.getRawParameterValue(decayIds[opIndex]);
+        FmSynthParams::opSustainLevel[opIndex] = *tree.getRawParameterValue(sustainIds[opIndex]);
+        FmSynthParams::opReleaseTime[opIndex] = *tree.getRawParameterValue(releaseIds[opIndex]);
+        ++opIndex;
     }
     buffer.clear();
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
