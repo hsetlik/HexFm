@@ -108,14 +108,9 @@ HexFmAudioProcessor::HexFmAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ),  tree(*this, nullptr, "synthParams", createLayout(numOperators))
+                       ),  tree(*this, nullptr, "synthParams", createLayout(numOperators)), synth(6, 4, 6)
 #endif
 {
-    for(int i = 0; i < numVoices; ++i)
-    {
-        synth.addVoice(new FmVoice(numOperators, i));
-    }
-    synth.clearSounds();
     for(int i = 0; i < 4; ++i)
     {
         auto iStr = juce::String(i);
@@ -124,7 +119,6 @@ HexFmAudioProcessor::HexFmAudioProcessor()
         lfoTargetIds.push_back("lfoTargetParam" + iStr);
         lfoLevelIds.push_back("lfoLevelParam" + iStr);
     }
-    synth.addSound(new FmSound());
     for(int i = 0; i < numOperators; ++i)
     {
         auto iStr = juce::String(i);
@@ -222,9 +216,9 @@ void HexFmAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     juce::ignoreUnused(samplesPerBlock);
     synth.setCurrentPlaybackSampleRate(sampleRate);
     maxiSettings::setup((int)sampleRate, 2, samplesPerBlock);
-    for(int i = 0; i < synth.getNumVoices(); ++i)
+    for(juce::SynthesiserVoice* i : *synth.voiceArray())
     {
-        FmVoice* voice = dynamic_cast<FmVoice*>(synth.getVoice(i));
+        auto* voice = dynamic_cast<FmVoice*>(i);
         voice->setSampleRate(sampleRate);
     }
 }
@@ -261,9 +255,9 @@ bool HexFmAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) co
 
 void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    for(int voice = 0; voice < numVoices; ++voice)
+    for(juce::SynthesiserVoice* voice : *synth.voiceArray())
     {
-        thisVoice = dynamic_cast<FmVoice*>(synth.getVoice(voice));
+        thisVoice = dynamic_cast<FmVoice*>(voice);
         for(int i = 0; i < numOperators; ++i)
         {
             for(LfoProcessor* lfo : thisVoice->lfoBank)
@@ -273,7 +267,6 @@ void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
                 lfo->currentLevel = *tree.getRawParameterValue(lfoLevelIds[lfo->getIndex()]);
                 lfo->currentWaveType = *tree.getRawParameterValue(lfoWaveIds[lfo->getIndex()]);
             }
-                
             thisVoice->setParameters(i, tree.getRawParameterValue(ratioIds[i]),
                                      tree.getRawParameterValue(levelIds[i]),
                                      tree.getRawParameterValue(modIndexIds[i]),

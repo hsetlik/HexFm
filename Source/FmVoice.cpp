@@ -10,6 +10,25 @@
 
 #include "FmVoice.h"
 
+std::vector<float> FmSynthParams::opDelayTime(TOTAL_OPERATORS, 0.0f);
+std::vector<float> FmSynthParams::opAttackTime(TOTAL_OPERATORS, 0.0f);
+std::vector<float> FmSynthParams::opHoldTime(TOTAL_OPERATORS, 0.0f);
+std::vector<float> FmSynthParams::opDecayTime(TOTAL_OPERATORS, 0.0f);
+std::vector<float> FmSynthParams::opSustainLevel(TOTAL_OPERATORS, 0.0f);
+std::vector<float> FmSynthParams::opReleaseTime(TOTAL_OPERATORS, 0.0f);
+
+std::vector<float> FmSynthParams::opRatio(TOTAL_OPERATORS, 0.0f);
+std::vector<float> FmSynthParams::opLevel(TOTAL_OPERATORS, 0.0f);
+std::vector<float> FmSynthParams::opAmplitudeMod(TOTAL_OPERATORS, 0.0f);
+std::vector<float> FmSynthParams::opModIndex(TOTAL_OPERATORS, 0.0f);
+
+std::vector<std::vector<int>> FmSynthParams::opRouting = FmSynthParams::createOpRouting();
+
+std::vector<float> FmSynthParams::lfoRate(TOTAL_LFOS, 0.0f);
+std::vector<float> FmSynthParams::lfoLevel(TOTAL_LFOS, 0.0f);
+std::vector<int> FmSynthParams::lfoWave(TOTAL_LFOS, 0);
+std::vector<int> FmSynthParams::lfoTarget(TOTAL_LFOS, 0);
+
 FmVoice::FmVoice(int numOperators, int index) :  voiceIndex(index), operatorCount(numOperators), fundamental(0.0f)
 {
     numJumps = 0;

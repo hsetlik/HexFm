@@ -79,7 +79,7 @@ private:
     std::vector<juce::String> sustainIds;
     std::vector<juce::String> releaseIds;
     std::vector<std::vector<juce::String>> routingIds;
-    juce::Synthesiser synth;
+    FmSynth synth;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HexFmAudioProcessor)
 };

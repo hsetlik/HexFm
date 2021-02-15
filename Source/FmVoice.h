@@ -11,6 +11,40 @@
 #pragma once
 #include <JuceHeader.h>
 #include "AlgorithmProcessor.h"
+const int TOTAL_OPERATORS = 6;
+const int TOTAL_LFOS = 4;
+
+
+struct FmSynthParams
+{
+    static std::vector<float> opDelayTime;
+    static std::vector<float> opAttackTime;
+    static std::vector<float> opHoldTime;
+    static std::vector<float> opDecayTime;
+    static std::vector<float> opSustainLevel;
+    static std::vector<float> opReleaseTime;
+    
+    static std::vector<std::vector<int>> createOpRouting()
+    {
+        std::vector<std::vector<int>> vec;
+        for(int i = 0; i < TOTAL_OPERATORS; ++i)
+        {
+            std::vector<int> newVec(TOTAL_OPERATORS, 0);
+            vec.push_back(newVec);
+        }
+        return vec;
+    }
+    static std::vector<std::vector<int>> opRouting;
+    static std::vector<float> opRatio;
+    static std::vector<float> opAmplitudeMod;
+    static std::vector<float> opLevel;
+    static std::vector<float> opModIndex;
+    
+    static std::vector<float> lfoRate;
+    static std::vector<float> lfoLevel;
+    static std::vector<int> lfoTarget;
+    static std::vector<int> lfoWave;
+};
 
 class FmSound : public juce::SynthesiserSound
 {
@@ -147,4 +181,31 @@ public:
     
     int lfoTarget;
     float lfoValue;
+};
+
+
+class FmSynth : public juce::Synthesiser
+{
+public:
+    FmSynth(int operators, int lfos, int numVoices) : juce::Synthesiser(), numOperators(operators), numLfos(lfos)
+    {
+        for(int i = 0; i < numVoices; ++i)
+        {
+            addVoice(new FmVoice(numOperators, i));
+        }
+        addSound(new FmSound());
+    }
+    FmVoice* getFmVoice(int i)
+    {
+        return dynamic_cast<FmVoice*>(voices.getUnchecked(i));
+    }
+    juce::OwnedArray<juce::SynthesiserVoice>* voiceArray()
+    {
+        return &voices;
+    }
+    //TODO: refactor this renderVoices() function as nuclear option
+    //void renderVoices(juce::AudioBuffer<float> &buffer, int startSample, int numSamples) override;
+private:
+    int numOperators;
+    int numLfos;
 };
