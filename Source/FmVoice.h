@@ -145,4 +145,7 @@ public:
     float opSample;
     float opSum;
     float lastOpSample;
+    
+    int lfoTarget;
+    float lfoValue;
 };

@@ -62,6 +62,11 @@ public:
     juce::AudioProcessorValueTreeState tree;
     FmVoice* thisVoice;
 private:
+    std::vector<juce::String> lfoTargetIds;
+    std::vector<juce::String> lfoWaveIds;
+    std::vector<juce::String> lfoRateIds;
+    std::vector<juce::String> lfoLevelIds;
+    
     std::vector<juce::String> ratioIds;
     std::vector<juce::String> levelIds;
     std::vector<juce::String> modIndexIds;

@@ -116,6 +116,14 @@ HexFmAudioProcessor::HexFmAudioProcessor()
         synth.addVoice(new FmVoice(numOperators, i));
     }
     synth.clearSounds();
+    for(int i = 0; i < 4; ++i)
+    {
+        auto iStr = juce::String(i);
+        lfoRateIds.push_back("lfoRateParam" + iStr);
+        lfoWaveIds.push_back("lfoWaveParam" + iStr);
+        lfoTargetIds.push_back("lfoTargetParam" + iStr);
+        lfoLevelIds.push_back("lfoLevelParam" + iStr);
+    }
     synth.addSound(new FmSound());
     for(int i = 0; i < numOperators; ++i)
     {
@@ -257,6 +265,14 @@ void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
         thisVoice = dynamic_cast<FmVoice*>(synth.getVoice(voice));
         for(int i = 0; i < numOperators; ++i)
         {
+            for(LfoProcessor* lfo : thisVoice->lfoBank)
+            {
+                lfo->currentRate = *tree.getRawParameterValue(lfoRateIds[lfo->getIndex()]);
+                lfo->currentTarget = *tree.getRawParameterValue(lfoTargetIds[lfo->getIndex()]);
+                lfo->currentLevel = *tree.getRawParameterValue(lfoLevelIds[lfo->getIndex()]);
+                lfo->currentWaveType = *tree.getRawParameterValue(lfoWaveIds[lfo->getIndex()]);
+            }
+                
             thisVoice->setParameters(i, tree.getRawParameterValue(ratioIds[i]),
                                      tree.getRawParameterValue(levelIds[i]),
                                      tree.getRawParameterValue(modIndexIds[i]),

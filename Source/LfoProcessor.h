@@ -53,6 +53,8 @@ public:
     int currentWaveType;
     float currentRate;
     float currentLevel;
+    int getIndex() {return lfoIndex;}
+    float lastValue;
 private:
     maxiOsc lfo_osc;
     RandomOscillator randOsc;

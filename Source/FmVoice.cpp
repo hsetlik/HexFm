@@ -100,10 +100,10 @@ void FmVoice::applyModulations()
 void FmVoice::applyLfo(int index)
 {
     LfoProcessor* thisLfo = lfoBank[index];
-    int target = thisLfo->currentTarget;
-    float rawValue = thisLfo->getSampleValue();
-    if(target > 0)
+    lfoTarget = thisLfo->currentTarget;
+    lfoValue = thisLfo->getSampleValue();
+    if(lfoTarget > 0)
     {
-        operators[target - 1]->setAmpMod((1.0f + rawValue) / 2.0f);
+        operators[lfoTarget - 1]->setAmpMod((1.0f + lfoValue) / 2.0f);
     }
 }
