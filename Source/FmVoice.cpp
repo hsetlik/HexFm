@@ -16,6 +16,13 @@ FmVoice::FmVoice(int numOperators, int index) :  voiceIndex(index), operatorCoun
     for(int i = 0; i < numOperators; ++i)
     {
         operators.add(new Operator(i));
+        std::vector<int> ints;
+        for(int n = 0; n < numOperators; ++n)
+        {
+            int newVal = 0;
+            ints.push_back(newVal);
+        }
+        routingParams.push_back(ints);
     }
     for(int n = 0; n < totalLfos; ++n)
     {
@@ -29,16 +36,22 @@ void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startS
 {
     for(int i = startSample; i < (startSample + numSamples); ++i)
     {
-        applyModulations();
         for(int lfo = 0; lfo < 4; ++ lfo)
         {
             applyLfo(lfo);
         }
+        //applyModulations();
         opSum = 0.0f;
-        for(int o = 0; o < operatorCount; ++o)
+        for(Operator* o : operators)
         {
-             opSample = operators[o]->sample(fundamental);
-            if(operators[o]->isAudible)
+            //operators[o]->modOffset = 0.0f;
+            for(Operator* d : operators)
+            {
+                if(routingParams[o->getIndex()][d->getIndex()])
+                    d->modOffset += o->lastOutputSample;
+            }
+             opSample = o->sample(fundamental);
+            if(o->isAudible)
                 opSum += opSample;
         }
         for(int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
@@ -51,17 +64,27 @@ void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startS
     }
 }
 
-void FmVoice::setRoutingFromGrid(juce::AudioProcessorValueTreeState *pTree)
+void FmVoice::setRoutingFromGrid(juce::AudioProcessorValueTreeState *pTree, std::vector<std::vector<juce::String>> grid)
 {
-    
+    for(Operator* i : operators)
+    {
+        for(Operator* n : operators)
+        {
+            if(*(pTree->getRawParameterValue(grid[i->getIndex()][n->getIndex()])) != 0.0f)
+                routingParams[i->getIndex()][n->getIndex()] = 1;
+            else
+                routingParams[i->getIndex()][n->getIndex()] = 0;
+        }
+    }
 }
 
 void FmVoice::applyModulations()
 {
+    /*
     for(int source = 0; source < operatorCount; ++source)
     {
-        operators[source]->cleanOffset();
         Operator* sourceOp = operators[source];
+        sourceOp->cleanOffset();
         for(int dest = 0; dest < operatorCount; ++dest)
         {
             Operator* destOp = operators[dest];
@@ -71,6 +94,7 @@ void FmVoice::applyModulations()
             }
         }
     }
+     */
 }
 
 void FmVoice::applyLfo(int index)

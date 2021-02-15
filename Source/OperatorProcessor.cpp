@@ -12,8 +12,6 @@
 
 float Operator::sample(float fundamental) 
 {
-    auto finalFreq = (fundamental * ratio) + (modOffset * modIndex);
-    auto fullAmp = osc.sinebuf(finalFreq);
-    lastOutputSample = envelope.process(fullAmp * level * amplitudeMod);
+    lastOutputSample = envelope.process(osc.sinebuf((fundamental * ratio) + (modOffset * modIndex)));
     return lastOutputSample;
 }

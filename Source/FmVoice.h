@@ -86,7 +86,7 @@ public:
         lfoBank[lfo]->currentLevel = *value;
     }
     void applyLfo(int index);
-    void setRoutingFromGrid(juce::AudioProcessorValueTreeState* pTree);
+    void setRoutingFromGrid(juce::AudioProcessorValueTreeState* pTree, std::vector<std::vector<juce::String>> grid);
     void setParameters
                      (
                      int operatorIndex,
@@ -116,9 +116,9 @@ public:
     void applyModulations();
     void setSampleRate(double newRate)
     {
-        for(int i = 0; i < operators.size(); ++i)
+        for(Operator* i : operators)
         {
-            operators[i]->envelope.setSampleRate(newRate);
+            i->envelope.setSampleRate(newRate);
         }
     }
     void pitchWheelMoved(int newPitchWheelVal) {}
@@ -136,13 +136,12 @@ public:
         
     }
     int voiceIndex;
-    bool routingParams[6][6];
+    std::vector<std::vector<int>> routingParams;
     int numJumps;
     int operatorCount;
     float fundamental;
     juce::OwnedArray<LfoProcessor> lfoBank;
     juce::OwnedArray<Operator> operators;
-    
     float opSample;
     float opSum;
     float lastOpSample;

@@ -138,7 +138,6 @@ HexFmAudioProcessor::HexFmAudioProcessor()
             routing.push_back(iStr + "to" + nStr + "Param");
         }
         routingIds.push_back(routing);
-        
     }
 }
 
@@ -270,6 +269,7 @@ void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
                                      tree.getRawParameterValue(releaseIds[i])
                                     );
         }
+        thisVoice->setRoutingFromGrid(&tree, routingIds);
     }
     buffer.clear();
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
