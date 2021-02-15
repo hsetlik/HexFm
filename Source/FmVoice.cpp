@@ -40,11 +40,11 @@ void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startS
         {
             applyLfo(lfo);
         }
-        //applyModulations();
         opSum = 0.0f;
+        for(Operator* op : operators)
+            {op->cleanOffset();}
         for(Operator* o : operators)
         {
-            //operators[o]->modOffset = 0.0f;
             for(Operator* d : operators)
             {
                 if(routingParams[o->getIndex()][d->getIndex()])
