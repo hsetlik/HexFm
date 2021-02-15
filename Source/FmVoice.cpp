@@ -78,6 +78,6 @@ void FmVoice::applyLfo(int index)
     lfoValue = thisLfo->getSampleValue();
     if(FmSynthParams::lfoTarget[index] > 0)
     {
-        operators[FmSynthParams::lfoTarget[index] - 1]->setAmpMod((1.0f + lfoValue) / 2.0f);
+        FmSynthParams::opAmplitudeMod[FmSynthParams::lfoTarget[index] - 1] = ((1.0f + lfoValue) / 2.0f);
     }
 }

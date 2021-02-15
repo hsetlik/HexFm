@@ -110,9 +110,5 @@ float DAHDSR::process(float input)
             default:
                 break;
         }
-    /*
-    if(output > 0.0)
-        printf("envelope on\n");
-     */
     return input * output;
 }

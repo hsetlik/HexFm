@@ -22,18 +22,6 @@ public:
         
     }
     ~Operator() {}
-    void setRatio(float newRatio)
-    {
-        ratio = newRatio;
-    }
-    void setLevel(float newLevel)
-    {
-        level = newLevel;
-    }
-    void setModIndex(float newIndex)
-    {
-        modIndex = newIndex;
-    }
     int getIndex()
     {
         return index;
@@ -41,22 +29,6 @@ public:
     void cleanOffset()
     {
         modOffset = 0.0f;
-    }
-    void setAudible(float shouldBeAudible)
-    {
-        isAudible = shouldBeAudible;
-    }
-    float getRatio()
-    {
-        return ratio;
-    }
-    float getLevel()
-    {
-        return level;
-    }
-    float getModIndex()
-    {
-        return modIndex;
     }
     void setAmpMod(float newVal)
     {
