@@ -26,7 +26,7 @@ float DAHDSR::process(float input)
                         currentPhase = attackPhase;
                         samplesIntoPhase = 0;
                         samplesInPhase = floor(attack * (sampleRate / 1000));
-                        factor = 1.0 + (log(1.0f) - log(minLevel)) / (samplesInPhase);
+                        factor = exp((log(1.0f) - log(minLevel)) /samplesInPhase);
                     }
                     output = 0.0f;
                 }
@@ -34,7 +34,7 @@ float DAHDSR::process(float input)
                 {
                     currentPhase = attackPhase;
                     samplesInPhase = floor(attack * (sampleRate / 1000));
-                    factor = 1.0 + (log(1.0f) - log(minLevel)) / (samplesInPhase);
+                    factor = exp((log(1.0f) - log(minLevel)) /samplesInPhase);
                     samplesIntoPhase = 0;
                 }
                 break;
@@ -63,7 +63,7 @@ float DAHDSR::process(float input)
                         currentPhase = decayPhase;
                         samplesIntoPhase = 0;
                         samplesInPhase = decay * (sampleRate / 1000);
-                        factor = 1.0 + (log(sustainLevel) - log(1.0f)) / (samplesInPhase);
+                        factor = exp((log(sustainLevel) - log(1.0f)) /samplesInPhase);
                     }
                     output = 1.0f;
                 }
@@ -72,7 +72,7 @@ float DAHDSR::process(float input)
                     currentPhase = decayPhase;
                     samplesIntoPhase = 0;
                     samplesInPhase = decay * (sampleRate / 1000);
-                    factor = 1.0 + (log(sustainLevel) - log(1.0f)) / (samplesInPhase);
+                    factor = exp((log(sustainLevel) - log(1.0f)) /samplesInPhase);;
                 }
                 break;
             }

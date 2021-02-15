@@ -46,7 +46,7 @@ public:
         currentPhase = releasePhase;
         samplesIntoPhase = 0;
         samplesInPhase = release * (sampleRate / 1000);
-        factor = 1.0 + (log(minLevel) - log(sustainLevel)) / (samplesInPhase);
+        factor = exp((log(minLevel) - log(sustainLevel)) /samplesInPhase);
     }
     //setters-- all time values are in ms
     void setSampleRate(double value) {sampleRate = value;}

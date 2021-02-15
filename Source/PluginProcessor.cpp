@@ -221,6 +221,7 @@ void HexFmAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     juce::ignoreUnused(samplesPerBlock);
     synth.setCurrentPlaybackSampleRate(sampleRate);
+    maxiSettings::setup((int)sampleRate, 2, samplesPerBlock);
     for(int i = 0; i < synth.getNumVoices(); ++i)
     {
         FmVoice* voice = dynamic_cast<FmVoice*>(synth.getVoice(i));
