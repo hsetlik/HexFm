@@ -53,7 +53,7 @@ public:
                     juce::SynthesiserSound *sound,
                     int currentPitchWheelPosition)
     {
-        fundamental = convert::mtof(midiNoteNumber);
+        fundamental = convert::mtof(midiNoteNumber - 12);
         for(Operator* i : operators)
         {
             i->envelope.triggerOn();
