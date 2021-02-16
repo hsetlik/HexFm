@@ -35,13 +35,14 @@ struct FmSynthParams
     static std::vector<std::vector<int>> opRouting;
     static std::vector<float> opRatio;
     static std::vector<float> opAmplitudeMod;
+    static std::vector<float> opEnvLevel;
     static std::vector<float> opLevel;
     static std::vector<float> opModIndex;
     
+    static float workingFundamental;
     static std::vector<float> lfoRate;
     static std::vector<float> lfoLevel;
     static std::vector<int> lfoTarget;
     static std::vector<int> lfoWave;
     static void setRouting(juce::AudioProcessorValueTreeState *pTree, std::vector<std::vector<juce::String>> grid);
-    
 };

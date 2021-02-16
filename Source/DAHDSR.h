@@ -52,12 +52,12 @@ public:
     void setSampleRate(double value) {sampleRate = value;}
     float process(float input);
     envPhase getPhase() {return currentPhase;}
+    double output;
 private:
     //data
     envPhase currentPhase;
     unsigned long long samplesIntoPhase;
     unsigned long long samplesInPhase;
-    double output;
     double factor;
     float minLevel = 0.00001f;
     double sampleRate;

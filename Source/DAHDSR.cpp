@@ -110,5 +110,6 @@ float DAHDSR::process(float input)
             default:
                 break;
         }
+    FmSynthParams::opEnvLevel[index] = output;
     return input * output;
 }

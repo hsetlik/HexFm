@@ -17,7 +17,7 @@ FmVoice::FmVoice(int numOperators, int index) :  voiceIndex(index), operatorCoun
     numJumps = 0;
     for(int i = 0; i < numOperators; ++i)
     {
-        operators.add(new Operator(i));
+        operators.add(new Operator(i, voiceIndex));
         std::vector<int> ints;
         for(int n = 0; n < numOperators; ++n)
         {
@@ -37,6 +37,7 @@ int op1Index = 0;
 int op2Index = 0;
 void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples)
 {
+    FmSynthParams::workingFundamental = fundamental;
     for(int i = startSample; i < (startSample + numSamples); ++i)
     {
         for(int lfo = 0; lfo < 4; ++ lfo)

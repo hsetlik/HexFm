@@ -17,7 +17,7 @@
 class Operator
 {
 public:
-    Operator(int opIndex) : envelope(opIndex), ratio(1.0f), index(opIndex)
+    Operator(int opIndex, int voiceIndex) : envelope(opIndex), voice(voiceIndex), ratio(1.0f), index(opIndex)
     {
         
     }
@@ -45,6 +45,7 @@ public:
     float lastOutputSample;
     bool isAudible = false;
     DAHDSR envelope;
+    int voice;
     float modOffset;
     float rawSample;
 private:

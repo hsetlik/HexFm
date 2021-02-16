@@ -11,6 +11,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "LfoComponent.h"
+#include "WaveGraph.h"
 
 class LfoGroupComponent : public juce::TabbedComponent
 {
@@ -25,6 +26,7 @@ public:
             auto tabName = "LFO " + juce::String(i + 1);
             addTab(tabName, tabColor, children.getLast(), false);
         }
+        addTab("Graph", tabColor, &graph, false);
     }
     ~LfoGroupComponent() {}
     void attachChildren(juce::AudioProcessorValueTreeState* pTree)
@@ -35,5 +37,6 @@ public:
         }
     }
 private:
+    WaveGraph graph;
     juce::OwnedArray<LfoComponent> children;
 };
