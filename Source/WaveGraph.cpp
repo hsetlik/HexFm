@@ -12,7 +12,6 @@
 
 void WaveGraph::updatePaths()
 {
-    opData.baseAngleDelta = juce::MathConstants<float>::twoPi / WAVE_RES;
     for(int i = 1; i < WAVE_RES + 1; ++i)
     {
         for(int op = 0; op < TOTAL_OPERATORS; ++op)

@@ -26,7 +26,6 @@ public:
             auto tabName = "LFO " + juce::String(i + 1);
             addTab(tabName, tabColor, children.getLast(), false);
         }
-        addTab("Graph", tabColor, &graph, false);
     }
     ~LfoGroupComponent() {}
     void attachChildren(juce::AudioProcessorValueTreeState* pTree)
@@ -37,6 +36,6 @@ public:
         }
     }
 private:
-    WaveGraph graph;
+    //WaveGraph graph;
     juce::OwnedArray<LfoComponent> children;
 };

@@ -17,12 +17,12 @@ const int PERIOD = 64;
 
 struct WaveData
 {
-    WaveData(float r, float l, int res) : angles(TOTAL_OPERATORS, 0.0f)
+    WaveData(float r, float l, int res) : angles(TOTAL_OPERATORS, 0.0f), baseAngleDelta(juce::MathConstants<float>::twoPi / WAVE_RES)
     {
         isVisible = true;
         for(int i = 0; i < TOTAL_OPERATORS; ++i)
         {
-            std::vector<float> opPoints(WAVE_RES, 0.0f);
+            std::vector<float> opPoints(WAVE_RES, 0.0);
             points.push_back(opPoints);
         }
     }
@@ -52,7 +52,7 @@ public:
     void timerCallback() override
     {
         updatePaths();
-        repaint();
+        //repaint();
     }
     void updatePaths();
     void paint(juce::Graphics& g) override;
