@@ -36,6 +36,5 @@ public:
         }
     }
 private:
-    //WaveGraph graph;
     juce::OwnedArray<LfoComponent> children;
 };

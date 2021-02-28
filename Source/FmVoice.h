@@ -53,7 +53,7 @@ public:
                     juce::SynthesiserSound *sound,
                     int currentPitchWheelPosition)
     {
-        fundamental = convert::mtof(midiNoteNumber);
+        fundamental = convert::mtof(midiNoteNumber - 12);
         for(Operator* i : operators)
         {
             i->envelope.triggerOn();
@@ -143,8 +143,6 @@ public:
     {
         return &voices;
     }
-    //TODO: refactor this renderVoices() function as nuclear option
-    //void renderVoices(juce::AudioBuffer<float> &buffer, int startSample, int numSamples) override;
 private:
     int numOperators;
     int numLfos;
