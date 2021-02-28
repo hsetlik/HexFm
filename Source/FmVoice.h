@@ -10,7 +10,7 @@
 
 #pragma once
 #include <JuceHeader.h>
-#include "AlgorithmProcessor.h"
+#include "OperatorProcessor.h"
 
 class FmSound : public juce::SynthesiserSound
 {
