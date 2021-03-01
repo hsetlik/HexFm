@@ -18,7 +18,7 @@
 class Operator
 {
 public:
-    Operator(int opIndex, int voiceIndex) : envelope(opIndex), voice(voiceIndex), ratio(1.0f), index(opIndex), wtOsc(sine512)
+    Operator(int opIndex, int voiceIndex) : envelope(opIndex), voice(voiceIndex), ratio(1.0f), index(opIndex), wtOsc(triangle512)
     {
         
     }
