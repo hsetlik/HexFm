@@ -7,6 +7,8 @@
   <MAINGROUP id="f8EfdE" name="HexFm">
     <GROUP id="{DC7DA288-18E4-8EA7-1D3D-9542BABB314D}" name="Source">
       <GROUP id="{DFABB24D-7FEA-FB8A-D3A7-677009A3C90E}" name="Components">
+        <FILE id="dsZMMN" name="NoiseOp.cpp" compile="1" resource="0" file="Source/NoiseOp.cpp"/>
+        <FILE id="gyz9H0" name="NoiseOp.h" compile="0" resource="0" file="Source/NoiseOp.h"/>
         <FILE id="rurjfR" name="WaveGraph.cpp" compile="1" resource="0" file="Source/WaveGraph.cpp"/>
         <FILE id="Tt7EAo" name="WaveGraph.h" compile="0" resource="0" file="Source/WaveGraph.h"/>
         <FILE id="cVyIHF" name="SliderSubclasses.h" compile="0" resource="0"
@@ -33,12 +35,14 @@
         <FILE id="lshFoY" name="LfoComponent.cpp" compile="1" resource="0"
               file="Source/LfoComponent.cpp"/>
         <FILE id="f1iOzr" name="LfoComponent.h" compile="0" resource="0" file="Source/LfoComponent.h"/>
-        <FILE id="rNrIfi" name="LfoGroupComponent.cpp" compile="1" resource="0"
-              file="Source/LfoGroupComponent.cpp"/>
         <FILE id="ncvimx" name="LfoGroupComponent.h" compile="0" resource="0"
               file="Source/LfoGroupComponent.h"/>
       </GROUP>
       <GROUP id="{7E985CFD-2F8E-2A87-C0F5-C64EED65ED45}" name="Synthesis">
+        <FILE id="xSiYaO" name="NoiseProcessor.cpp" compile="1" resource="0"
+              file="Source/NoiseProcessor.cpp"/>
+        <FILE id="lSfV9e" name="NoiseProcessor.h" compile="0" resource="0"
+              file="Source/NoiseProcessor.h"/>
         <FILE id="NMp3Vi" name="ParameterStructure.cpp" compile="1" resource="0"
               file="Source/ParameterStructure.cpp"/>
         <FILE id="SGsDK1" name="ParameterStructure.h" compile="0" resource="0"
@@ -56,10 +60,6 @@
               file="Source/SampleAndHoldOscillator.h"/>
         <FILE id="sasLiy" name="FmVoice.cpp" compile="1" resource="0" file="Source/FmVoice.cpp"/>
         <FILE id="sbSxj2" name="FmVoice.h" compile="0" resource="0" file="Source/FmVoice.h"/>
-        <FILE id="yHslQq" name="AlgorithmProcessor.cpp" compile="1" resource="0"
-              file="Source/AlgorithmProcessor.cpp"/>
-        <FILE id="n2d1pN" name="AlgorithmProcessor.h" compile="0" resource="0"
-              file="Source/AlgorithmProcessor.h"/>
         <FILE id="QgskjP" name="DAHDSR.cpp" compile="1" resource="0" file="Source/DAHDSR.cpp"/>
         <FILE id="jcx3MR" name="DAHDSR.h" compile="0" resource="0" file="Source/DAHDSR.h"/>
       </GROUP>

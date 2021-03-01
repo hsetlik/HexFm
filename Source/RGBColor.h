@@ -10,6 +10,11 @@
 
 #pragma once
 #include <JuceHeader.h>
+
+struct ColorTriad
+{
+    juce::Colour left, right, center;
+};
 struct ColorCreator
 {
     //without fourth argument, returns color with fully opaque alpha
@@ -51,5 +56,35 @@ struct ColorCreator
         int iBlue = floor(mixBlue * 255);
         
         return RGBColor(iRed, iGreen, iBlue);
+    }
+    static juce::Colour complement(juce::Colour start)
+    {
+        auto fHue = start.getHue();
+        auto fSat = start.getSaturationHSL();
+        auto fLgt = start.getLightness();
+        
+        auto dHueStart = fHue * 360.0;
+        auto hue = 360.0 - dHueStart;
+        return juce::Colour(hue, fSat, fLgt, 1.0f);
+    }
+    
+    static ColorTriad triadFrom(juce::Colour center)
+    {
+        ColorTriad triad;
+        triad.center = center;
+        auto fHue = center.getHue() * 360;
+        auto rHue = fHue + 120;
+        if(rHue > 360)
+            rHue -= 360;
+        else if(rHue < 0)
+            rHue += 360;
+        triad.right = juce::Colour(rHue, center.getSaturationHSL(), center.getLightness(), 1.0f);
+        auto lHue = fHue - 120;
+        if(lHue > 360)
+            lHue -= 360;
+        else if(lHue < 0)
+            lHue += 360;
+        triad.left = juce::Colour(lHue, center.getSaturationHSL(), center.getLightness(), 1.0f);
+        return triad;
     }
 };

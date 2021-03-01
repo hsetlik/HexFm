@@ -21,6 +21,7 @@ ratioLabel(&ratioSlider.slider, ""),
 modIndexSlider(index),
 indexLabel(&modIndexSlider.slider, ""),
 outputButton(index),
+noiseButton(index),
 delaySlider(index),
 delayLabel(&delaySlider, "ms"),
 attackSlider(index),
@@ -39,6 +40,9 @@ releaseLabel(&releaseSlider, "ms")
     addAndMakeVisible(&ratioSlider);
     addAndMakeVisible(&modIndexSlider);
     addAndMakeVisible(&outputButton);
+    addAndMakeVisible(&noiseButton);
+    noiseButton.addListener(this);
+    
     addAndMakeVisible(&delaySlider);
     addAndMakeVisible(&attackSlider);
     addAndMakeVisible(&holdSlider);
@@ -48,7 +52,6 @@ releaseLabel(&releaseSlider, "ms")
     
     addAndMakeVisible(&ratioLabel);
     addAndMakeVisible(&indexLabel);
-    
     addAndMakeVisible(&envGraph);
     
     addAndMakeVisible(&delayLabel);
@@ -83,6 +86,7 @@ void OperatorComponent::resized()
     envGraph.setBounds(n, 13 * n, 15 * n, 10 * n);
 
     outputButton.setBounds(16 * n, 1.5 * n, 5.5 * n, 2.5 * n);
+    noiseButton.setBounds(18.5 * n, 19 * n, 4 * n, 2.5 * n);
     levelSlider.setBounds(19 * n, 6 * n, 4 * n, 12 * n);
     
     
@@ -105,11 +109,28 @@ void OperatorComponent::paint(juce::Graphics &g)
     auto nameRect = juce::Rectangle<int> {n * 3, n / 6, 10 * n, 6 * n};
     auto labelText = "Operator " + juce::String(opIndex + 1);
     g.drawText(labelText, nameRect, juce::Justification::centred);
-    auto iText = "INDEX";
-    auto rText = "RATIO";
+    
     auto lText = "LEVEL";
     g.setFont(juce::Font("LCD", 11.0f, 0));
     g.drawText(iText, iLabelBox, juce::Justification::centredBottom);
     g.drawText(rText, rLabelBox, juce::Justification::centredBottom);
     g.drawText(lText, lLabelBox, juce::Justification::centredBottom);
+}
+
+void OperatorComponent::buttonClicked(juce::Button *b)
+{
+    auto* button = dynamic_cast<NoiseToggleButton*>(b);
+    button->switchMode();
+    if(button->isNoise)
+    {
+        iText = "LOW";
+        rText = "HIGH";
+    }
+    else
+    {
+        //vice versa
+        iText = "INDEX";
+        rText = "RATIO";
+    }
+    repaint();
 }

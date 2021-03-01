@@ -18,7 +18,7 @@
 //==============================================================================
 /*
 */
-class OperatorComponent  : public juce::Component
+class OperatorComponent  : public juce::Component, juce::Button::Listener
 {
 public:
     OperatorComponent(int index, juce::AudioProcessorValueTreeState* pTree);
@@ -29,7 +29,8 @@ public:
         levelSlider.attach(pTree);
         ratioSlider.attach(pTree);
         modIndexSlider.attach(pTree);
-        
+        noiseButton.attach(pTree);
+        noiseButton.addListener(this);
         
         delaySlider.attach(pTree);
         attackSlider.attach(pTree);
@@ -40,6 +41,7 @@ public:
     }
     void resized() override;
     void paint(juce::Graphics& g) override;
+    void buttonClicked(juce::Button* b) override;
     int opIndex;
 private:
     DAHDSRGraph envGraph;
@@ -51,6 +53,7 @@ private:
     ModIndexSlider modIndexSlider;
     EnvLabel indexLabel;
     OutputToggleButton outputButton;
+    NoiseToggleButton noiseButton;
     
     DelaySlider delaySlider;
     EnvLabel delayLabel;
@@ -64,6 +67,9 @@ private:
     EnvLabel sustainLabel;
     ReleaseSlider releaseSlider;
     EnvLabel releaseLabel;
+    
+    juce::String iText = "INDEX";
+    juce::String rText = "RATIO";
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OperatorComponent)
 };

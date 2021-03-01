@@ -21,6 +21,7 @@ struct FmSynthParams
     static std::vector<float> opSustainLevel;
     static std::vector<float> opReleaseTime;
     static std::vector<int> opAudible;
+    static std::vector<int> opIsNoise;
     
     static std::vector<std::vector<int>> createOpRouting()
     {

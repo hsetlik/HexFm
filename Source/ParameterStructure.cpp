@@ -17,6 +17,7 @@ std::vector<float> FmSynthParams::opDecayTime(TOTAL_OPERATORS, 0.0f);
 std::vector<float> FmSynthParams::opSustainLevel(TOTAL_OPERATORS, 0.0f);
 std::vector<float> FmSynthParams::opReleaseTime(TOTAL_OPERATORS, 0.0f);
 std::vector<int> FmSynthParams::opAudible(TOTAL_OPERATORS, 0);
+std::vector<int> FmSynthParams::opIsNoise(TOTAL_OPERATORS, 0);
 
 std::vector<float> FmSynthParams::opRatio(TOTAL_OPERATORS, 0.0f);
 std::vector<float> FmSynthParams::opLevel(TOTAL_OPERATORS, 0.0f);

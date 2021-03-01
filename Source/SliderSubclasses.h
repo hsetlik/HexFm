@@ -297,5 +297,42 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> attachment;
 };
 
+class NoiseToggleButton : public juce::TextButton
+{
+public:
+    NoiseToggleButton(int index) : opIndex(index), bText("Noise")
+    {
+        setClickingTogglesState(true);
+        setButtonText(bText);
+        isNoise = false;
+        pitchColor = ColorCreator::RGBColor(226, 76, 86);
+        noiseColor = ColorCreator::RGBColor(31, 46, 50);
+        setColour(juce::TextButton::buttonColourId, pitchColor);
+        setColour(juce::TextButton::buttonOnColourId, noiseColor);
+    }
+    ~NoiseToggleButton() {}
+    void attach(juce::AudioProcessorValueTreeState* pTree)
+    {
+        juce::String iStr = juce::String(opIndex);
+        auto paramId = "noiseModeParam" + iStr;
+        attachment.reset(new juce::AudioProcessorValueTreeState::ButtonAttachment(*pTree, paramId, *this));
+    }
+    void switchMode()
+    {
+        isNoise = !isNoise;
+        if(isNoise)
+            bText = "Pitch";
+        else
+            bText = "Noise";
+        setButtonText(bText);
+    }
+    int opIndex;
+    juce::String bText;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> attachment;
+    bool isNoise;
+    juce::Colour noiseColor;
+    juce::Colour pitchColor;
+};
+
 
 

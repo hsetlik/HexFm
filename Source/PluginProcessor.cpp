@@ -53,6 +53,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
         layout.add(std::make_unique<juce::AudioParameterFloat>(decayId, decayName, timeRange2, 100.0f));
         layout.add(std::make_unique<juce::AudioParameterFloat>(sustainId, sustainName, 0.0f, 1.0f , 0.6f));
         layout.add(std::make_unique<juce::AudioParameterFloat>(releaseId, releaseName, timeRange2, 40.0f));
+        //noise mode toggles
+        auto noiseId = "noiseModeParam" + iStr;
+        auto noiseName = "Operator " + iStr + " noise mode";
+        layout.add(std::make_unique<juce::AudioParameterBool>(noiseId, noiseName, false));
         //bools for modulation paths
         for(int n = 0; n < numOperators; ++n)
         {
