@@ -92,7 +92,7 @@ public:
     {
         for(Operator* i : operators)
         {
-            i->envelope.setSampleRate(newRate);
+            i->updateSampleRate(newRate);
         }
     }
     void pitchWheelMoved(int newPitchWheelVal) {}
@@ -107,7 +107,7 @@ public:
     //==============================================
     void setCurrentPlaybackSampleRate (double newRate)
     {
-        
+        setSampleRate(newRate);
     }
     int voiceIndex;
     std::vector<std::vector<int>> routingParams;

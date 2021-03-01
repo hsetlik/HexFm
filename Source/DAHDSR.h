@@ -27,7 +27,7 @@ public:
         noteOff
     };
     //functions
-    DAHDSR(int ind) : sampleRate(44100), index(ind)
+    DAHDSR(int ind) : factor(1.0f), sampleRate(44100), index(ind)
     {
         trigger = false;
         samplesIntoPhase = 0;
