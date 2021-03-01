@@ -12,7 +12,7 @@
 
 
 
-FmVoice::FmVoice(int numOperators, int index) :  voiceIndex(index), operatorCount(numOperators), fundamental(0.0f)
+FmVoice::FmVoice(int numOperators, int index) :  voiceIndex(index), operatorCount(numOperators), fundamental(1.0f)
 {
     numJumps = 0;
     for(int i = 0; i < numOperators; ++i)

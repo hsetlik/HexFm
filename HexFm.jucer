@@ -39,6 +39,10 @@
               file="Source/LfoGroupComponent.h"/>
       </GROUP>
       <GROUP id="{7E985CFD-2F8E-2A87-C0F5-C64EED65ED45}" name="Synthesis">
+        <FILE id="SQQJJO" name="WavetableOscillator.cpp" compile="1" resource="0"
+              file="Source/WavetableOscillator.cpp"/>
+        <FILE id="HYEHBL" name="WavetableOscillator.h" compile="0" resource="0"
+              file="Source/WavetableOscillator.h"/>
         <FILE id="xSiYaO" name="NoiseProcessor.cpp" compile="1" resource="0"
               file="Source/NoiseProcessor.cpp"/>
         <FILE id="lSfV9e" name="NoiseProcessor.h" compile="0" resource="0"

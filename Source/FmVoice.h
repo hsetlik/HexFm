@@ -53,7 +53,8 @@ public:
                     juce::SynthesiserSound *sound,
                     int currentPitchWheelPosition)
     {
-        fundamental = convert::mtof(midiNoteNumber - 12);
+        fundamental = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
+        printf("Fundamental: %f\n", fundamental);
         for(Operator* i : operators)
         {
             i->envelope.triggerOn();
@@ -91,7 +92,7 @@ public:
     {
         for(Operator* i : operators)
         {
-            i->envelope.setSampleRate(newRate);
+            i->setSampleRate(newRate);
         }
     }
     void pitchWheelMoved(int newPitchWheelVal) {}
@@ -106,7 +107,8 @@ public:
     //==============================================
     void setCurrentPlaybackSampleRate (double newRate)
     {
-        
+        for(auto* o : operators)
+            o->setSampleRate(newRate);
     }
     int voiceIndex;
     std::vector<std::vector<int>> routingParams;

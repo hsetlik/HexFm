@@ -751,7 +751,7 @@ bool maxiSample::save(string filename)
     myFile.write ((char*) &myBlockAlign, 2);
     myFile.write ((char*) &myBitsPerSample, 2);
     myFile.write ("data", 4);
-    int myDataSize = shortAmps.size() * 2;
+    auto myDataSize = shortAmps.size() * 2;
     myFile.write ((char*) &myDataSize, 4);
     //        myFile.write ((char*) temp, myDataSize);
     myFile.write ((char*) shortAmps.data(), myDataSize);
@@ -1044,7 +1044,7 @@ void maxiSample::autoTrim(float alpha, float threshold, bool trimStart, bool tri
         }
     }
 
-    int endMarker = amplitudes.size()-1;
+    int endMarker = (int)amplitudes.size()-1;
     if(trimEnd) {
         maxiLagExp<float> endLag(alpha, 0);
         while(endMarker > 0) {
@@ -1068,7 +1068,7 @@ void maxiSample::autoTrim(float alpha, float threshold, bool trimStart, bool tri
         position=0;
         recordPosition=0;
         //envelope the start
-        int fadeSize=min((unsigned long)100, amplitudes.size());
+        auto fadeSize=min((unsigned long)100, amplitudes.size());
         for(int i=0; i < fadeSize; i++) {
             double factor = i / (double) fadeSize;
             amplitudes[i] = round(amplitudes[i] * factor);

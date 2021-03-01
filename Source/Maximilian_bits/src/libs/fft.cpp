@@ -535,7 +535,6 @@ void fft::convToDB(float *in, float *out) {
 
 void fft::calcFFT_vdsp(float *data, float *window) {
     issetup = true;
-    uint32_t        i;
     
     //multiply by window
     vDSP_vmul(data, 1, window, 1, &in_real[0], 1, n);

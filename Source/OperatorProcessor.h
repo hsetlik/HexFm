@@ -13,11 +13,12 @@
 #include "maximilian.h"
 #include "DAHDSR.h"
 #include "LfoProcessor.h"
+#include "WavetableOscillator512.h"
 
 class Operator
 {
 public:
-    Operator(int opIndex, int voiceIndex) : envelope(opIndex), voice(voiceIndex), ratio(1.0f), index(opIndex)
+    Operator(int opIndex, int voiceIndex) : envelope(opIndex), voice(voiceIndex), ratio(1.0f), index(opIndex), sineOsc(sineTable)
     {
         
     }
@@ -41,6 +42,11 @@ public:
         else
             return true;
     }
+    void setSampleRate(double newRate)
+    {
+        sineOsc.setSampleRate(newRate);
+        envelope.setSampleRate(newRate);
+    }
     float sample(float fundamental);
     float lastOutputSample;
     bool isAudible = false;
@@ -54,7 +60,7 @@ private:
     float modIndex;
     float level;
     int index;
-    maxiOsc osc;
+    WavetableOscillator512 sineOsc;
     const int ratioId = (3 * index) + 2;
     const int modIndexId = (3 * index) + 3;
     const int levelId = (3 * index) + 4;
