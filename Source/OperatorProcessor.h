@@ -18,7 +18,7 @@
 class Operator
 {
 public:
-    Operator(int opIndex, int voiceIndex) : envelope(opIndex), voice(voiceIndex), ratio(1.0f), index(opIndex), wtOsc(triangle512)
+    Operator(int opIndex, int voiceIndex) : envelope(opIndex), voice(voiceIndex), ratio(1.0f), index(opIndex), wtOsc(sine512)
     {
         
     }
@@ -34,6 +34,11 @@ public:
     void setAmpMod(float newVal)
     {
         amplitudeMod = newVal;
+    }
+    void modulateRatio(float value, int mode)
+    {
+        //min ratio is 0.1f, max is 10.0f
+        
     }
     bool isActive()
     {

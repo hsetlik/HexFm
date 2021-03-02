@@ -66,6 +66,7 @@ private:
     std::vector<juce::String> lfoWaveIds;
     std::vector<juce::String> lfoRateIds;
     std::vector<juce::String> lfoLevelIds;
+    std::vector<juce::String> lfoRatioModeIds;
     
     std::vector<juce::String> ratioIds;
     std::vector<juce::String> levelIds;

@@ -73,6 +73,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
         auto waveName = "LFO " + iStr + " Waveform";
         auto targetId = "lfoTargetParam" + iStr;
         auto targetName = "LFO " + iStr + " Target";
+        auto modeId = "lfoRatioModeParam" + iStr;
+        auto modeName = "LFO " + iStr + "ratio modulation mode";
         
         layout.add(std::make_unique<juce::AudioParameterFloat>(rateId, rateName, 0.0f, 20.0f , 1.0f));
         layout.add(std::make_unique<juce::AudioParameterFloat>(levelId, levelName, 0.0f, 1.0f , 1.0f));
@@ -83,6 +85,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
         {
             auto nStr = juce::String(n + 1);
             auto opLevel = "Operator " + nStr + " level";
+            auto opRatio = "Operator " + nStr + "level";
+            targets.add(opRatio);
             targets.add(opLevel);
         }
         juce::StringArray waveTypes;
@@ -92,6 +96,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
         waveTypes.add("Saw");
         waveTypes.add("Random");
         
+        juce::StringArray ratioModes;
+        ratioModes.add("Up");
+        ratioModes.add("Both");
+        ratioModes.add("Down");
+        
+        layout.add(std::make_unique<juce::AudioParameterChoice>(modeId, modeName, ratioModes, 0));
         layout.add(std::make_unique<juce::AudioParameterChoice>(targetId, targetName, targets, 0));
         layout.add(std::make_unique<juce::AudioParameterChoice>(waveId, waveName, waveTypes, 0));
     }
@@ -118,6 +128,7 @@ HexFmAudioProcessor::HexFmAudioProcessor()
         lfoWaveIds.push_back("lfoWaveParam" + iStr);
         lfoTargetIds.push_back("lfoTargetParam" + iStr);
         lfoLevelIds.push_back("lfoLevelParam" + iStr);
+        lfoRatioModeIds.push_back("lfoRatioModeParam" + iStr);
     }
     for(int i = 0; i < numOperators; ++i)
     {
@@ -263,6 +274,7 @@ void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
          FmSynthParams::lfoWave[lfoIndex] = *tree.getRawParameterValue(lfoWaveIds[lfoIndex]);
          FmSynthParams::lfoRate[lfoIndex] = *tree.getRawParameterValue(lfoRateIds[lfoIndex]);
          FmSynthParams::lfoLevel[lfoIndex] = *tree.getRawParameterValue(lfoLevelIds[lfoIndex]);
+         FmSynthParams::lfoRatioMode[lfoIndex] = *tree.getRawParameterValue(lfoRatioModeIds[lfoIndex]);
          ++lfoIndex;
      }
     opIndex = 0;

@@ -23,13 +23,15 @@ std::vector<float> FmSynthParams::opLevel(TOTAL_OPERATORS, 0.0f);
 std::vector<float> FmSynthParams::opAmplitudeMod(TOTAL_OPERATORS, 0.0f);
 std::vector<float> FmSynthParams::opModIndex(TOTAL_OPERATORS, 0.0f);
 std::vector<float> FmSynthParams::opEnvLevel(TOTAL_OPERATORS, 0.0f);
+std::vector<float> FmSynthParams::opRatioMod(TOTAL_OPERATORS, 0.0f);
 
 std::vector<std::vector<int>> FmSynthParams::opRouting = FmSynthParams::createOpRouting();
 
 std::vector<float> FmSynthParams::lfoRate(TOTAL_LFOS, 0.0f);
-std::vector<float> FmSynthParams::lfoLevel(TOTAL_LFOS, 0.0f);
+std::vector<float> FmSynthParams::lfoLevel(TOTAL_LFOS, 1.0f);
 std::vector<int> FmSynthParams::lfoWave(TOTAL_LFOS, 0);
 std::vector<int> FmSynthParams::lfoTarget(TOTAL_LFOS, 0);
+std::vector<int> FmSynthParams::lfoRatioMode(TOTAL_LFOS, 0);
 
 
 float FmSynthParams::workingFundamental = 440.0f;

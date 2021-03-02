@@ -20,22 +20,22 @@ float LfoProcessor::getSampleValue()
     {
         case 0:
         {
-            lastValue = (lfo_osc.sinebuf(FmSynthParams::lfoRate[lfoIndex]));
+            lastValue = ((lfo_osc.sinebuf(FmSynthParams::lfoRate[lfoIndex]) * 0.5f) + 0.5f);
             break;
         }
         case 1:
         {
-            lastValue = (lfo_osc.triangle(FmSynthParams::lfoRate[lfoIndex]));
+            lastValue = ((lfo_osc.triangle(FmSynthParams::lfoRate[lfoIndex]) * 0.5f) + 0.5f);
             break;
         }
         case 2:
         {
-            lastValue = (lfo_osc.square(FmSynthParams::lfoRate[lfoIndex]));
+            lastValue = ((lfo_osc.square(FmSynthParams::lfoRate[lfoIndex]) * 0.5f) + 0.5f);
             break;
         }
         case 3:
         {
-            lastValue = (lfo_osc.saw(FmSynthParams::lfoRate[lfoIndex]));
+            lastValue = ((lfo_osc.saw(FmSynthParams::lfoRate[lfoIndex]) / 2.0f) + 0.5f);
             break;
         }
         case 4:

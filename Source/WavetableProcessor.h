@@ -17,7 +17,6 @@ class WToscillator
 public:
     WToscillator(std::vector<float> t) : data(t), position(0.0f), sampleRate(44100.f)
     {
-        position = 0.0f;
     }
     ~WToscillator() {}
     void setSampleRate(double rate)

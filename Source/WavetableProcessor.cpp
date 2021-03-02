@@ -15,7 +15,9 @@ float WToscillator::getSample(double frequency)
     posDelta = 1.0f / (sampleRate / frequency);
     position += posDelta;
     if(position > 1.0f)
+    {
         position -= 1.0f;
+    }
     bottomSampleIndex = floor(512 * position);
     skew = (512 * position) - bottomSampleIndex;
     sampleDiff = data[bottomSampleIndex + 1] - data[bottomSampleIndex];
