@@ -20,9 +20,14 @@ class Operator
 public:
     Operator(int opIndex, int voiceIndex) : envelope(opIndex), voice(voiceIndex), ratio(1.0f), index(opIndex), wtOsc(sine512)
     {
-        
+        minRatio = std::numeric_limits<float>::max();
+        maxRatio = std::numeric_limits<float>::min();
     }
-    ~Operator() {}
+    ~Operator()
+    {
+        //printf("Minimum ratio: %f\n", minRatio);
+        //printf("Maximum ratio: %f\n", maxRatio);
+    }
     int getIndex()
     {
         return index;
@@ -31,37 +36,8 @@ public:
     {
         modOffset = 0.0f;
     }
-    void modulateRatio(float value, int mode)
-    {
-        //value is between 0 and 1
-        //min ratio is 0.1f, max is 10.0f
-        auto maxIncrease = 10.0f - ratio;
-        auto maxDecrease = ratio - 0.1f;
-        float modValue;
-        switch(mode)
-        {
-            case 0: //upwards only
-            {
-                modValue = maxIncrease * value;
-                break;
-            }
-            case 1: // both directions
-            {
-                auto biValue = (value * 2.0f) - 1.0f; //track value to range -1, 1
-                if(biValue > 0.0f)
-                    modValue = maxIncrease * biValue;
-                else
-                    modValue = maxDecrease * biValue;
-                break;
-            }
-            case 2: //downwards only
-            {
-                modValue =  -maxDecrease * value;
-                break;
-            }
-        }
-        ParamStatic::opRatioMod[index] = modValue;
-    }
+    void modulateRatio(float value, int mode);
+    
     bool isActive()
     {
         if(envelope.getPhase() == DAHDSR::noteOff)
@@ -90,4 +66,8 @@ private:
     const int ratioId = (3 * index) + 2;
     const int modIndexId = (3 * index) + 3;
     const int levelId = (3 * index) + 4;
+    float minRatio;
+    float maxRatio;
+   
+   
 };

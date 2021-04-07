@@ -12,10 +12,10 @@
 #define TOTAL_OPERATORS 6
 #define TOTAL_LFOS 4
 
-
 //hold all the parameters for a given patch in a single instance
 struct ParamStatic
 {
+    
     static std::vector<float> opDelayTime;
     static std::vector<float> opAttackTime;
     static std::vector<float> opHoldTime;

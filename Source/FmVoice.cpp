@@ -14,6 +14,8 @@
 
 FmVoice::FmVoice(int numOperators, int index) :  voiceIndex(index), operatorCount(numOperators), fundamental(1.0f)
 {
+    lfoMax = std::numeric_limits<float>::min();
+    lfoMin = std::numeric_limits<float>::max();
     numJumps = 0;
     for(int i = 0; i < numOperators; ++i)
     {
@@ -76,6 +78,12 @@ void FmVoice::applyLfo(int index)
 {
     LfoProcessor* thisLfo = lfoBank[index];
     lfoValue = thisLfo->getSampleValue();
+    /*
+    if(lfoValue < lfoMin)
+        lfoMin = lfoValue;
+    if(lfoValue > lfoMax)
+        lfoMax = lfoValue;
+     */
     if(ParamStatic::lfoTarget[index] > 0)
     {
       if(ParamStatic::lfoTarget[index] % 2 != 0)
@@ -83,7 +91,7 @@ void FmVoice::applyLfo(int index)
       else
       {
           auto targetOp = ParamStatic::lfoTarget[index] / 2;
-          operators[targetOp]->modulateRatio(lfoValue, 1);
+          operators[targetOp]->modulateRatio(lfoValue, ParamStatic::lfoRatioMode[index]);
       }
     }
 }

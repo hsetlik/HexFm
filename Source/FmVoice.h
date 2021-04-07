@@ -119,9 +119,10 @@ public:
     float opSample;
     float opSum;
     float lastOpSample;
-    
     int lfoTarget;
     float lfoValue;
+    float lfoMax;
+    float lfoMin;
 };
 
 
@@ -147,4 +148,5 @@ public:
 private:
     int numOperators;
     int numLfos;
+    
 };
