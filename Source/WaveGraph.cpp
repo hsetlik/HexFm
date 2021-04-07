@@ -16,14 +16,14 @@ void WaveGraph::updatePaths()
     {
         for(int op = 0; op < TOTAL_OPERATORS; ++op)
         {
-            opData.actualFreq = FmSynthParams::workingFundamental * FmSynthParams::opRatio[op];
+            opData.actualFreq = ParamStatic::workingFundamental * ParamStatic::opRatio[op];
             for(int src = 0; src < TOTAL_OPERATORS; ++src)
             {
-                if(FmSynthParams::opRouting[src][op] == 1)
-                    opData.actualFreq += opData.points[src][i - 1] * FmSynthParams::opModIndex[op];
+                if(ParamStatic::opRouting[src][op] == 1)
+                    opData.actualFreq += opData.points[src][i - 1] * ParamStatic::opModIndex[op];
             }
-            opData.level = FmSynthParams::opEnvLevel[op] * FmSynthParams::opLevel[op] * FmSynthParams::opAmplitudeMod[op];
-            opData.angleDelta = (opData.baseAngleDelta * opData.actualFreq) / FmSynthParams::workingFundamental;
+            opData.level = ParamStatic::opEnvLevel[op] * ParamStatic::opLevel[op] * ParamStatic::opAmplitudeMod[op];
+            opData.angleDelta = (opData.baseAngleDelta * opData.actualFreq) / ParamStatic::workingFundamental;
             opData.angles[op] += opData.angleDelta;
             opData.output = std::sin(opData.angles[op]);
             opData.points[op][i] = opData.output * opData.level;
@@ -54,7 +54,7 @@ void WaveGraph::paint(juce::Graphics &g)
             for(auto* p : opPaths)
             {
                 p->lineTo(currentX, yCenter + (fullAmplitude * opData.points[op][i]));
-                if(FmSynthParams::opAudible[op])
+                if(ParamStatic::opAudible[op])
                     audioPoint += (fullAmplitude * opData.points[op][i]);
                 ++op;
             }

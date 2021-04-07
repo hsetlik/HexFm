@@ -37,7 +37,7 @@ int op1Index = 0;
 int op2Index = 0;
 void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples)
 {
-    FmSynthParams::workingFundamental = fundamental;
+    ParamStatic::workingFundamental = fundamental;
     for(int i = startSample; i < (startSample + numSamples); ++i)
     {
         for(int lfo = 0; lfo < 4; ++ lfo)
@@ -46,19 +46,19 @@ void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startS
         }
         opSum = 0.0f;
         for(Operator* op : operators)
-            {op->cleanOffset();}
+            {op->cleanFreqOffset();}
         op1Index = 0;
         for(Operator* o : operators)
         {
             op2Index = 0;
             for(Operator* d : operators)
             {
-                if(FmSynthParams::opRouting[op1Index][op2Index])
+                if(ParamStatic::opRouting[op1Index][op2Index])
                     d->modOffset += o->lastOutputSample;
                 ++op2Index;
             }
             opSample = o->sample(fundamental);
-            if(FmSynthParams::opAudible[o->getIndex()])
+            if(ParamStatic::opAudible[o->getIndex()])
                 opSum += opSample;
             ++op1Index;
         }
@@ -76,39 +76,14 @@ void FmVoice::applyLfo(int index)
 {
     LfoProcessor* thisLfo = lfoBank[index];
     lfoValue = thisLfo->getSampleValue();
-    if(FmSynthParams::lfoTarget[index] > 0)
+    if(ParamStatic::lfoTarget[index] > 0)
     {
-      if(FmSynthParams::lfoTarget[index] % 2 != 0)
-          FmSynthParams::opAmplitudeMod[(FmSynthParams::lfoTarget[index] / 2) - 1] = ((1.0f + lfoValue) / 2.0f);
-    else
-        {
-            switch(FmSynthParams::lfoRatioMode[index] + 1)
-            {
-                case 1:
-                {
-                    FmSynthParams::opRatioMod[index] = -(10.0f - FmSynthParams::opRatio[index]) * lfoValue;
-                    break;
-                }
-                case 2:
-                {
-                    if(lfoValue <= 0.5f)
-                    {
-                        FmSynthParams::opRatioMod[index] = -(FmSynthParams::opRatio[index] - 0.1f) * lfoValue;
-                    }
-                    else
-                    {
-                        FmSynthParams::opRatioMod[index] = (10.0f - FmSynthParams::opRatio[index]) * lfoValue;
-                    }
-                    break;
-                }
-                case 3:
-                {
-                    FmSynthParams::opRatioMod[index] = -(FmSynthParams::opRatio[index] - 0.1f) * lfoValue;
-                }
-                default:
-                    break;
-            }
-        }
-
+      if(ParamStatic::lfoTarget[index] % 2 != 0)
+          ParamStatic::opAmplitudeMod[(ParamStatic::lfoTarget[index] / 2) - 1] = ((1.0f + lfoValue) / 2.0f);
+      else
+      {
+          auto targetOp = ParamStatic::lfoTarget[index] / 2;
+          operators[targetOp]->modulateRatio(lfoValue, 1);
+      }
     }
 }

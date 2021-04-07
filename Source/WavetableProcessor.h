@@ -15,8 +15,14 @@
 class WToscillator
 {
 public:
-    WToscillator(std::vector<float> t) : data(t), position(0.0f), sampleRate(44100.f)
+    WToscillator(std::vector<float> t) : position(0.0f), sampleRate(44100.f)
     {
+        auto length = (int)t.size();
+        fData = new float[length];
+        for(int i = 0; i < length; ++i)
+        {
+            fData[i] = t[i];
+        }
     }
     ~WToscillator() {}
     void setSampleRate(double rate)
@@ -24,12 +30,8 @@ public:
         sampleRate = rate;
     }
     float getSample(double frequency);
-    void setTable(std::vector<float> table)
-    {
-        data = table;
-    }
 private:
-    std::vector<float> data;
+    float* fData;
     float position;
     float posDelta;
     float output;

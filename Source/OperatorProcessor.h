@@ -27,18 +27,40 @@ public:
     {
         return index;
     }
-    void cleanOffset()
+    void cleanFreqOffset()
     {
         modOffset = 0.0f;
     }
-    void setAmpMod(float newVal)
-    {
-        amplitudeMod = newVal;
-    }
     void modulateRatio(float value, int mode)
     {
+        //value is between 0 and 1
         //min ratio is 0.1f, max is 10.0f
-        
+        auto maxIncrease = 10.0f - ratio;
+        auto maxDecrease = ratio - 0.1f;
+        float modValue;
+        switch(mode)
+        {
+            case 0: //upwards only
+            {
+                modValue = maxIncrease * value;
+                break;
+            }
+            case 1: // both directions
+            {
+                auto biValue = (value * 2.0f) - 1.0f; //track value to range -1, 1
+                if(biValue > 0.0f)
+                    modValue = maxIncrease * biValue;
+                else
+                    modValue = maxDecrease * biValue;
+                break;
+            }
+            case 2: //downwards only
+            {
+                modValue =  -maxDecrease * value;
+                break;
+            }
+        }
+        ParamStatic::opRatioMod[index] = modValue;
     }
     bool isActive()
     {
@@ -60,7 +82,6 @@ public:
     float modOffset;
     float rawSample;
 private:
-    float amplitudeMod = 1.0f;
     float ratio;
     float modIndex;
     float level;

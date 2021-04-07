@@ -16,34 +16,34 @@ LfoProcessor::LfoProcessor(int index) : lfoIndex(index)
 
 float LfoProcessor::getSampleValue()
 {
-    switch(FmSynthParams::lfoWave[lfoIndex])
+    switch(ParamStatic::lfoWave[lfoIndex])
     {
         case 0:
         {
-            lastValue = ((lfo_osc.sinebuf(FmSynthParams::lfoRate[lfoIndex]) * 0.5f) + 0.5f);
+            lastValue = ((lfo_osc.sinebuf(ParamStatic::lfoRate[lfoIndex]) * 0.5f) + 0.5f);
             break;
         }
         case 1:
         {
-            lastValue = ((lfo_osc.triangle(FmSynthParams::lfoRate[lfoIndex]) * 0.5f) + 0.5f);
+            lastValue = ((lfo_osc.triangle(ParamStatic::lfoRate[lfoIndex]) * 0.5f) + 0.5f);
             break;
         }
         case 2:
         {
-            lastValue = ((lfo_osc.square(FmSynthParams::lfoRate[lfoIndex]) * 0.5f) + 0.5f);
+            lastValue = ((lfo_osc.square(ParamStatic::lfoRate[lfoIndex]) * 0.5f) + 0.5f);
             break;
         }
         case 3:
         {
-            lastValue = ((lfo_osc.saw(FmSynthParams::lfoRate[lfoIndex]) / 2.0f) + 0.5f);
+            lastValue = ((lfo_osc.saw(ParamStatic::lfoRate[lfoIndex]) / 2.0f) + 0.5f);
             break;
         }
         case 4:
         {
-            int msCycle = floor(1000 / (FmSynthParams::lfoRate[lfoIndex] + 0.0001));
+            int msCycle = floor(1000 / (ParamStatic::lfoRate[lfoIndex] + 0.0001));
             lastValue = randOsc.sample(msCycle);
             break;
         }
     }
-    return lastValue * FmSynthParams::lfoLevel[lfoIndex];
+    return lastValue * ParamStatic::lfoLevel[lfoIndex];
 };

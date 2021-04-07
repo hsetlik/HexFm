@@ -12,7 +12,7 @@
 
 float Operator::sample(float fundamental) 
 {
-    rawSample = wtOsc.getSample((fundamental * (FmSynthParams::opRatio[index] + FmSynthParams::opRatioMod[index])) + (modOffset * FmSynthParams::opModIndex[index]));
-    lastOutputSample = envelope.process(rawSample) * ( 1.0f - FmSynthParams::opAmplitudeMod[index]);
+    rawSample = wtOsc.getSample((fundamental * (ParamStatic::opRatio[index] + ParamStatic::opRatioMod[index])) + (modOffset * ParamStatic::opModIndex[index]));
+    lastOutputSample = envelope.process(rawSample) * ( 1.0f - ParamStatic::opAmplitudeMod[index]);
     return lastOutputSample;
 }

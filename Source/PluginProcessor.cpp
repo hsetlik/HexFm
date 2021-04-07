@@ -266,31 +266,31 @@ bool HexFmAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) co
 
 void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    FmSynthParams::setRouting(&tree, routingIds);
+    ParamStatic::setRouting(&tree, routingIds);
     lfoIndex = 0;
-     for(auto i : FmSynthParams::lfoLevel)
+     for(auto i : ParamStatic::lfoLevel)
      {
-         FmSynthParams::lfoTarget[lfoIndex] = *tree.getRawParameterValue(lfoTargetIds[lfoIndex]);
-         FmSynthParams::lfoWave[lfoIndex] = *tree.getRawParameterValue(lfoWaveIds[lfoIndex]);
-         FmSynthParams::lfoRate[lfoIndex] = *tree.getRawParameterValue(lfoRateIds[lfoIndex]);
-         FmSynthParams::lfoLevel[lfoIndex] = *tree.getRawParameterValue(lfoLevelIds[lfoIndex]);
-         FmSynthParams::lfoRatioMode[lfoIndex] = *tree.getRawParameterValue(lfoRatioModeIds[lfoIndex]);
+         ParamStatic::lfoTarget[lfoIndex] = *tree.getRawParameterValue(lfoTargetIds[lfoIndex]);
+         ParamStatic::lfoWave[lfoIndex] = *tree.getRawParameterValue(lfoWaveIds[lfoIndex]);
+         ParamStatic::lfoRate[lfoIndex] = *tree.getRawParameterValue(lfoRateIds[lfoIndex]);
+         ParamStatic::lfoLevel[lfoIndex] = *tree.getRawParameterValue(lfoLevelIds[lfoIndex]);
+         ParamStatic::lfoRatioMode[lfoIndex] = *tree.getRawParameterValue(lfoRatioModeIds[lfoIndex]);
          ++lfoIndex;
      }
     opIndex = 0;
-    for(auto i : FmSynthParams::opRatio)
+    for(auto i : ParamStatic::opRatio)
     {
-        FmSynthParams::opRatio[opIndex] = *tree.getRawParameterValue(ratioIds[opIndex]);
-        FmSynthParams::opLevel[opIndex] = *tree.getRawParameterValue(levelIds[opIndex]);
-        FmSynthParams::opModIndex[opIndex] = *tree.getRawParameterValue(modIndexIds[opIndex]);
-        FmSynthParams::opAudible[opIndex] = *tree.getRawParameterValue(audibleIds[opIndex]);
+        ParamStatic::opRatio[opIndex] = *tree.getRawParameterValue(ratioIds[opIndex]);
+        ParamStatic::opLevel[opIndex] = *tree.getRawParameterValue(levelIds[opIndex]);
+        ParamStatic::opModIndex[opIndex] = *tree.getRawParameterValue(modIndexIds[opIndex]);
+        ParamStatic::opAudible[opIndex] = *tree.getRawParameterValue(audibleIds[opIndex]);
         
-        FmSynthParams::opDelayTime[opIndex] = *tree.getRawParameterValue(delayIds[opIndex]);
-        FmSynthParams::opAttackTime[opIndex] = *tree.getRawParameterValue(attackIds[opIndex]);
-        FmSynthParams::opHoldTime[opIndex] = *tree.getRawParameterValue(holdIds[opIndex]);
-        FmSynthParams::opDecayTime[opIndex] = *tree.getRawParameterValue(decayIds[opIndex]);
-        FmSynthParams::opSustainLevel[opIndex] = *tree.getRawParameterValue(sustainIds[opIndex]);
-        FmSynthParams::opReleaseTime[opIndex] = *tree.getRawParameterValue(releaseIds[opIndex]);
+        ParamStatic::opDelayTime[opIndex] = *tree.getRawParameterValue(delayIds[opIndex]);
+        ParamStatic::opAttackTime[opIndex] = *tree.getRawParameterValue(attackIds[opIndex]);
+        ParamStatic::opHoldTime[opIndex] = *tree.getRawParameterValue(holdIds[opIndex]);
+        ParamStatic::opDecayTime[opIndex] = *tree.getRawParameterValue(decayIds[opIndex]);
+        ParamStatic::opSustainLevel[opIndex] = *tree.getRawParameterValue(sustainIds[opIndex]);
+        ParamStatic::opReleaseTime[opIndex] = *tree.getRawParameterValue(releaseIds[opIndex]);
         ++opIndex;
     }
     buffer.clear();

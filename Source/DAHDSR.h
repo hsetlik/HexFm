@@ -37,7 +37,7 @@ public:
     void triggerOn()
     {
         trigger = true;
-        samplesInPhase = floor(FmSynthParams::opDelayTime[index] * (sampleRate / 1000));
+        samplesInPhase = floor(ParamStatic::opDelayTime[index] * (sampleRate / 1000));
         samplesIntoPhase = 0;
         currentPhase = delayPhase;
     }
@@ -46,8 +46,8 @@ public:
         trigger = false;
         currentPhase = releasePhase;
         samplesIntoPhase = 0;
-        samplesInPhase = FmSynthParams::opReleaseTime[index] * (sampleRate / 1000);
-        factor = exp((log(minLevel) - log(FmSynthParams::opSustainLevel[index])) /samplesInPhase);
+        samplesInPhase = ParamStatic::opReleaseTime[index] * (sampleRate / 1000);
+        factor = exp((log(minLevel) - log(ParamStatic::opSustainLevel[index])) /samplesInPhase);
     }
     void setSampleRate(double value) {sampleRate = value;}
     float process(float input);

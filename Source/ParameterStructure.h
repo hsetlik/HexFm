@@ -9,10 +9,12 @@
 */
 #pragma once
 #include <JuceHeader.h>
-const int TOTAL_OPERATORS = 6;
-const int TOTAL_LFOS = 4;
+#define TOTAL_OPERATORS 6
+#define TOTAL_LFOS 4
 
-struct FmSynthParams
+
+//hold all the parameters for a given patch in a single instance
+struct ParamStatic
 {
     static std::vector<float> opDelayTime;
     static std::vector<float> opAttackTime;
