@@ -17,7 +17,7 @@ patchLoader(&p, &saveDialog),
 saveDialog(&patchLoader),
 audioProcessor (p)
 {
-    operatorColor = ColorCreator::RGBColor(51, 81, 90);
+    operatorColor = Color::RGBColor(51, 81, 90);
     for(int i = 0; i < numOperators; ++i)
     {
         allOps.add(new OperatorComponent(i, &audioProcessor.tree));
@@ -43,12 +43,12 @@ HexFmAudioProcessorEditor::~HexFmAudioProcessorEditor()
 //==============================================================================
 void HexFmAudioProcessorEditor::paint(juce::Graphics &g)
 {
-    auto background = ColorCreator::RGBColor(37, 50, 53);
+    auto background = Color::RGBColor(37, 50, 53);
     g.fillAll(background);
     for(int i = 0; i < 6; ++i)
     {
         auto rect = allOps[i]->getBounds();
-        g.setColour(ColorCreator::blend(operatorColor, juce::Colours::black, 0.2));
+        g.setColour(Color::blendRGB(operatorColor, juce::Colours::black, 0.2));
         g.fillRect(rect);
         auto centerRect = rect.reduced(5);
         g.setColour(operatorColor);

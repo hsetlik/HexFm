@@ -35,7 +35,7 @@ public:
     }
     float sample(int msPerCycle)
     {
-        if(msPerCycle != lastRate)
+        if(msPerCycle != lastRate) //only restart the timer if the rate has changed
         {
             lastRate = msPerCycle;
             stopTimer();

@@ -277,8 +277,8 @@ public:
         setClickingTogglesState(true);
         setTooltip("Toggles this operator's audio output");
         setButtonText("Output");
-        outputOnColor = ColorCreator::RGBColor(226, 76, 86);
-        outputOffColor = ColorCreator::RGBColor(31, 46, 50);
+        outputOnColor = Color::RGBColor(226, 76, 86);
+        outputOffColor = Color::RGBColor(31, 46, 50);
         setColour(juce::TextButton::buttonColourId, outputOffColor);
         setColour(juce::TextButton::buttonOnColourId, outputOnColor);
     }

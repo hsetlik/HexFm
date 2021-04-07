@@ -29,8 +29,8 @@ sRelease(Release)
     fDecay = 100.0f;
     fSustain = 0.6f;
     fRelease = 40.0f;
-    bgColor = ColorCreator::RGBColor(37, 50, 53);
-    traceColor = ColorCreator::RGBColor(250, 172, 63);
+    bgColor = Color::RGBColor(37, 50, 53);
+    traceColor = Color::RGBColor(250, 172, 63);
     startTimerHz(24);
 }
 

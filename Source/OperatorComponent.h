@@ -30,7 +30,6 @@ public:
         ratioSlider.attach(pTree);
         modIndexSlider.attach(pTree);
         
-        
         delaySlider.attach(pTree);
         attackSlider.attach(pTree);
         holdSlider.attach(pTree);
@@ -43,7 +42,7 @@ public:
     int opIndex;
 private:
     DAHDSRGraph envGraph;
-    ColorCreator color;
+    Color color;
     juce::Colour background;
     LevelSlider levelSlider;
     RatioSlider ratioSlider;

@@ -156,17 +156,16 @@ void LfoComponent::resized()
     selector.setBounds(8 * n, 8 * n, 97, 33);
     
     waveSelector.setBounds(7 * n, 4.5 * n, 10 * n, 2 * n);
-    targetSelector.setBounds(7 * n, 12 * n, 14 * n, 2 * n);
+    targetSelector.setBounds(8 * n, 12 * n, 14 * n, 2 * n);
 }
 
 void LfoComponent::paint(juce::Graphics &g)
 {
     auto n = getWidth() / 24;
     auto lLabelBox = juce::Rectangle<int> {2 * n, int(0.5 * n), 5 * n, 2 * n};
-    auto rLabelBox = juce::Rectangle<int> {2 * n, int(8.8 * n), 5 * n, 2 * n};
+    auto rLabelBox = juce::Rectangle<int> {2 * n, int(12 * n), 5 * n, 2 * n};
     g.setFont(juce::Font("VCR OSD Mono", 13.0f, 0));
     g.setColour(juce::Colours::white);
     g.drawText("Level", lLabelBox, juce::Justification::centredBottom);
     g.drawText("Rate", rLabelBox, juce::Justification::centredBottom);
 }
-

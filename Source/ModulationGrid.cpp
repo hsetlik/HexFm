@@ -65,7 +65,7 @@ void ModulationGrid::resized()
 
 void ModulationGrid::paint(juce::Graphics &g)
 {
-    auto background = ColorCreator::RGBColor(37, 50, 53);
+    auto background = Color::RGBColor(37, 50, 53);
     g.fillAll(background);
     auto textColor = juce::Colours::white;
     g.setColour(textColor);

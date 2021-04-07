@@ -19,14 +19,14 @@
 class ModulationToggle : public juce::ShapeButton
 {
 public:
-    ModulationToggle(int source, int dest) : juce::ShapeButton("modButton", ColorCreator::blend(buttonOnColor, juce::Colours::black, 0.085), ColorCreator::blend(buttonOnColor, juce::Colours::black, 0.085), ColorCreator::RGBColor(226, 76, 86)),
+    ModulationToggle(int source, int dest) : juce::ShapeButton("modButton", Color::blendRGB(buttonOnColor, juce::Colours::black, 0.085), Color::blendRGB(buttonOnColor, juce::Colours::black, 0.085), Color::RGBColor(226, 76, 86)),
     sourceOp(source),
     destOp(dest)
     {
         shouldUseOnColours(true);
         setClickingTogglesState(true);
-        buttonOnColor = ColorCreator::RGBColor(226, 76, 86);
-        buttonOffColor = ColorCreator::blend(buttonOnColor, juce::Colours::black, 0.085);
+        buttonOnColor = Color::RGBColor(226, 76, 86);
+        buttonOffColor = Color::blendRGB(buttonOnColor, juce::Colours::black, 0.085);
     }
     ~ModulationToggle() {}
     void paintButton(juce::Graphics& g, bool mouseOver, bool isMouseDown) override

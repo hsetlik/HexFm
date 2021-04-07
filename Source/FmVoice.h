@@ -148,5 +148,4 @@ public:
 private:
     int numOperators;
     int numLfos;
-    
 };

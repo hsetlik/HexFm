@@ -87,7 +87,7 @@ void FmVoice::applyLfo(int index)
     if(ParamStatic::lfoTarget[index] > 0)
     {
       if(ParamStatic::lfoTarget[index] % 2 != 0)
-          ParamStatic::opAmplitudeMod[(ParamStatic::lfoTarget[index] / 2) - 1] = ((1.0f + lfoValue) / 2.0f);
+          ParamStatic::opAmplitudeMod[(ParamStatic::lfoTarget[index] / 2)] = ((1.0f + lfoValue) / 2.0f);
       else
       {
           auto targetOp = ParamStatic::lfoTarget[index] / 2;

@@ -29,13 +29,12 @@ public:
         grabValues();
         repaint();
     }
-    float exp(float linear)
+    static float exp(float linear)
     {
         auto val = 20000.0f - linear;
         return std::powf(100.0f,(-2.0f * (val / 20000.0f)));
     }
 private:
-    ColorCreator graphColor;
     juce::Colour bgColor;
     juce::Colour traceColor;
     float fDelay, fAttack, fHold, fDecay, fSustain, fRelease;
