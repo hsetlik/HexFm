@@ -40,6 +40,9 @@ LfoModeSelector::LfoModeSelector(int index) : modeSelectorIndex(index)
     choiceHandler.addItem("both", 2);
     choiceHandler.addItem("down", 3);
     
+    upButton.setTooltip("Modulate ratio upwards");
+    bothButton.setTooltip("Modulate ratio up and down");
+    downButton.setTooltip("Modulate ratio downwards");
     upButton.triggerClick();
 }
 
@@ -51,7 +54,6 @@ void LfoModeSelector::buttonClicked(juce::Button *b)
         choiceHandler.setSelectedId(2);
     else
         choiceHandler.setSelectedId(3);
-        
 }
 
 void LfoModeSelector::resized()
@@ -123,6 +125,7 @@ void LfoComponent::comboBoxChanged(juce::ComboBox *c)
     {
         selector.setVisible(true);
         selector.setEnabled(true);
+        selector.initialize();
     }
 }
 

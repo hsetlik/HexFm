@@ -23,6 +23,10 @@ public:
     {
         
     }
+    void initialize()
+    {
+        upButton.triggerClick();
+    }
     void resized() override;
 private:
     int modeSelectorIndex;
