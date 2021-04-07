@@ -91,7 +91,7 @@ void FmVoice::applyLfo(int index)
       else
       {
           auto targetOp = ParamStatic::lfoTarget[index] / 2;
-          operators[targetOp]->modulateRatio(lfoValue, ParamStatic::lfoRatioMode[index]);
+          operators[targetOp - 1]->modulateRatio(lfoValue, ParamStatic::lfoRatioMode[index]);
       }
     }
 }

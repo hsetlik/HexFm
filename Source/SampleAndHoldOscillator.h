@@ -18,12 +18,20 @@ public:
     {
         srand((unsigned) time(NULL));
         startTimer(lastRate);
+        maxOutput = std::numeric_limits<float>::min();
+        minOutput = std::numeric_limits<float>::max();
     }
-    ~RandomOscillator() {}
+    ~RandomOscillator()
+    {
+        /*
+        printf("Max Output: %f\n", maxOutput);
+        printf("Min Output: %f\n", minOutput);
+         */
+    }
     void hiResTimerCallback() override
     {
         lastRandom = (float) rand() / RAND_MAX;
-        lastOutputValue = (lastRandom - 0.5f) * 2.0f;
+        lastOutputValue = lastRandom;
     }
     float sample(int msPerCycle)
     {
@@ -38,6 +46,8 @@ public:
             return lastOutputValue;
     }
 private:
+    float maxOutput;
+    float minOutput;
     float lastRandom;
     int lastRate = 1000;
     float lastOutputValue = 0.0f;
