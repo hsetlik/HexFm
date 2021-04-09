@@ -56,7 +56,7 @@ void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startS
             for(Operator* d : operators)
             {
                 if(ParamStatic::opRouting[op1Index][op2Index])
-                    d->modOffset += o->lastOutputSample;
+                    { d->modOffset += o->lastOutputSample;}
                 ++op2Index;
             }
             opSample = o->sample(fundamental);

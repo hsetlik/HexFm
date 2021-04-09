@@ -10,7 +10,7 @@
 
 #include "WavetableProcessor.h"
 
-float WToscillator::getSample(double frequency)
+float SineTableOscillator::getSample(double frequency)
 {
     posDelta = 1.0f / (sampleRate / frequency);
     position += posDelta;

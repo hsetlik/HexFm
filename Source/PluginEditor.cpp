@@ -71,8 +71,8 @@ void HexFmAudioProcessorEditor::resized()
     allOps[3]->setBounds(0, h, w, h);
     allOps[4]->setBounds(w, h, w, h);
     allOps[5]->setBounds(2 * w, h, w, h);
-    modGrid.setBounds(3 * w, 0, w, w);
-    lfoGroup.setBounds(3 * w, w, w, w);
+    modGrid.setBounds(3 * w, 0, w, w / 2);
+    lfoGroup.setBounds(3 * w, w / 2, w, w / 2);
     patchLoader.setBounds(3 * w, 2 * w, w, getHeight() - (2 * w));
     saveDialog.setBounds(w, h / 2, 2 * w, h);
 }

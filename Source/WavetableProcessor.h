@@ -11,20 +11,20 @@
 #pragma once
 #include <JuceHeader.h>
 #include "WavetableData.h"
+#define TABLESIZE 512
 
-class WToscillator
+class SineTableOscillator
 {
 public:
-    WToscillator(std::vector<float> t) : position(0.0f), sampleRate(44100.f)
+    SineTableOscillator() : fData(new float[TABLESIZE]), position(0.0f), sampleRate(44100.f)
     {
-        auto length = (int)t.size();
-        fData = new float[length];
-        for(int i = 0; i < length; ++i)
+        auto dX = juce::MathConstants<float>::twoPi / TABLESIZE;
+        for(int i = 0; i < TABLESIZE; ++i)
         {
-            fData[i] = t[i];
+            fData[i] = std::sin(dX * i);
         }
     }
-    ~WToscillator() {}
+    ~SineTableOscillator() {}
     void setSampleRate(double rate)
     {
         sampleRate = rate;

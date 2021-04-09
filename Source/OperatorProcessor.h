@@ -18,7 +18,7 @@
 class Operator
 {
 public:
-    Operator(int opIndex, int voiceIndex) : envelope(opIndex), voice(voiceIndex), ratio(1.0f), index(opIndex), wtOsc(sine512)
+    Operator(int opIndex, int voiceIndex) : lastOutputSample(0.0f), envelope(opIndex), voice(voiceIndex), ratio(1.0f), index(opIndex)
     {
         minRatio = std::numeric_limits<float>::max();
         maxRatio = std::numeric_limits<float>::min();
@@ -62,12 +62,10 @@ private:
     float modIndex;
     float level;
     int index;
-    WToscillator wtOsc;
+    SineTableOscillator wtOsc;
     const int ratioId = (3 * index) + 2;
     const int modIndexId = (3 * index) + 3;
     const int levelId = (3 * index) + 4;
     float minRatio;
     float maxRatio;
-   
-   
 };
