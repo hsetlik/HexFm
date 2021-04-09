@@ -10,12 +10,12 @@
 
 #include "ParameterStructure.h"
 
-std::vector<float> ParamStatic::opDelayTime(TOTAL_OPERATORS, 0.0f);
-std::vector<float> ParamStatic::opAttackTime(TOTAL_OPERATORS, 0.0f);
-std::vector<float> ParamStatic::opHoldTime(TOTAL_OPERATORS, 0.0f);
-std::vector<float> ParamStatic::opDecayTime(TOTAL_OPERATORS, 0.0f);
-std::vector<float> ParamStatic::opSustainLevel(TOTAL_OPERATORS, 0.0f);
-std::vector<float> ParamStatic::opReleaseTime(TOTAL_OPERATORS, 0.0f);
+std::vector<float> ParamStatic::opDelayTime(TOTAL_OPERATORS, 25.0f);
+std::vector<float> ParamStatic::opAttackTime(TOTAL_OPERATORS, 25.0f);
+std::vector<float> ParamStatic::opHoldTime(TOTAL_OPERATORS, 25.0f);
+std::vector<float> ParamStatic::opDecayTime(TOTAL_OPERATORS, 25.0f);
+std::vector<float> ParamStatic::opSustainLevel(TOTAL_OPERATORS, 0.5f);
+std::vector<float> ParamStatic::opReleaseTime(TOTAL_OPERATORS, 25.0f);
 std::vector<int> ParamStatic::opAudible(TOTAL_OPERATORS, 0);
 
 std::vector<float> ParamStatic::opRatio(TOTAL_OPERATORS, 0.0f);
