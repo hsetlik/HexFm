@@ -3,6 +3,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "RGBColor.h"
+#include "CustomLnF.h"
 
 class EnvLabel : public juce::Label, public juce::Slider::Listener
 {

@@ -30,7 +30,7 @@ sRelease(Release)
     fSustain = 0.6f;
     fRelease = 40.0f;
     bgColor = UXPalette::darkGray1;
-    traceColor = UXPalette::lightOrange;
+    traceColor = UXPalette::highlight;
     startTimerHz(24);
 }
 

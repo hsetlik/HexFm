@@ -36,15 +36,24 @@ releaseLabel(&releaseSlider, "ms")
 {
     attachAll(pTree);
     addAndMakeVisible(&levelSlider);
+    levelSlider.setLookAndFeel(&look); //override the vertical bar draw method next
     addAndMakeVisible(&ratioSlider);
+    ratioSlider.setLookAndFeel(&look);
     addAndMakeVisible(&modIndexSlider);
+    modIndexSlider.slider.setLookAndFeel(&look);
     addAndMakeVisible(&outputButton);
     addAndMakeVisible(&delaySlider);
+    delaySlider.setLookAndFeel(&look);
     addAndMakeVisible(&attackSlider);
+    attackSlider.setLookAndFeel(&look);
     addAndMakeVisible(&holdSlider);
+    holdSlider.setLookAndFeel(&look);
     addAndMakeVisible(&decaySlider);
+    decaySlider.setLookAndFeel(&look);
     addAndMakeVisible(&sustainSlider);
+    sustainSlider.setLookAndFeel(&look);
     addAndMakeVisible(&releaseSlider);
+    releaseSlider.setLookAndFeel(&look);
     
     addAndMakeVisible(&ratioLabel);
     addAndMakeVisible(&indexLabel);
@@ -63,6 +72,15 @@ releaseLabel(&releaseSlider, "ms")
 
 OperatorComponent::~OperatorComponent()
 {
+    levelSlider.setLookAndFeel(nullptr);
+    ratioSlider.setLookAndFeel(nullptr);
+    modIndexSlider.slider.setLookAndFeel(nullptr);
+    delaySlider.setLookAndFeel(nullptr);
+    attackSlider.setLookAndFeel(nullptr);
+    holdSlider.setLookAndFeel(nullptr);
+    decaySlider.setLookAndFeel(nullptr);
+    sustainSlider.setLookAndFeel(nullptr);
+    releaseSlider.setLookAndFeel(nullptr);
 }
 
 void OperatorComponent::resized()

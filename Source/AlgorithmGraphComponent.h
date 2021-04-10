@@ -50,6 +50,7 @@ namespace AlgorithmGridConstants
 static int unitWidth = 7;
 static float cellSideLength = 55.0f;
 static float routingStrokeWidth = 0.75f;
+static float opTextSize = 15.0f;
 static int topLeftX;
 static int topLeftY;
 static juce::Rectangle<float> graphBounds;

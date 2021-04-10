@@ -20,7 +20,7 @@ void OperatorBox::paint(juce::Graphics &g)
     g.setColour(fillColor);
     g.fillRect(filledBounds);
     g.setColour(textColor);
-    g.setFont(juce::Font("VCR OSD Mono", 15.0f, 0)); //TODO: pick a better font
+    g.setFont(juce::Font("VCR OSD Mono", AlgorithmGridConstants::opTextSize, 0)); //TODO: pick a better font
     auto textBounds = filledBounds.reduced(5.0f);
     auto idxString = juce::String(std::to_string(index + 1));
     g.drawText(idxString, textBounds, juce::Justification::centred);
@@ -181,6 +181,7 @@ void AlgorithmGraph::paint(juce::Graphics &g)
     //increment the largest dimension so we have a bit of space around the edges
     largestDimension += 2;
     AlgorithmGridConstants::unitWidth = largestDimension;
+    AlgorithmGridConstants::opTextSize = (float)60.0f / largestDimension;
     AlgorithmGridConstants::cellSideLength = fBounds.getHeight() / (float)largestDimension;
     opBoxes.clear();
     int currentRow = 1;

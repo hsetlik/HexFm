@@ -64,5 +64,7 @@ private:
     ReleaseSlider releaseSlider;
     EnvLabel releaseLabel;
     
+    LnF1 look;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OperatorComponent)
 };
