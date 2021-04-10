@@ -11,6 +11,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "RGBColor.h"
+#include "GlobalColor.h"
 
 class DAHDSRGraph : public juce::Component, public juce::Timer
 {

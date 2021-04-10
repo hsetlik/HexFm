@@ -29,8 +29,8 @@ sRelease(Release)
     fDecay = 100.0f;
     fSustain = 0.6f;
     fRelease = 40.0f;
-    bgColor = Color::RGBColor(37, 50, 53);
-    traceColor = Color::RGBColor(250, 172, 63);
+    bgColor = UXPalette::darkGray1;
+    traceColor = UXPalette::lightOrange;
     startTimerHz(24);
 }
 
@@ -65,7 +65,6 @@ void DAHDSRGraph::paint(juce::Graphics &g)
     trace.lineTo(fDelay + fAttack + fHold + fDecay, sustainY);
     trace.lineTo(fDelay + fAttack + fHold + fDecay + sustainLength, sustainY);
     trace.lineTo(timeTotal + sustainLength, area.getHeight());
-    //trace.closeSubPath();
     trace.scaleToFit(0.0f, 5.0f, area.getWidth(), (area.getHeight() - 5.0f), false);
     
     auto stroke = juce::PathStrokeType(1.0f);

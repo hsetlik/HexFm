@@ -97,7 +97,21 @@ int AlgorithmGraph::calculateRows()
     gridRows.clear();
     if(toDraw.size() > 0)
     {
+        bool silentFound = false;
+        bool checkForSilent = false;
         if(bottomLevel.size() > 0)
+            ++numRows;
+        else
+            checkForSilent = true;
+        for(auto op : toDraw)
+        {
+            if(op->dests.size() < 1)
+            {
+                VectorUtil::addIfUnique(bottomLevel, op);
+                silentFound = true;
+            }
+        }
+        if(silentFound && checkForSilent)
             ++numRows;
         //figure out which operators belong in which rows starting from the top level
         if(topLevel.size() > 0)

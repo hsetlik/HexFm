@@ -13,6 +13,7 @@
 #include <JuceHeader.h>
 #include "RGBColor.h"
 #include "ParameterStructure.h"
+#include "GlobalColor.h"
 
 //==============================================================================
 
@@ -20,14 +21,15 @@
 class ModulationToggle : public juce::ShapeButton
 {
 public:
-    ModulationToggle(int source, int dest) : juce::ShapeButton("modButton", Color::blendRGB(buttonOnColor, juce::Colours::black, 0.085), Color::blendRGB(buttonOnColor, juce::Colours::black, 0.085), Color::RGBColor(226, 76, 86)),
+    ModulationToggle(int source, int dest) :
+    juce::ShapeButton("modButton", UXPalette::darkRed, UXPalette::darkRed, UXPalette::lightRed),
     sourceOp(source),
     destOp(dest)
     {
         shouldUseOnColours(true);
         setClickingTogglesState(true);
-        buttonOnColor = Color::RGBColor(226, 76, 86);
-        buttonOffColor = Color::blendRGB(buttonOnColor, juce::Colours::black, 0.085);
+        buttonOnColor = UXPalette::lightRed;
+        buttonOffColor = UXPalette::darkRed;
     }
     ~ModulationToggle() {}
     void paintButton(juce::Graphics& g, bool mouseOver, bool isMouseDown) override
