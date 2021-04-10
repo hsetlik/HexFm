@@ -46,8 +46,7 @@ struct VectorUtil
 
 namespace AlgorithmGridConstants
 {
-const int xCells = 7;
-static int yCells = 7;
+static int unitWidth = 7;
 static float cellSideLength = 55.0f;
 static float routingStrokeWidth = 0.75f;
 static int topLeftX;
@@ -88,6 +87,13 @@ public:
         fillColor = Color::RGBColor(86, 110, 116);
         textColor = juce::Colours::black;
     }
+    OperatorBox(int idx) : xPos(0), yPos(0), index(idx)
+    {
+        sideLength = AlgorithmGridConstants::cellSideLength * 0.75f;
+        fOffset = AlgorithmGridConstants::cellSideLength - sideLength;
+        fillColor = Color::RGBColor(86, 110, 116);
+        textColor = juce::Colours::black;
+    }
     ~OperatorBox() {}
     void resized() override;
     void paint(juce::Graphics& g) override;
@@ -106,6 +112,7 @@ class AlgorithmGraph : public juce::Component, public juce::Timer
 public:
     AlgorithmGraph()
     {
+        setRepaintsOnMouseActivity(false);
         for(int i = 0; i < 6; ++i)
         {
             opInfo.add(new OpInfo(i));
@@ -117,7 +124,16 @@ public:
     void timerCallback() override;
     void resized() override;
     void updateOpInfo();
-    void calculateRows();
+    int calculateRows(); //returns total number of rows;
+    void addOperatorComponent(int gX, int gY, int idx)
+    {
+        opBoxes.add(new OperatorBox(gX, gY, idx));
+        auto* op = opBoxes.getLast();
+        addAndMakeVisible(op);
+        auto dL = AlgorithmGridConstants::cellSideLength;
+        op->setBounds(gX * dL, gY * dL, dL, dL);
+        resized();
+    }
     void paint(juce::Graphics& g) override;
     std::pair<float, float> getCellCenter(int x, int y)
     {
@@ -126,12 +142,13 @@ public:
         return std::pair<float, float>(screenX, screenY);
     }
     void addPath(std::pair<int, int> from, std::pair<int, int>);
-   
-    std::vector<juce::Path> paths;
+    juce::OwnedArray<juce::Path> paths;
     std::vector<OpInfo*> toDraw;
     std::vector<OpInfo*> bottomLevel;
     std::vector<OpInfo*> topLevel;
+    std::vector<std::vector<OpInfo*>> gridRows;
     juce::OwnedArray<OpInfo> opInfo;
+    juce::OwnedArray<OperatorBox> opBoxes;
     juce::Colour pathColor;
     juce::Colour background;
 };
