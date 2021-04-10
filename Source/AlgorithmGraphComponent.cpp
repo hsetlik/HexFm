@@ -116,9 +116,9 @@ int AlgorithmGraph::calculateRows()
         //figure out which operators belong in which rows starting from the top level
         if(topLevel.size() > 0)
             ++numRows;
-        
         bool foundBottom = false;
         auto* currentLevel = &topLevel;
+        
         while(!foundBottom)
         {
             //copy the current level vector and add it to gridRows
@@ -136,15 +136,16 @@ int AlgorithmGraph::calculateRows()
             //if the bottom still isn't found, add another layer to the grid
             if(!foundBottom)
             {
-                std::vector<OpInfo*> newRow;
+                auto newRow = new std::vector<OpInfo*>();
                 for(auto op : *currentLevel)
                 {
                     for(auto dest : op->dests)
                     {
-                        newRow.push_back(dest);
+                        if(!VectorUtil::contains(bottomLevel, dest)) //we have to account for the bottom level: only lower row that's already determined
+                            VectorUtil::addIfUnique(*newRow, dest);
                     }
                 }
-                currentLevel = &newRow;
+                currentLevel = newRow;
                 ++numRows;
             }
         }
@@ -164,9 +165,19 @@ void AlgorithmGraph::paint(juce::Graphics &g)
     int largestDimension = rowCount;
     for(auto i : gridRows)
     {
+        juce::String str = "In This Row: ";
+        for(auto op : i)
+        {
+            auto numStr = juce::String(op->index);
+            numStr += ", ";
+            str += numStr;
+        }
+        str += "\n";
+        printf("%s", str.toRawUTF8());
         if(i.size() > largestDimension)
             largestDimension = (int)i.size();
     }
+    printf("\n");
     //increment the largest dimension so we have a bit of space around the edges
     largestDimension += 2;
     AlgorithmGridConstants::unitWidth = largestDimension;
