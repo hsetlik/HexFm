@@ -65,7 +65,7 @@ void DAHDSRGraph::paint(juce::Graphics &g)
     trace.lineTo(fDelay + fAttack + fHold + fDecay, sustainY);
     trace.lineTo(fDelay + fAttack + fHold + fDecay + sustainLength, sustainY);
     trace.lineTo(timeTotal + sustainLength, area.getHeight());
-    trace.closeSubPath();
+    //trace.closeSubPath();
     trace.scaleToFit(0.0f, 5.0f, area.getWidth(), (area.getHeight() - 5.0f), false);
     
     auto stroke = juce::PathStrokeType(1.0f);

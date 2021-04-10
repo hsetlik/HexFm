@@ -11,6 +11,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "RGBColor.h"
+#include "GlobalColor.h"
 #include "ParameterStructure.h"
 
 struct VectorUtil
@@ -119,8 +120,8 @@ public:
         }
         startTimerHz(24);
         pathColor = juce::Colours::black;
+        background = UXPalette::darkGray1;
     }
-    
     void timerCallback() override;
     void resized() override;
     void updateOpInfo();
@@ -133,6 +134,14 @@ public:
         auto dL = AlgorithmGridConstants::cellSideLength;
         op->setBounds(gX * dL, gY * dL, dL, dL);
         resized();
+    }
+    void reInitOpInfo()
+    {
+        opInfo.clear();
+        for(int i = 0; i < 6; ++i)
+        {
+            opInfo.add(new OpInfo(i));
+        }
     }
     void paint(juce::Graphics& g) override;
     std::pair<float, float> getCellCenter(int x, int y)

@@ -31,13 +31,9 @@ void AlgorithmGraph::addPath(std::pair<int, int> from, std::pair<int, int> to)
     paths.add(new juce::Path());
     auto path = paths.getLast();
     auto p1 = getCellCenter(from.first, from.second);
-    auto p2 = getCellCenter(to.first, from.second);
     auto p3 = getCellCenter(to.first, to.second);
     path->startNewSubPath(p1.first, p1.second);
-    path->lineTo(p2.first, p2.second);
     path->lineTo(p3.first, p3.second);
-    path->closeSubPath();
-    
 }
 
 void AlgorithmGraph::timerCallback()
@@ -135,6 +131,7 @@ int AlgorithmGraph::calculateRows()
                     }
                 }
                 currentLevel = &newRow;
+                ++numRows;
             }
         }
         gridRows.push_back(bottomLevel);
@@ -146,6 +143,8 @@ void AlgorithmGraph::paint(juce::Graphics &g)
     auto fBounds = getLocalBounds().toFloat();
     AlgorithmGridConstants::topLeftX = fBounds.getX();
     AlgorithmGridConstants::topLeftY = fBounds.getY();
+    g.fillAll(background);
+    reInitOpInfo();
     updateOpInfo();
     int rowCount = calculateRows();
     int largestDimension = rowCount;
