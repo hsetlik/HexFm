@@ -32,6 +32,16 @@ struct VectorUtil
             list.push_back(member);
         }
     }
+    template <typename T>
+    static bool contains(std::vector<T>& list, T member)
+    {
+        for(auto i : list)
+        {
+            if(member == i)
+                return true;
+        }
+        return false;
+    }
 };
 
 namespace AlgorithmGridConstants
@@ -45,58 +55,24 @@ static int topLeftY;
 static juce::Rectangle<float> graphBounds;
 }
 
-struct OperatorInfo
+struct OpInfo
 {
-    OperatorInfo()
+    OpInfo(int idx) : index(idx)
     {
-        sources.clear();
-        sources.reserve(sizeof(OperatorInfo*) * 6);
-        dests.clear();
-        dests.reserve(sizeof(OperatorInfo*) * 6);
         gridX = 0;
         gridY = 0;
         modOrder = std::numeric_limits<int>::max();
     }
-    std::vector<OperatorInfo*> sources;
-    std::vector<OperatorInfo*> dests;
-    int index = 0;
-    int gridX = 0;
-    int gridY = 0;
+    std::vector<OpInfo*> sources;
+    std::vector<OpInfo*> dests;
+    int index;
+    int gridX;
+    int gridY;
+    bool isActive = false;
     int modOrder = std::numeric_limits<int>::max();
-    void init()
+    bool operator ==(const OpInfo test)
     {
-        sources.clear();
-        sources.reserve(6);
-        dests.clear();
-        dests.reserve(6);
-        gridX = 0;
-        gridY = 0;
-        modOrder = std::numeric_limits<int>::max();
-    }
-    void setModOrder() //call this on each bottom-level operator to recursively set up all mod orders
-    {
-        if(dests.capacity() < 1)
-            dests.reserve(6);
-        int highestOrder = std::numeric_limits<int>::max();
-        if(dests.size() > 0)
-        {
-            auto& check = dests;
-            for(int i = 0; i < (int)dests.size(); ++i)
-            {
-                auto op = dests[i];
-                if(op->modOrder < highestOrder)
-                {
-                    highestOrder = op->modOrder;
-                }
-            }
-        }
-        modOrder = highestOrder + 1;
-        for(auto op : sources)
-            op->setModOrder();
-    }
-    bool operator ==(OperatorInfo test)
-    {
-        if(this == &test)
+        if(index == test.index)
             return true;
         return false;
     }
@@ -125,19 +101,19 @@ public:
     juce::Colour textColor;
 };
 
-
-using OpVector = std::vector<OperatorInfo*>;
 class AlgorithmGraph : public juce::Component, public juce::Timer
 {
 public:
     AlgorithmGraph()
     {
-        
+        for(int i = 0; i < 6; ++i)
+        {
+            opInfo.add(new OpInfo(i));
+        }
         startTimerHz(24);
         pathColor = juce::Colours::black;
-        for(int i = 0; i < 6; ++i)
-            opInfo[i].index = i;
     }
+    
     void timerCallback() override;
     void resized() override;
     void updateOpInfo();
@@ -150,21 +126,12 @@ public:
         return std::pair<float, float>(screenX, screenY);
     }
     void addPath(std::pair<int, int> from, std::pair<int, int>);
-    void initOperators()
-    {
-        int idx = 0;
-        for(auto op : opInfo)
-        {
-            op.init();
-            op.index = idx;
-            ++idx;
-        }
-    }
+   
     std::vector<juce::Path> paths;
-    std::array<OperatorInfo, 6> opInfo;
-    OpVector toDraw;
-    OpVector bottomLevel;
-    OpVector gridRows;
+    std::vector<OpInfo*> toDraw;
+    std::vector<OpInfo*> bottomLevel;
+    std::vector<OpInfo*> topLevel;
+    juce::OwnedArray<OpInfo> opInfo;
     juce::Colour pathColor;
     juce::Colour background;
 };

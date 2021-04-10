@@ -57,51 +57,43 @@ void AlgorithmGraph::resized()
 void AlgorithmGraph::updateOpInfo()
 {
     toDraw.clear();
-    toDraw.reserve(sizeof(OperatorInfo*) * 6);
+    bottomLevel.clear();
+    topLevel.clear();
     for(int s = 0; s < 6; ++s)
     {
         for(int d = 0; d < 6; ++d)
         {
-            if(ParamStatic::opRouting[s][d] != 0)
+            if(ParamStatic::opRouting[s][d])
             {
-                VectorUtil::addIfUnique(opInfo[d].sources, &opInfo[s]);
-                VectorUtil::addIfUnique(opInfo[s].dests, &opInfo[d]);
-                VectorUtil::addIfUnique(toDraw, &opInfo[d]);
-                VectorUtil::addIfUnique(toDraw, &opInfo[s]);
+                opInfo[d]->sources.push_back(opInfo[s]);
+                opInfo[s]->dests.push_back(opInfo[d]);
+                opInfo[s]->isActive = true;
+                opInfo[d]->isActive = true;
+                VectorUtil::addIfUnique(toDraw, opInfo[d]);
+                VectorUtil::addIfUnique(toDraw, opInfo[s]);
             }
         }
     }
-    bottomLevel.clear();
-    bottomLevel.reserve(sizeof(OperatorInfo*) * 6);
-    for(auto op : opInfo)
+    for(auto op : toDraw)
     {
-        if(op.sources.size() > 0 && op.dests.size() < 1)
+        if(ParamStatic::opAudible[op->index])
         {
-            VectorUtil::addIfUnique(bottomLevel, &op);
-            op.modOrder = 0;
+            bottomLevel.push_back(op);
+        }
+        if(op->sources.size() < 1 && (!VectorUtil::contains(bottomLevel, op)))
+        {
+            topLevel.push_back(op);
         }
     }
+    auto tl = &topLevel;
+    auto bl = &bottomLevel;
 }
 void AlgorithmGraph::calculateRows()
 {
-    for(auto op : bottomLevel)
-    {
-        op->setModOrder();
-    }
-    int totalRows = 0;
-    for(auto op : toDraw)
-    {
-        if(op->modOrder > totalRows && op->modOrder < 6)
-            totalRows = op->modOrder;
-    }
-    printf("%d total rows\n", totalRows);
+    
 }
 void AlgorithmGraph::paint(juce::Graphics &g)
 {
-    initOperators();
     updateOpInfo();
-    auto b = &bottomLevel;
-    //gridRows.clear();
-    calculateRows();
 }
 
