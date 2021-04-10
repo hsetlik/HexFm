@@ -11,7 +11,7 @@
 #include <JuceHeader.h>
 #include "FmVoice.h"
 #include "LayoutCreator.h"
-
+#include "AlgorithmGraphComponent.h"
 
 const int numOperators = 6;
 const int numVoices = 8;

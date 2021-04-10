@@ -26,64 +26,27 @@ void OperatorBox::paint(juce::Graphics &g)
     g.drawText(idxString, textBounds, juce::Justification::centred);
 }
 
-void RoutingPath::addPathAt(int gridX, int gridY, RoutingDirection dir)
+void AlgorithmGraph::addPath(std::pair<int, int> from, std::pair<int, int> to)
 {
-    auto startingPoint = AlgorithmGridConstants::getCellCenter(gridX, gridY);
     auto path = new juce::Path();
-    path->startNewSubPath(startingPoint.first, startingPoint.second);
-    switch(dir)
-    {
-        case RoutingDirection::down:
-        {
-            auto endPoint = AlgorithmGridConstants::getCellCenter(gridX, gridY + 1);
-            path->lineTo(endPoint.first, endPoint.second);
-            break;
-        }
-        case RoutingDirection::downLeft:
-        {
-            auto p1 = AlgorithmGridConstants::getCellCenter(gridX - 1, gridY);
-            auto p2 = AlgorithmGridConstants::getCellCenter(gridX - 1, gridY + 1);
-            path->lineTo(p1.first, p1.second);
-            path->lineTo(p2.first, p1.second);
-            break;
-        }
-        case RoutingDirection::downRight:
-        {
-            auto p1 = AlgorithmGridConstants::getCellCenter(gridX + 1, gridY);
-            auto p2 = AlgorithmGridConstants::getCellCenter(gridX + 1, gridY + 1);
-            path->lineTo(p1.first, p1.second);
-            path->lineTo(p2.first, p1.second);
-            break;
-        }
-        case RoutingDirection::left:
-        {
-            auto endPoint = AlgorithmGridConstants::getCellCenter(gridX - 1, gridY);
-            path->lineTo(endPoint.first, endPoint.second);
-            break;
-        }
-        case RoutingDirection::right:
-        {
-            auto endPoint = AlgorithmGridConstants::getCellCenter(gridX + 1, gridY);
-            path->lineTo(endPoint.first, endPoint.second);
-            break;
-        }
-        case RoutingDirection::selfMod:
-        {
-            auto yUp = startingPoint.second - (AlgorithmGridConstants::cellSideLength * 0.65f);
-            auto xLeft = startingPoint.first - (AlgorithmGridConstants::cellSideLength * 0.65f);
-            path->lineTo(xLeft, startingPoint.second);
-            path->lineTo(xLeft, yUp);
-            path->lineTo(startingPoint.first, yUp);
-            break;
-        }
-    }
+    auto p1 = getCellCenter(from.first, from.second);
+    auto p2 = getCellCenter(to.first, from.second);
+    auto p3 = getCellCenter(to.first, to.second);
+    path->startNewSubPath(p1.first, p1.second);
+    path->lineTo(p2.first, p2.second);
+    path->lineTo(p3.first, p3.second);
     path->closeSubPath();
     paths.push_back(*path);
 }
 
 void AlgorithmGraph::timerCallback()
 {
-    
+    auto check = ParamStatic::routingHasChanged;
+    if(check == true)
+    {
+        repaint();
+        ParamStatic::routingHasChanged = false;
+    }
 }
 
 void AlgorithmGraph::resized()
@@ -91,8 +54,54 @@ void AlgorithmGraph::resized()
     
 }
 
+void AlgorithmGraph::updateOpInfo()
+{
+    toDraw.clear();
+    toDraw.reserve(sizeof(OperatorInfo*) * 6);
+    for(int s = 0; s < 6; ++s)
+    {
+        for(int d = 0; d < 6; ++d)
+        {
+            if(ParamStatic::opRouting[s][d] != 0)
+            {
+                VectorUtil::addIfUnique(opInfo[d].sources, &opInfo[s]);
+                VectorUtil::addIfUnique(opInfo[s].dests, &opInfo[d]);
+                VectorUtil::addIfUnique(toDraw, &opInfo[d]);
+                VectorUtil::addIfUnique(toDraw, &opInfo[s]);
+            }
+        }
+    }
+    bottomLevel.clear();
+    bottomLevel.reserve(sizeof(OperatorInfo*) * 6);
+    for(auto op : opInfo)
+    {
+        if(op.sources.size() > 0 && op.dests.size() < 1)
+        {
+            VectorUtil::addIfUnique(bottomLevel, &op);
+            op.modOrder = 0;
+        }
+    }
+}
+void AlgorithmGraph::calculateRows()
+{
+    for(auto op : bottomLevel)
+    {
+        op->setModOrder();
+    }
+    int totalRows = 0;
+    for(auto op : toDraw)
+    {
+        if(op->modOrder > totalRows && op->modOrder < 6)
+            totalRows = op->modOrder;
+    }
+    printf("%d total rows\n", totalRows);
+}
 void AlgorithmGraph::paint(juce::Graphics &g)
 {
-    
+    initOperators();
+    updateOpInfo();
+    auto b = &bottomLevel;
+    //gridRows.clear();
+    calculateRows();
 }
 

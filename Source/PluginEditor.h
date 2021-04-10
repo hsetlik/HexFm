@@ -13,6 +13,7 @@
 #include "OperatorComponent.h"
 #include "ModulationGrid.h"
 #include "RGBColor.h"
+#include "GlobalColor.h"
 #include "LfoGroupComponent.h"
 #include "PatchManagerComponent.h"
 #include "PatchSavingDialogBox.h"
@@ -38,7 +39,9 @@ private:
     LfoGroupComponent lfoGroup;
     PatchLoader patchLoader;
     PatchDialogBox saveDialog;
+    AlgorithmGraph algGraph;
     juce::Colour operatorColor;
+    int dY;
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     HexFmAudioProcessor& audioProcessor;

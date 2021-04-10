@@ -25,6 +25,8 @@ std::vector<float> ParamStatic::opModIndex(TOTAL_OPERATORS, 0.0f);
 std::vector<float> ParamStatic::opEnvLevel(TOTAL_OPERATORS, 0.0f);
 std::vector<float> ParamStatic::opRatioMod(TOTAL_OPERATORS, 0.0f);
 
+bool ParamStatic::routingHasChanged = false;
+
 std::vector<std::vector<int>> ParamStatic::opRouting = ParamStatic::createOpRouting();
 
 std::vector<float> ParamStatic::lfoRate(TOTAL_LFOS, 0.0f);
@@ -35,7 +37,7 @@ std::vector<int> ParamStatic::lfoRatioMode(TOTAL_LFOS, 0);
 
 float ParamStatic::workingFundamental = 440.0f;
 
-void ParamStatic::setRouting(juce::AudioProcessorValueTreeState *pTree, std::vector<std::vector<juce::String> > grid)
+void ParamStatic::setRouting(juce::AudioProcessorValueTreeState *pTree, std::vector<std::vector<juce::String>> grid)
 {
     for(int i = 0; i < TOTAL_OPERATORS; ++i)
     {

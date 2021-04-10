@@ -55,6 +55,13 @@ public:
     double output;
 private:
     //data
+    static unsigned long long phaseSafe(unsigned long long input) //to avoid divide-by-zero errors
+    {
+        if(input > 0)
+            return input;
+        else
+            return 1;
+    }
     envPhase currentPhase;
     unsigned long long samplesIntoPhase;
     unsigned long long samplesInPhase;

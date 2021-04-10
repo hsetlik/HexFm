@@ -15,6 +15,7 @@
         <FILE id="mPIM9v" name="upOn.png" compile="0" resource="1" file="PNGs/upOn.png"/>
       </GROUP>
       <GROUP id="{DFABB24D-7FEA-FB8A-D3A7-677009A3C90E}" name="Components">
+        <FILE id="h7YqHj" name="GlobalColor.h" compile="0" resource="0" file="Source/GlobalColor.h"/>
         <FILE id="Ma0iaK" name="AlgorithmGraphComponent.cpp" compile="1" resource="0"
               file="Source/AlgorithmGraphComponent.cpp"/>
         <FILE id="UtYXUm" name="AlgorithmGraphComponent.h" compile="0" resource="0"
@@ -44,7 +45,6 @@
               file="Source/ModulationGrid.h"/>
         <FILE id="JabjOg" name="DAHDSRGraph.cpp" compile="1" resource="0" file="Source/DAHDSRGraph.cpp"/>
         <FILE id="UZUXjy" name="DAHDSRGraph.h" compile="0" resource="0" file="Source/DAHDSRGraph.h"/>
-        <FILE id="ghBs0v" name="LayoutCreator.h" compile="0" resource="0" file="Source/LayoutCreator.h"/>
         <FILE id="lshFoY" name="LfoComponent.cpp" compile="1" resource="0"
               file="Source/LfoComponent.cpp"/>
         <FILE id="f1iOzr" name="LfoComponent.h" compile="0" resource="0" file="Source/LfoComponent.h"/>

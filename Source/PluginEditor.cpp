@@ -24,6 +24,7 @@ audioProcessor (p)
         addAndMakeVisible(*allOps.getLast());
     }
     
+    addAndMakeVisible(&algGraph);
     addAndMakeVisible(&patchLoader);
     
     patchLoader.patchSelector.setSelectedItemIndex(1);
@@ -34,7 +35,7 @@ audioProcessor (p)
     modGrid.attachButtons(&audioProcessor.tree);
     addAndMakeVisible(&lfoGroup);
     lfoGroup.attachChildren(&audioProcessor.tree);
-    setSize (1000, 600);
+    setSize (1000, 800);
 }
 
 HexFmAudioProcessorEditor::~HexFmAudioProcessorEditor()
@@ -64,15 +65,24 @@ void HexFmAudioProcessorEditor::paint(juce::Graphics &g)
 void HexFmAudioProcessorEditor::resized()
 {
     int w = getWidth() / 4;
+    //w = 250
     int h = getHeight() / 2;
-    allOps[0]->setBounds(0, 0, w, h);
-    allOps[1]->setBounds(w, 0, w, h);
-    allOps[2]->setBounds(2 * w, 0, w, h);
-    allOps[3]->setBounds(0, h, w, h);
-    allOps[4]->setBounds(w, h, w, h);
-    allOps[5]->setBounds(2 * w, h, w, h);
-    modGrid.setBounds(3 * w, 0, w, w / 2);
-    lfoGroup.setBounds(3 * w, w / 2, w, w / 2);
-    patchLoader.setBounds(3 * w, 2 * w, w, getHeight() - (2 * w));
     saveDialog.setBounds(w, h / 2, 2 * w, h);
+     //Screen dimensions are set to: 1000, 800
+     //overall aspect: 5/4
+    dY = getHeight() / 10;
+    allOps[0]->setBounds(0, dY, 3 * dY, 4.5 * dY);
+    allOps[1]->setBounds(3 * dY, dY, 3 * dY, 4.5 * dY);
+    allOps[2]->setBounds(6 * dY, dY, 3 * dY, 4.5 * dY);
+    allOps[3]->setBounds(0, 5.5 * dY, 3 * dY, 4.5 * dY);
+    allOps[4]->setBounds(3 * dY, 5.5 * dY, 3 * dY, 4.5 * dY);
+    allOps[5]->setBounds(6 * dY, 5.5 * dY, 3 * dY, 4.5 * dY);
+    
+    modGrid.setBounds(9 * dY, 4 * dY, 3 * dY, 3 * dY);
+    lfoGroup.setBounds(9 * dY, 7 * dY, 3 * dY, 3 * dY);
+    algGraph.setBounds(9 * dY, dY, 3 * dY, 3 * dY);
+    
+    patchLoader.setBounds(3 * dY, 0, 9 * dY, dY);
 }
+
+

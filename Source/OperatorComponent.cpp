@@ -57,6 +57,8 @@ releaseLabel(&releaseSlider, "ms")
     addAndMakeVisible(&decayLabel);
     addAndMakeVisible(&sustainLabel);
     addAndMakeVisible(&releaseLabel);
+    
+    
 }
 
 OperatorComponent::~OperatorComponent()

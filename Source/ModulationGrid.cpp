@@ -24,10 +24,16 @@ ModulationGrid::ModulationGrid(int numOperators)
             //make each button visible as it is created
             buttonSet->add(new ModulationToggle(source, dest));
             addAndMakeVisible(buttonSet->getLast());
+            buttonSet->getLast()->addListener(this);
         }
     }
     addAndMakeVisible(sourceLabel);
     addAndMakeVisible(destLabel);
+}
+
+void ModulationGrid::buttonClicked(juce::Button *b)
+{
+    ParamStatic::routingHasChanged = true;
 }
 
 ModulationGrid::~ModulationGrid()

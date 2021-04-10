@@ -52,13 +52,13 @@ saveDialogComponent(patchDlg)
 
 void PatchLoader::resized()
 {
-    int n = getWidth() / 18;
-    
-    patchSelector.setBounds(n, n / 2, 16 * n, 2 * n);
-    
-    lastPatchButton.setBounds(4 * n, 4 * n, 3 * n,  2 * n);
-    nextPatchButton.setBounds(7 * n, 4 * n, 3 * n,  2 * n);
-    saveButton.setBounds(12 * n, 4 * n, 3 * n, 2 * n);
+    auto dY = getHeight() / 8;
+    //aspect ratio is 2/19 -> 6/57
+    //component width is 57 * dY
+    lastPatchButton.setBounds(dY, dY, 4 * dY, 4 * dY);
+    nextPatchButton.setBounds(5 * dY, dY, 4 * dY, 4 * dY);
+    patchSelector.setBounds(11 * dY, dY, 30 * dY, 4 * dY);
+    saveButton.setBounds(44 * dY, dY, 6 * dY, 4 * dY);
 }
 
 void PatchLoader::getPresetsFromFolder()

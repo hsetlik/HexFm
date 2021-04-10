@@ -41,6 +41,7 @@ struct ParamStatic
     static std::vector<float> opLevel;
     static std::vector<float> opModIndex;
     static std::vector<float> opRatioMod;
+    static bool routingHasChanged;
     
     static float workingFundamental;
     static std::vector<float> lfoRate;

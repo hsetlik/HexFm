@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include "RGBColor.h"
+#include "ParameterStructure.h"
 
 //==============================================================================
 
@@ -52,11 +53,12 @@ private:
     juce::Colour buttonOffColor = juce::Colours::white;
 };
 
-class ModulationGrid  : public juce::Component
+class ModulationGrid  : public juce::Component, public juce::Button::Listener
 {
 public:
     ModulationGrid(int numOperators);
     ~ModulationGrid() override;
+    void buttonClicked(juce::Button* b) override;
     void attachButtons(juce::AudioProcessorValueTreeState* pTree);
     void paint (juce::Graphics& g) override;
     void resized() override;

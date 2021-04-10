@@ -19,13 +19,13 @@ float DAHDSR::process(float input)
                 if(ParamStatic::opDelayTime[index] > 0)
                 {
                     if(samplesIntoPhase == 0)
-                        samplesInPhase = floor(ParamStatic::opDelayTime[index] * (sampleRate / 1000));
+                        samplesInPhase = phaseSafe(floor(ParamStatic::opDelayTime[index] * (sampleRate / 1000)));
                     samplesIntoPhase += 1;
                     if(samplesIntoPhase >= samplesInPhase)
                     {
                         currentPhase = attackPhase;
                         samplesIntoPhase = 0;
-                        samplesInPhase = floor(ParamStatic::opAttackTime[index] * (sampleRate / 1000));
+                        samplesInPhase = phaseSafe(floor(ParamStatic::opAttackTime[index] * (sampleRate / 1000)));
                         factor = exp((log(1.0f) - log(minLevel)) /samplesInPhase);
                     }
                     output = 0.0f;
@@ -33,7 +33,7 @@ float DAHDSR::process(float input)
                 else
                 {
                     currentPhase = attackPhase;
-                    samplesInPhase = floor(ParamStatic::opAttackTime[index] * (sampleRate / 1000));
+                    samplesInPhase = phaseSafe(floor(ParamStatic::opAttackTime[index] * (sampleRate / 1000)));
                     factor = exp((log(1.0f) - log(minLevel)) /samplesInPhase);
                     samplesIntoPhase = 0;
                 }
@@ -45,7 +45,7 @@ float DAHDSR::process(float input)
                     output = minLevel;
                 output = output * factor;
                 samplesIntoPhase++;
-                if(samplesIntoPhase > samplesInPhase)
+                if(samplesIntoPhase >= samplesInPhase)
                 {
                     currentPhase = holdPhase;
                     samplesIntoPhase = 0;
@@ -62,7 +62,7 @@ float DAHDSR::process(float input)
                     {
                         currentPhase = decayPhase;
                         samplesIntoPhase = 0;
-                        samplesInPhase = ParamStatic::opDecayTime[index] * (sampleRate / 1000);
+                        samplesInPhase = phaseSafe(ParamStatic::opDecayTime[index] * (sampleRate / 1000));
                         factor = exp((log(ParamStatic::opSustainLevel[index]) - log(1.0f)) /samplesInPhase);
                     }
                     output = 1.0f;
@@ -71,7 +71,7 @@ float DAHDSR::process(float input)
                 {
                     currentPhase = decayPhase;
                     samplesIntoPhase = 0;
-                    samplesInPhase = ParamStatic::opDecayTime[index] * (sampleRate / 1000);
+                    samplesInPhase = phaseSafe(ParamStatic::opDecayTime[index] * (sampleRate / 1000));
                     factor = exp((log(ParamStatic::opSustainLevel[index]) - log(1.0f)) /samplesInPhase);;
                 }
                 break;
@@ -97,7 +97,7 @@ float DAHDSR::process(float input)
             {
                 output = output * factor;
                 samplesIntoPhase += 1;
-                if(samplesIntoPhase > samplesInPhase)
+                if(samplesIntoPhase >= samplesInPhase)
                     currentPhase = noteOff;
                 break;
             }
@@ -110,5 +110,11 @@ float DAHDSR::process(float input)
             default:
                 break;
         }
+    if(isnan(output))
+    {
+        output = 0.0f;
+        printf("Envelope output is nan\n");
+    }
+        
     return input * output;
 }
