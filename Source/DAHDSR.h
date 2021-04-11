@@ -26,12 +26,20 @@ public:
         releasePhase,
         noteOff
     };
+    juce::AudioProcessorValueTreeState* tree;
     //functions
-    DAHDSR(int ind) : factor(1.0f), sampleRate(44100), index(ind)
+    DAHDSR(int ind, juce::AudioProcessorValueTreeState* t) : tree(t), factor(1.0f), sampleRate(44100), index(ind)
     {
         trigger = false;
         samplesIntoPhase = 0;
         currentPhase = noteOff;
+        auto iStr = juce::String(ind);
+        delayId = "delayParam" + iStr;
+        attackId = "attackParam" + iStr;
+        holdId = "holdParam" + iStr;
+        decayId = "decayParam" + iStr;
+        sustainId = "sustainParam" + iStr;
+        releaseId = "releaseParam" + iStr;
     }
     ~DAHDSR() {}
     void triggerOn()
@@ -40,6 +48,10 @@ public:
         samplesInPhase = floor(ParamStatic::opDelayTime[index] * (sampleRate / 1000));
         samplesIntoPhase = 0;
         currentPhase = delayPhase;
+    }
+    float valueOf(juce::String& str)
+    {
+        return *tree->getRawParameterValue(str);
     }
     void triggerOff()
     {
@@ -70,4 +82,10 @@ private:
     double sampleRate;
     int index;
     bool trigger;
+    juce::String delayId;
+    juce::String attackId;
+    juce::String holdId;
+    juce::String decayId;
+    juce::String sustainId;
+    juce::String releaseId;
 };

@@ -47,5 +47,5 @@ void Operator::modulateRatio(float value, int mode)
             break;
         }
     }
-    ParamStatic::opRatio[index] = ratio + modValue;
+    ratio = ratio + modValue;
 }

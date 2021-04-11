@@ -19,15 +19,25 @@ class Operator
 {
 public:
     juce::AudioProcessorValueTreeState* tree;
-    Operator(int opIndex, int voiceIndex, juce::AudioProcessorValueTreeState* t) : tree(t), lastOutputSample(0.0f), envelope(opIndex), voice(voiceIndex), ratio(1.0f), index(opIndex)
+    Operator(int opIndex, int voiceIndex, juce::AudioProcessorValueTreeState* t) : tree(t), lastOutputSample(0.0f), envelope(opIndex, tree), voice(voiceIndex), ratio(1.0f), index(opIndex)
     {
         minRatio = std::numeric_limits<float>::max();
         maxRatio = std::numeric_limits<float>::min();
+        auto iStr = juce::String(opIndex);
+        panId = "panParam" + iStr;
+        levelId = "levelParam" + iStr;
+        ratioId = "ratioParam" + iStr;
+        modIndexId = "indexParam" + iStr;
+        
     }
     ~Operator()
     {
         //printf("Minimum ratio: %f\n", minRatio);
         //printf("Maximum ratio: %f\n", maxRatio);
+    }
+    float getValue(juce::String str)
+    {
+        return *tree->getRawParameterValue(str);
     }
     int getIndex()
     {
@@ -77,9 +87,12 @@ private:
     float level;
     int index;
     SineTableOscillator wtOsc;
-    const int ratioId = (3 * index) + 2;
-    const int modIndexId = (3 * index) + 3;
-    const int levelId = (3 * index) + 4;
     float minRatio;
     float maxRatio;
+    juce::String panId;
+    juce::String modIndexId;
+    juce::String levelId;
+    juce::String ratioId;
+    juce::String amplitudeId;
+    
 };
