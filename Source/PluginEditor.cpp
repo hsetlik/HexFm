@@ -24,6 +24,8 @@ audioProcessor (p)
         addAndMakeVisible(*allOps.getLast());
     }
     
+    juce::LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypefaceName("Founders Grotesk Light");
+    
     addAndMakeVisible(&algGraph);
     addAndMakeVisible(&patchLoader);
     

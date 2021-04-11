@@ -38,27 +38,27 @@ panLabel(&panSlider, "")
 {
     attachAll(pTree);
     addAndMakeVisible(&levelSlider);
-    levelSlider.setLookAndFeel(&look); //override the vertical bar draw method next
+    levelSlider.setLookAndFeel(&look1); //override the vertical bar draw method next
     addAndMakeVisible(&ratioSlider);
-    ratioSlider.setLookAndFeel(&look);
+    ratioSlider.setLookAndFeel(&look1);
     addAndMakeVisible(&modIndexSlider);
-    modIndexSlider.slider.setLookAndFeel(&look);
+    modIndexSlider.slider.setLookAndFeel(&look1);
     addAndMakeVisible(&outputButton);
     outputButton.addListener(this);
     addAndMakeVisible(&delaySlider);
-    delaySlider.setLookAndFeel(&look);
+    delaySlider.setLookAndFeel(&look1);
     addAndMakeVisible(&attackSlider);
-    attackSlider.setLookAndFeel(&look);
+    attackSlider.setLookAndFeel(&look1);
     addAndMakeVisible(&holdSlider);
-    holdSlider.setLookAndFeel(&look);
+    holdSlider.setLookAndFeel(&look1);
     addAndMakeVisible(&decaySlider);
-    decaySlider.setLookAndFeel(&look);
+    decaySlider.setLookAndFeel(&look1);
     addAndMakeVisible(&sustainSlider);
-    sustainSlider.setLookAndFeel(&look);
+    sustainSlider.setLookAndFeel(&look1);
     addAndMakeVisible(&releaseSlider);
-    releaseSlider.setLookAndFeel(&look);
+    releaseSlider.setLookAndFeel(&look1);
     addAndMakeVisible(&panSlider);
-    panSlider.setLookAndFeel(&look);
+    panSlider.setLookAndFeel(&look1);
     
     addAndMakeVisible(&ratioLabel);
     addAndMakeVisible(&indexLabel);
@@ -72,6 +72,13 @@ panLabel(&panSlider, "")
     addAndMakeVisible(&decayLabel);
     addAndMakeVisible(&sustainLabel);
     addAndMakeVisible(&releaseLabel);
+    
+    delayLabel.setLookAndFeel(&look2);
+    attackLabel.setLookAndFeel(&look2);
+    holdLabel.setLookAndFeel(&look2);
+    decayLabel.setLookAndFeel(&look2);
+    sustainLabel.setLookAndFeel(&look2);
+    releaseLabel.setLookAndFeel(&look2);
     
     panSlider.setVisible(false);
     panSlider.setEnabled(false);
@@ -94,6 +101,13 @@ OperatorComponent::~OperatorComponent()
     sustainSlider.setLookAndFeel(nullptr);
     releaseSlider.setLookAndFeel(nullptr);
     panSlider.setLookAndFeel(nullptr);
+    
+    delayLabel.setLookAndFeel(nullptr);
+    attackLabel.setLookAndFeel(nullptr);
+    holdLabel.setLookAndFeel(nullptr);
+    decayLabel.setLookAndFeel(nullptr);
+    sustainLabel.setLookAndFeel(nullptr);
+    releaseLabel.setLookAndFeel(nullptr);
 }
 
 void OperatorComponent::buttonClicked(juce::Button *b)
@@ -149,6 +163,10 @@ void OperatorComponent::resized()
     
     panSlider.setBounds(18 * n, 6 * n, 5 * n, 5 * n);
     panLabel.setBounds(17.5 * n, 11 * n, 6 * n, 2 * n);
+    
+    panLabel.setFontSize(3 * dN);
+    ratioLabel.setFontSize(3 * dN);
+    indexLabel.setFontSize(3 * dN);
 }
 
 void OperatorComponent::paint(juce::Graphics &g)

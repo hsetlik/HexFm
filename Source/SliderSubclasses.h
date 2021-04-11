@@ -11,8 +11,9 @@ public:
     EnvLabel(juce::Slider* sliderToAttach, juce::String suff) : attachSlider(sliderToAttach), suffix(suff)
     {
         auto vcrFont = juce::Font("WW Digital", 8.0f, 0);
+        auto robotoLightItalic = juce::Font("Roboto Light", 8.0f, 0).withStyle(juce::Font::FontStyleFlags::italic);
         setEditable(true);
-        getLookAndFeel().setDefaultSansSerifTypeface(getLookAndFeel().getTypefaceForFont(vcrFont));
+        setFont(robotoLightItalic);
         attachSlider->addListener(this);
         setJustificationType(juce::Justification::centred);
         setMinimumHorizontalScale(0.25);
@@ -29,13 +30,18 @@ public:
         setText(labelText, juce::dontSendNotification);
     }
     ~EnvLabel() {}
+    void setFontSize(float size)
+    {
+        auto robotoLightItalic = juce::Font("Roboto Light", size, 0).withStyle(juce::Font::FontStyleFlags::italic);
+        setFont(robotoLightItalic);
+    }
     void sliderValueChanged(juce::Slider* slider) override
     {
         juce::String tempText;
         juce::String labelText;
         auto valueToDraw = attachSlider->getValue();
         auto fullString = juce::String(valueToDraw);
-        if(suffix == " ")
+        if(suffix == "")
         {
             labelText = fullString;
         }
@@ -49,6 +55,8 @@ public:
                 tempText = fullString.substring(0, 5);
             labelText = tempText +  suffix;
         }
+        if(fullString.length() > 6)
+            labelText = labelText.substring(0, 7);
         setText(labelText, juce::dontSendNotification);
     }
     void textWasEdited() override

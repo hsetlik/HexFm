@@ -69,7 +69,8 @@ private:
     PanSlider panSlider;
     EnvLabel panLabel;
     
-    LnF1 look;
+    LnF1 look1;
+    LnF2 look2;
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OperatorComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OperatorComponent)
 };
