@@ -72,9 +72,10 @@ void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startS
             ++op1Index;
         }
         outputBuffer.addSample(0, i, sumL);
-        outputBuffer.addSample(1, i, sumR);
+        if(outputBuffer.getNumChannels() > 0)
+            outputBuffer.addSample(1, i, sumR);
         
-        if(fabs(opSum - lastOpSample) > 0.2f)
+        if(fabs(opSum - lastOpSample) > 0.3f)
             ++numJumps;
         lastOpSample = opSum;
     }

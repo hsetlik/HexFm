@@ -272,19 +272,19 @@ void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
 {
     ParamStatic::setRouting(&tree, routingIds);
     lfoIndex = 0;
-     for(auto i : ParamStatic::lfoLevel)
+     for(auto& i : ParamStatic::lfoLevel)
      {
          ParamStatic::lfoTarget[lfoIndex] = *tree.getRawParameterValue(lfoTargetIds[lfoIndex]);
          ParamStatic::lfoWave[lfoIndex] = *tree.getRawParameterValue(lfoWaveIds[lfoIndex]);
          ParamStatic::lfoRate[lfoIndex] = *tree.getRawParameterValue(lfoRateIds[lfoIndex]);
-         ParamStatic::lfoLevel[lfoIndex] = *tree.getRawParameterValue(lfoLevelIds[lfoIndex]);
+         i = *tree.getRawParameterValue(lfoLevelIds[lfoIndex]);
          ParamStatic::lfoRatioMode[lfoIndex] = *tree.getRawParameterValue(lfoRatioModeIds[lfoIndex]);
          ++lfoIndex;
      }
     opIndex = 0;
-    for(auto i : ParamStatic::opRatio)
+    for(auto& i : ParamStatic::opRatio)
     {
-        ParamStatic::opRatio[opIndex] = *tree.getRawParameterValue(ratioIds[opIndex]);
+        i = *tree.getRawParameterValue(ratioIds[opIndex]);
         ParamStatic::opLevel[opIndex] = *tree.getRawParameterValue(levelIds[opIndex]);
         ParamStatic::opModIndex[opIndex] = *tree.getRawParameterValue(modIndexIds[opIndex]);
         ParamStatic::opAudible[opIndex] = *tree.getRawParameterValue(audibleIds[opIndex]);
