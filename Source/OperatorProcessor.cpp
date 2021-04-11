@@ -14,6 +14,7 @@ float Operator::sample(float fundamental)
 {
     rawSample = wtOsc.getSample((fundamental * ParamStatic::opRatio[index]) + (modOffset * ParamStatic::opModIndex[index]));
     lastOutputSample = envelope.process(rawSample) * ( 1.0f - ParamStatic::opAmplitudeMod[index]);
+    updatePan();
     return lastOutputSample;
 }
 

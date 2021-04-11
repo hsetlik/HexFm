@@ -18,7 +18,7 @@
 //==============================================================================
 /*
 */
-class OperatorComponent  : public juce::Component
+class OperatorComponent  : public juce::Component, public juce::Button::Listener
 {
 public:
     OperatorComponent(int index, juce::AudioProcessorValueTreeState* pTree);
@@ -29,6 +29,7 @@ public:
         levelSlider.attach(pTree);
         ratioSlider.attach(pTree);
         modIndexSlider.attach(pTree);
+        panSlider.attach(pTree);
         
         delaySlider.attach(pTree);
         attackSlider.attach(pTree);
@@ -37,6 +38,7 @@ public:
         sustainSlider.attach(pTree);
         releaseSlider.attach(pTree);
     }
+    void buttonClicked(juce::Button* b) override;
     void resized() override;
     void paint(juce::Graphics& g) override;
     int opIndex;
@@ -63,6 +65,9 @@ private:
     EnvLabel sustainLabel;
     ReleaseSlider releaseSlider;
     EnvLabel releaseLabel;
+    
+    PanSlider panSlider;
+    EnvLabel panLabel;
     
     LnF1 look;
     

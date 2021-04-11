@@ -24,11 +24,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
         auto indexName = "Operator " + iStr + " Mod Index";
         auto outputId = "audibleParam" + iStr;
         auto outputName = "Operator " + iStr + " audible";
+        auto panId = "panParam" + iStr;
+        auto panName = "Operator " + iStr + " pan";
         juce::NormalisableRange<float> ratioRange(0.0f, 10.0f, 0.01f, 0.5f);
         ratioRange.setSkewForCentre(1.0f);
         layout.add(std::make_unique<juce::AudioParameterFloat>(ratioId, ratioName, ratioRange, 1.0f));
         layout.add(std::make_unique<juce::AudioParameterFloat>(levelId, levelName, 0.0f, 1.0f, 1.0f));
         layout.add(std::make_unique<juce::AudioParameterFloat>(indexId, indexName, 0.0f, 200.0f, 0.0f));
+        layout.add(std::make_unique<juce::AudioParameterFloat>(panId, panName, -1.0f, 1.0f, 0.0f));
         layout.add(std::make_unique<juce::AudioParameterBool>(outputId, outputName, false));
         //and for the envelope
         auto delayId = "delayParam" + iStr;
@@ -137,6 +140,7 @@ HexFmAudioProcessor::HexFmAudioProcessor()
         levelIds.push_back("levelParam" + iStr);
         modIndexIds.push_back("indexParam" + iStr);
         audibleIds.push_back("audibleParam" + iStr);
+        panIds.push_back("panParam" + iStr);
         
         delayIds.push_back("delayParam" + iStr);
         attackIds.push_back("attackParam" + iStr);
@@ -284,6 +288,7 @@ void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
         ParamStatic::opLevel[opIndex] = *tree.getRawParameterValue(levelIds[opIndex]);
         ParamStatic::opModIndex[opIndex] = *tree.getRawParameterValue(modIndexIds[opIndex]);
         ParamStatic::opAudible[opIndex] = *tree.getRawParameterValue(audibleIds[opIndex]);
+        ParamStatic::opPanValue[opIndex] = *tree.getRawParameterValue(panIds[opIndex]);
         
         ParamStatic::opDelayTime[opIndex] = *tree.getRawParameterValue(delayIds[opIndex]);
         ParamStatic::opAttackTime[opIndex] = *tree.getRawParameterValue(attackIds[opIndex]);

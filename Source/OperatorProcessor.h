@@ -50,13 +50,26 @@ public:
         envelope.setSampleRate(newRate);
         wtOsc.setSampleRate(newRate);
     }
+    void updatePan()
+    {
+        panValue = (ParamStatic::opPanValue[index] + 1.0f) / 2.0f;
+        gainR = panValue;
+        gainL = 1.0f - panValue;
+        lastOutputL = lastOutputSample * gainL;
+        lastOutputR = lastOutputSample * gainR;
+    }
     float sample(float fundamental);
     float lastOutputSample;
+    float gainL;
+    float gainR;
+    float lastOutputL;
+    float lastOutputR;
     bool isAudible = false;
     DAHDSR envelope;
     int voice;
     float modOffset;
     float rawSample;
+    float panValue;
 private:
     float ratio;
     float modIndex;

@@ -173,11 +173,11 @@ void AlgorithmGraph::paint(juce::Graphics &g)
             str += numStr;
         }
         str += "\n";
-        printf("%s", str.toRawUTF8());
+        //printf("%s", str.toRawUTF8());
         if(i.size() > largestDimension)
             largestDimension = (int)i.size();
     }
-    printf("\n");
+    //printf("\n");
     //increment the largest dimension so we have a bit of space around the edges
     largestDimension += 2;
     AlgorithmGridConstants::unitWidth = largestDimension;

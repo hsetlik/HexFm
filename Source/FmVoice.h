@@ -120,6 +120,8 @@ public:
     float opSum;
     float lastOpSample;
     int lfoTarget;
+    float sumL;
+    float sumR;
     float lfoValue;
     float lfoMax;
     float lfoMin;

@@ -47,6 +47,8 @@ void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startS
             applyLfo(lfo);
         }
         opSum = 0.0f;
+        sumL = 0.0f;
+        sumR = 0.0f;
         for(Operator* op : operators)
             {op->cleanFreqOffset();}
         op1Index = 0;
@@ -61,13 +63,16 @@ void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startS
             }
             opSample = o->sample(fundamental);
             if(ParamStatic::opAudible[o->getIndex()])
+            {
                 opSum += opSample;
+                sumL += o->lastOutputL;
+                sumR += o->lastOutputR;
+            }
+                
             ++op1Index;
         }
-        for(int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
-        {
-            outputBuffer.addSample(channel, i, opSum);
-        }
+        outputBuffer.addSample(0, i, sumL);
+        outputBuffer.addSample(1, i, sumR);
         
         if(fabs(opSum - lastOpSample) > 0.2f)
             ++numJumps;

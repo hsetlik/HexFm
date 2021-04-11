@@ -79,6 +79,7 @@ private:
     std::vector<juce::String> decayIds;
     std::vector<juce::String> sustainIds;
     std::vector<juce::String> releaseIds;
+    std::vector<juce::String> panIds;
     std::vector<std::vector<juce::String>> routingIds;
     
     int lfoIndex;

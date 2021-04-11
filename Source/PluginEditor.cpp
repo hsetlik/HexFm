@@ -49,10 +49,10 @@ void HexFmAudioProcessorEditor::paint(juce::Graphics &g)
     for(int i = 0; i < 6; ++i)
     {
         auto rect = allOps[i]->getBounds();
-        g.setColour(Color::blendRGB(operatorColor, juce::Colours::black, 0.2));
+        g.setColour(UXPalette::darkGray1);
         g.fillRect(rect);
-        auto centerRect = rect.reduced(5);
-        g.setColour(operatorColor);
+        auto centerRect = rect.reduced(2);
+        g.setColour(UXPalette::darkGray3);
         g.fillRect(centerRect);
     }
     if(!saveDialog.isEnabled())

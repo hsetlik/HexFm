@@ -24,6 +24,7 @@ std::vector<float> ParamStatic::opAmplitudeMod(TOTAL_OPERATORS, 0.0f);
 std::vector<float> ParamStatic::opModIndex(TOTAL_OPERATORS, 0.0f);
 std::vector<float> ParamStatic::opEnvLevel(TOTAL_OPERATORS, 0.0f);
 std::vector<float> ParamStatic::opRatioMod(TOTAL_OPERATORS, 0.0f);
+std::vector<float> ParamStatic::opPanValue(TOTAL_OPERATORS, 0.0f);
 
 bool ParamStatic::routingHasChanged = false;
 

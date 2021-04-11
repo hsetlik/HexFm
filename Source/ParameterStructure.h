@@ -22,6 +22,7 @@ struct ParamStatic
     static std::vector<float> opDecayTime;
     static std::vector<float> opSustainLevel;
     static std::vector<float> opReleaseTime;
+   
     static std::vector<int> opAudible;
     
     static std::vector<std::vector<int>> createOpRouting()
@@ -41,6 +42,7 @@ struct ParamStatic
     static std::vector<float> opLevel;
     static std::vector<float> opModIndex;
     static std::vector<float> opRatioMod;
+    static std::vector<float> opPanValue;
     static bool routingHasChanged;
     
     static float workingFundamental;

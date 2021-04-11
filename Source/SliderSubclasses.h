@@ -270,6 +270,27 @@ public:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> attachment;
 };
 
+class PanSlider : public juce::Slider
+{
+public:
+    PanSlider(int index) : opIndex(index)
+    {
+        setTooltip("Stereo Pan");
+        setSliderStyle(juce::Slider::Rotary);
+        setTextBoxStyle(juce::Slider::NoTextBox, true,0, 0);
+    }
+    ~PanSlider(){}
+    void attach(juce::AudioProcessorValueTreeState* pTree)
+    {
+        juce::String iStr = juce::String(opIndex);
+        auto paramId = "panParam" + iStr;
+        attachment.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, paramId, *this));
+    }
+    juce::String idStr;
+    int opIndex;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> attachment;
+};
+
 class OutputToggleButton : public juce::TextButton
 {
 public:
