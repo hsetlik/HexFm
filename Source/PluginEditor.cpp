@@ -67,7 +67,7 @@ void HexFmAudioProcessorEditor::resized()
     int w = getWidth() / 4;
     //w = 250
     int h = getHeight() / 2;
-    saveDialog.setBounds(w, h / 2, 2 * w, h);
+    saveDialog.setBounds(w, h / 3, 2 * w, h);
      //Screen dimensions are set to: 1000, 800
      //overall aspect: 5/4
     dY = getHeight() / 10;

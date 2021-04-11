@@ -30,7 +30,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
         ratioRange.setSkewForCentre(1.0f);
         layout.add(std::make_unique<juce::AudioParameterFloat>(ratioId, ratioName, ratioRange, 1.0f));
         layout.add(std::make_unique<juce::AudioParameterFloat>(levelId, levelName, 0.0f, 1.0f, 1.0f));
-        layout.add(std::make_unique<juce::AudioParameterFloat>(indexId, indexName, 0.0f, 200.0f, 0.0f));
+        layout.add(std::make_unique<juce::AudioParameterFloat>(indexId, indexName, 0.0f, 500.0f, 0.0f));
         layout.add(std::make_unique<juce::AudioParameterFloat>(panId, panName, -1.0f, 1.0f, 0.0f));
         layout.add(std::make_unique<juce::AudioParameterBool>(outputId, outputName, false));
         //and for the envelope

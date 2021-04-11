@@ -12,6 +12,7 @@
 #include <JuceHeader.h>
 #include "maximilian.h"
 #include "RGBColor.h"
+#include "GlobalColor.h"
 class LfoModeSelector : public juce::Component, juce::Button::Listener
 {
 public:

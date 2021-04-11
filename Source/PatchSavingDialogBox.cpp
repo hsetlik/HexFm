@@ -16,7 +16,7 @@ PatchDialogBox::PatchDialogBox(PatchLoader* loader) : patchLoader(loader)
     cancelButton.addListener(this);
     addAndMakeVisible(&nameField);
     nameField.setMultiLine(false);
-    nameField.setTextToShowWhenEmpty("Patch Name", juce::Colours::lightslategrey);
+    nameField.setTextToShowWhenEmpty("Patch Name", UXPalette::lightGray);
     nameField.setPopupMenuEnabled(false);
     
     addAndMakeVisible(&savePatchButton);
@@ -28,7 +28,7 @@ PatchDialogBox::PatchDialogBox(PatchLoader* loader) : patchLoader(loader)
 
 void PatchDialogBox::paint(juce::Graphics &g)
 {
-    g.fillAll(juce::Colours::darkslategrey);
+    g.fillAll(UXPalette::darkGray2);
     auto labelFont = juce::Font("VCR OSD Mono", 12.0f, 0);
     g.setFont(labelFont);
     g.setColour(juce::Colours::white);

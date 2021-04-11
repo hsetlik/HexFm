@@ -12,6 +12,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "PatchManagerComponent.h"
+#include "GlobalColor.h"
 
 class PatchDialogBox : public juce::Component, juce::Button::Listener
 {

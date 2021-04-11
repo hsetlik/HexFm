@@ -18,7 +18,7 @@ class LfoGroupComponent : public juce::TabbedComponent
 public:
     LfoGroupComponent() : juce::TabbedComponent(juce::TabbedButtonBar::TabsAtTop)
     {
-        auto tabColor = Color::RGBColor(51, 81, 90);
+        auto tabColor = UXPalette::darkGray3;
         setTabBarDepth(25);
         for(int i = 0; i < 4; ++i)
         {

@@ -113,24 +113,27 @@ void OperatorComponent::buttonClicked(juce::Button *b)
         panLabel.setVisible(false);
         panLabel.setEnabled(false);
     }
+    repaint();
 }
 
 void OperatorComponent::resized()
 {
     int n = getWidth() / 24;
-    delaySlider.setBounds(n / 2, 23 * n, 4 * n, 4 * n);
-    attackSlider.setBounds(4.5 * n, 23 * n, 4 * n, 4 * n);
-    holdSlider.setBounds(8.5 * n, 23 * n, 4 * n, 4 * n);
-    decaySlider.setBounds(12.5 * n, 23 * n, 4 * n, 4 * n);
-    sustainSlider.setBounds(16.5 * n, 23 * n, 4 * n, 4 * n);
-    releaseSlider.setBounds(20.5 * n, 23 * n, 4 * n, 4 * n);
+    auto fBounds = getBounds().toFloat().reduced(3.0f);
+    auto dN = fBounds.getWidth() / 48.0f;
+    delaySlider.setBounds(dN / 2, 50 * dN, 7.5 * dN, 7.5 * dN);
+    attackSlider.setBounds(8.5 * dN, 50 * dN, 7.5 * dN, 7.5 * dN);
+    holdSlider.setBounds(17 * dN, 50 * dN, 7.5 * dN, 7.5 * dN);
+    decaySlider.setBounds(25 * dN, 50 * dN, 7.5 * dN, 7.5 * dN);
+    sustainSlider.setBounds(33 * dN, 50 * dN, 7.5 * dN, 7.5 * dN);
+    releaseSlider.setBounds(41 * dN, 50 * dN, 7.5 * dN, 7.5 * dN);
     
-    delayLabel.setBounds(n / 2, 27 * n, 4 * n, 2 * n);
-    attackLabel.setBounds(4.5 * n, 27 * n, 4 * n, 2 * n);
-    holdLabel.setBounds(8.5 * n, 27 * n, 4 * n, 2 * n);
-    decayLabel.setBounds(12.5 * n, 27 * n, 4 * n, 2 * n);
-    sustainLabel.setBounds(16.5 * n, 27 * n, 4 * n, 2 * n);
-    releaseLabel.setBounds(20.5 * n, 27 * n, 4 * n, 2 * n);
+    delayLabel.setBounds(dN / 2, 56 * dN, 7.5 * dN, 3 * dN);
+    attackLabel.setBounds(8.5 * dN, 56 * dN, 7.5 * dN, 3 * dN);
+    holdLabel.setBounds(16.5 * dN, 56 * dN, 7.5 * dN, 3 * dN);
+    decayLabel.setBounds(24.5 * dN, 56 * dN, 7.5 * dN, 3 * dN);
+    sustainLabel.setBounds(32.5 * dN, 56 * dN, 7.5 * dN, 3 * dN);
+    releaseLabel.setBounds(40.5 * dN, 56 * dN, 7.5 * dN, 3 * dN);
     
     envGraph.setBounds(n, 13 * n, 15 * n, 10 * n);
 
