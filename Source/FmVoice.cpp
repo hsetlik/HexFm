@@ -12,14 +12,14 @@
 
 
 
-FmVoice::FmVoice(int numOperators, int index) :  voiceIndex(index), operatorCount(numOperators), fundamental(1.0f)
+FmVoice::FmVoice(int numOperators, int index, juce::AudioProcessorValueTreeState* t) : tree(t), voiceIndex(index), operatorCount(numOperators), fundamental(1.0f)
 {
     lfoMax = std::numeric_limits<float>::min();
     lfoMin = std::numeric_limits<float>::max();
     numJumps = 0;
     for(int i = 0; i < numOperators; ++i)
     {
-        operators.add(new Operator(i, voiceIndex));
+        operators.add(new Operator(i, voiceIndex, tree));
         std::vector<int> ints;
         for(int n = 0; n < numOperators; ++n)
         {

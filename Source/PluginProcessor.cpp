@@ -121,7 +121,7 @@ HexFmAudioProcessor::HexFmAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ),  tree(*this, nullptr, "synthParams", createLayout(numOperators)), synth(6, 4, 6)
+                       ),  tree(*this, nullptr, "synthParams", createLayout(numOperators)), synth(6, 4, 6, &tree)
 #endif
 {
     for(int i = 0; i < 4; ++i)

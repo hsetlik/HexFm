@@ -28,7 +28,8 @@ public:
 class FmVoice : public juce::SynthesiserVoice
 {
 public:
-    FmVoice(int numOperators, int index);
+    juce::AudioProcessorValueTreeState* tree;
+    FmVoice(int numOperators, int index, juce::AudioProcessorValueTreeState* t);
     ~FmVoice()
     {
         printf("Voice #: %d -- %d total jumps\n", voiceIndex, numJumps);
@@ -131,11 +132,12 @@ public:
 class FmSynth : public juce::Synthesiser
 {
 public:
-    FmSynth(int operators, int lfos, int numVoices) : juce::Synthesiser(), numOperators(operators), numLfos(lfos)
+    juce::AudioProcessorValueTreeState* tree;
+    FmSynth(int operators, int lfos, int numVoices, juce::AudioProcessorValueTreeState* t) : tree(t), juce::Synthesiser(), numOperators(operators), numLfos(lfos)
     {
         for(int i = 0; i < numVoices; ++i)
         {
-            addVoice(new FmVoice(numOperators, i));
+            addVoice(new FmVoice(numOperators, i, tree));
         }
         addSound(new FmSound());
     }

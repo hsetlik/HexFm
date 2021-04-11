@@ -18,7 +18,8 @@
 class Operator
 {
 public:
-    Operator(int opIndex, int voiceIndex) : lastOutputSample(0.0f), envelope(opIndex), voice(voiceIndex), ratio(1.0f), index(opIndex)
+    juce::AudioProcessorValueTreeState* tree;
+    Operator(int opIndex, int voiceIndex, juce::AudioProcessorValueTreeState* t) : tree(t), lastOutputSample(0.0f), envelope(opIndex), voice(voiceIndex), ratio(1.0f), index(opIndex)
     {
         minRatio = std::numeric_limits<float>::max();
         maxRatio = std::numeric_limits<float>::min();
