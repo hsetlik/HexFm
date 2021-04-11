@@ -84,12 +84,6 @@ void FmVoice::applyLfo(int index)
 {
     LfoProcessor* thisLfo = lfoBank[index];
     lfoValue = thisLfo->getSampleValue();
-    /*
-    if(lfoValue < lfoMin)
-        lfoMin = lfoValue;
-    if(lfoValue > lfoMax)
-        lfoMax = lfoValue;
-     */
     if(ParamStatic::lfoTarget[index] > 0)
     {
       if(ParamStatic::lfoTarget[index].get() % 2 != 0)

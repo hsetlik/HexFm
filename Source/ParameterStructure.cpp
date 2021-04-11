@@ -10,8 +10,6 @@
 
 #include "ParameterStructure.h"
 
-
-
 bool ParamStatic::routingHasChanged = false;
 
 AtomicParam<float> ParamStatic::opDelayTime[TOTAL_OPERATORS];
@@ -21,8 +19,7 @@ AtomicParam<float> ParamStatic::opDecayTime[TOTAL_OPERATORS];
 AtomicParam<float> ParamStatic::opSustainLevel[TOTAL_OPERATORS];
 AtomicParam<float> ParamStatic::opReleaseTime[TOTAL_OPERATORS];
 
-AtomicParam<int> ParamStatic::opAudible[TOTAL_OPERATORS];;
-
+AtomicParam<int> ParamStatic::opAudible[TOTAL_OPERATORS];
 
 AtomicParam<int> ParamStatic::opRouting[TOTAL_OPERATORS][TOTAL_OPERATORS];
 AtomicParam<float> ParamStatic::opRatio[TOTAL_OPERATORS];
