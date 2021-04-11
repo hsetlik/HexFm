@@ -28,3 +28,18 @@ public:
         setDefaultSansSerifTypefaceName("Roboto Light Italic");
     }
 };
+
+
+class OutputButtonLnF : public juce::LookAndFeel_V4
+{
+public:
+    OutputButtonLnF()
+    {
+        setDefaultSansSerifTypefaceName("");
+    }
+    
+    juce::Font getTextButtonFont(juce::TextButton &, int buttonHeight) override
+    {
+        return juce::Font("Bebas Neue", 15.0f, 0);
+    }
+};

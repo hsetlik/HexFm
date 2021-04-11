@@ -85,6 +85,8 @@ panLabel(&panSlider, "")
     panLabel.setVisible(false);
     panLabel.setEnabled(false);
     
+    outputButton.setLookAndFeel(&outputLnF);
+    
     outputButton.triggerClick();
     outputButton.triggerClick();
 }
@@ -108,6 +110,8 @@ OperatorComponent::~OperatorComponent()
     decayLabel.setLookAndFeel(nullptr);
     sustainLabel.setLookAndFeel(nullptr);
     releaseLabel.setLookAndFeel(nullptr);
+    
+    outputButton.setLookAndFeel(nullptr);
 }
 
 void OperatorComponent::buttonClicked(juce::Button *b)
@@ -152,6 +156,7 @@ void OperatorComponent::resized()
     envGraph.setBounds(n, 13 * n, 15 * n, 10 * n);
 
     outputButton.setBounds(16 * n, 1.5 * n, 5.5 * n, 2.5 * n);
+    outputButton.changeWidthToFitText();
     levelSlider.setBounds(19 * n, 13 * n, 4 * n, 10 * n);
     
     

@@ -10,7 +10,6 @@ class EnvLabel : public juce::Label, public juce::Slider::Listener
 public:
     EnvLabel(juce::Slider* sliderToAttach, juce::String suff) : attachSlider(sliderToAttach), suffix(suff)
     {
-        auto vcrFont = juce::Font("WW Digital", 8.0f, 0);
         auto robotoLightItalic = juce::Font("Roboto Light", 8.0f, 0).withStyle(juce::Font::FontStyleFlags::italic);
         setEditable(true);
         setFont(robotoLightItalic);

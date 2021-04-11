@@ -71,6 +71,7 @@ private:
     
     LnF1 look1;
     LnF2 look2;
+    OutputButtonLnF outputLnF;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OperatorComponent)
 };
