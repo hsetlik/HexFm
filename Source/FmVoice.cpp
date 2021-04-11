@@ -57,12 +57,12 @@ void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startS
             op2Index = 0;
             for(Operator* d : operators)
             {
-                if(ParamStatic::opRouting[op1Index][op2Index])
+                if(ParamStatic::opRouting[op1Index][op2Index].get())
                     { d->modOffset += o->lastOutputSample;}
                 ++op2Index;
             }
             opSample = o->sample(fundamental);
-            if(ParamStatic::opAudible[o->getIndex()])
+            if(ParamStatic::opAudible[o->getIndex()].get())
             {
                 opSum += opSample;
                 sumL += o->lastOutputL;
@@ -92,12 +92,12 @@ void FmVoice::applyLfo(int index)
      */
     if(ParamStatic::lfoTarget[index] > 0)
     {
-      if(ParamStatic::lfoTarget[index] % 2 != 0)
-          ParamStatic::opAmplitudeMod[(ParamStatic::lfoTarget[index] / 2)] = ((1.0f + lfoValue) / 2.0f);
+      if(ParamStatic::lfoTarget[index].get() % 2 != 0)
+          ParamStatic::opAmplitudeMod[(ParamStatic::lfoTarget[index].get() / 2)] = ((1.0f + lfoValue) / 2.0f);
       else
       {
-          auto targetOp = ParamStatic::lfoTarget[index] / 2;
-          operators[targetOp - 1]->modulateRatio(lfoValue, ParamStatic::lfoRatioMode[index]);
+          auto targetOp = ParamStatic::lfoTarget[index].get() / 2;
+          operators[targetOp - 1]->modulateRatio(lfoValue, ParamStatic::lfoRatioMode[index].get());
       }
     }
 }

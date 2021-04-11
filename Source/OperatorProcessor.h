@@ -52,7 +52,7 @@ public:
     }
     void updatePan()
     {
-        panValue = (ParamStatic::opPanValue[index] + 1.0f) / 2.0f;
+        panValue = (ParamStatic::opPanValue[index].get() + 1.0f) / 2.0f;
         gainR = panValue;
         gainL = 1.0f - panValue;
         lastOutputL = lastOutputSample * gainL;

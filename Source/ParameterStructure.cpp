@@ -10,31 +10,34 @@
 
 #include "ParameterStructure.h"
 
-std::vector<float> ParamStatic::opDelayTime(TOTAL_OPERATORS, 25.0f);
-std::vector<float> ParamStatic::opAttackTime(TOTAL_OPERATORS, 25.0f);
-std::vector<float> ParamStatic::opHoldTime(TOTAL_OPERATORS, 25.0f);
-std::vector<float> ParamStatic::opDecayTime(TOTAL_OPERATORS, 25.0f);
-std::vector<float> ParamStatic::opSustainLevel(TOTAL_OPERATORS, 0.5f);
-std::vector<float> ParamStatic::opReleaseTime(TOTAL_OPERATORS, 25.0f);
-std::vector<int> ParamStatic::opAudible(TOTAL_OPERATORS, 0);
 
-std::vector<float> ParamStatic::opRatio(TOTAL_OPERATORS, 0.0f);
-std::vector<float> ParamStatic::opLevel(TOTAL_OPERATORS, 0.0f);
-std::vector<float> ParamStatic::opAmplitudeMod(TOTAL_OPERATORS, 0.0f);
-std::vector<float> ParamStatic::opModIndex(TOTAL_OPERATORS, 0.0f);
-std::vector<float> ParamStatic::opEnvLevel(TOTAL_OPERATORS, 0.0f);
-std::vector<float> ParamStatic::opRatioMod(TOTAL_OPERATORS, 0.0f);
-std::vector<float> ParamStatic::opPanValue(TOTAL_OPERATORS, 0.0f);
 
 bool ParamStatic::routingHasChanged = false;
 
-std::vector<std::vector<int>> ParamStatic::opRouting = ParamStatic::createOpRouting();
+AtomicParam<float> ParamStatic::opDelayTime[TOTAL_OPERATORS];
+AtomicParam<float> ParamStatic::opAttackTime[TOTAL_OPERATORS];
+AtomicParam<float> ParamStatic::opHoldTime[TOTAL_OPERATORS];
+AtomicParam<float> ParamStatic::opDecayTime[TOTAL_OPERATORS];
+AtomicParam<float> ParamStatic::opSustainLevel[TOTAL_OPERATORS];
+AtomicParam<float> ParamStatic::opReleaseTime[TOTAL_OPERATORS];
 
-std::vector<float> ParamStatic::lfoRate(TOTAL_LFOS, 0.0f);
-std::vector<float> ParamStatic::lfoLevel(TOTAL_LFOS, 1.0f);
-std::vector<int> ParamStatic::lfoWave(TOTAL_LFOS, 0);
-std::vector<int> ParamStatic::lfoTarget(TOTAL_LFOS, 0);
-std::vector<int> ParamStatic::lfoRatioMode(TOTAL_LFOS, 0);
+AtomicParam<int> ParamStatic::opAudible[TOTAL_OPERATORS];;
+
+
+AtomicParam<int> ParamStatic::opRouting[TOTAL_OPERATORS][TOTAL_OPERATORS];
+AtomicParam<float> ParamStatic::opRatio[TOTAL_OPERATORS];
+AtomicParam<float> ParamStatic::opAmplitudeMod[TOTAL_OPERATORS];
+AtomicParam<float> ParamStatic::opEnvLevel[TOTAL_OPERATORS];
+AtomicParam<float> ParamStatic::opLevel[TOTAL_OPERATORS];
+AtomicParam<float> ParamStatic::opModIndex[TOTAL_OPERATORS];
+AtomicParam<float> ParamStatic::opRatioMod[TOTAL_OPERATORS];
+AtomicParam<float> ParamStatic::opPanValue[TOTAL_OPERATORS];
+
+AtomicParam<float> ParamStatic::lfoRate[TOTAL_LFOS];
+AtomicParam<float> ParamStatic::lfoLevel[TOTAL_LFOS];
+AtomicParam<int> ParamStatic::lfoTarget[TOTAL_LFOS];
+AtomicParam<int> ParamStatic::lfoWave[TOTAL_LFOS];
+AtomicParam<int> ParamStatic::lfoRatioMode[TOTAL_LFOS];
 
 float ParamStatic::workingFundamental = 440.0f;
 

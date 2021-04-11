@@ -12,44 +12,75 @@
 #define TOTAL_OPERATORS 6
 #define TOTAL_LFOS 4
 
+template <typename T>
+class AtomicParam
+{
+public:
+    void set(T _value)
+    {
+        value = _value;
+    }
+    void setFrom(std::atomic<T>* source)
+    {
+        value = source->load();
+    }
+    T get()
+    {
+        return value.load();
+    }
+    AtomicParam()
+    {
+        value = (T)0;
+    }
+    AtomicParam(T val)
+    {
+        value = val;
+    }
+    void operator =(T val)
+    {
+        value = val;
+    }
+    bool operator  ==(T val)
+    {
+        if(val == value.load())
+            return true;
+        return false;
+    }
+    bool operator >(T val)
+    {
+        return value.load() > val;
+    }
+private:
+    std::atomic<T> value;
+};
+
 //hold all the parameters for a given patch in a single instance
 struct ParamStatic
 {
-    
-    static std::vector<float> opDelayTime;
-    static std::vector<float> opAttackTime;
-    static std::vector<float> opHoldTime;
-    static std::vector<float> opDecayTime;
-    static std::vector<float> opSustainLevel;
-    static std::vector<float> opReleaseTime;
+    static AtomicParam<float> opDelayTime[TOTAL_OPERATORS];
+    static AtomicParam<float> opAttackTime[TOTAL_OPERATORS];
+    static AtomicParam<float> opHoldTime[TOTAL_OPERATORS];
+    static AtomicParam<float> opDecayTime[TOTAL_OPERATORS];
+    static AtomicParam<float> opSustainLevel[TOTAL_OPERATORS];
+    static AtomicParam<float> opReleaseTime[TOTAL_OPERATORS];
    
-    static std::vector<int> opAudible;
+    static AtomicParam<int> opAudible[TOTAL_OPERATORS];;
     
-    static std::vector<std::vector<int>> createOpRouting()
-    {
-        std::vector<std::vector<int>> vec;
-        for(int i = 0; i < TOTAL_OPERATORS; ++i)
-        {
-            std::vector<int> newVec(TOTAL_OPERATORS, 0);
-            vec.push_back(newVec);
-        }
-        return vec;
-    }
-    static std::vector<std::vector<int>> opRouting;
-    static std::vector<float> opRatio;
-    static std::vector<float> opAmplitudeMod;
-    static std::vector<float> opEnvLevel;
-    static std::vector<float> opLevel;
-    static std::vector<float> opModIndex;
-    static std::vector<float> opRatioMod;
-    static std::vector<float> opPanValue;
+    static AtomicParam<int> opRouting[TOTAL_OPERATORS][TOTAL_OPERATORS];
+    static AtomicParam<float> opRatio[TOTAL_OPERATORS];
+    static AtomicParam<float> opAmplitudeMod[TOTAL_OPERATORS];
+    static AtomicParam<float> opEnvLevel[TOTAL_OPERATORS];
+    static AtomicParam<float> opLevel[TOTAL_OPERATORS];
+    static AtomicParam<float> opModIndex[TOTAL_OPERATORS];
+    static AtomicParam<float> opRatioMod[TOTAL_OPERATORS];
+    static AtomicParam<float> opPanValue[TOTAL_OPERATORS];
     static bool routingHasChanged;
     
     static float workingFundamental;
-    static std::vector<float> lfoRate;
-    static std::vector<float> lfoLevel;
-    static std::vector<int> lfoTarget;
-    static std::vector<int> lfoWave;
-    static std::vector<int> lfoRatioMode;
+    static AtomicParam<float> lfoRate[TOTAL_LFOS];
+    static AtomicParam<float> lfoLevel[TOTAL_LFOS];
+    static AtomicParam<int> lfoTarget[TOTAL_LFOS];
+    static AtomicParam<int> lfoWave[TOTAL_LFOS];
+    static AtomicParam<int> lfoRatioMode[TOTAL_LFOS];
     static void setRouting(juce::AudioProcessorValueTreeState *pTree, std::vector<std::vector<juce::String>> grid);
 };

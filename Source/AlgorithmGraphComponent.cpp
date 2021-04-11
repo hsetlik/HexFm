@@ -66,7 +66,7 @@ void AlgorithmGraph::updateOpInfo()
     {
         for(int d = 0; d < 6; ++d)
         {
-            if(ParamStatic::opRouting[s][d])
+            if(ParamStatic::opRouting[s][d].get())
             {
                 VectorUtil::addIfUnique(opInfo[d]->sources, opInfo[s]);
                 VectorUtil::addIfUnique(opInfo[s]->dests, opInfo[d]);
@@ -80,7 +80,7 @@ void AlgorithmGraph::updateOpInfo()
     for(auto op : toDraw)
     {
         //bottom row is any operator we can hear
-        if(ParamStatic::opAudible[op->index])
+        if(ParamStatic::opAudible[op->index].get())
         {
             bottomLevel.push_back(op);
         }
