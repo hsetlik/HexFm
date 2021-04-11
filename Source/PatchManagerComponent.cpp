@@ -10,6 +10,91 @@
 
 #include "PatchManagerComponent.h"
 
+void PatchSelector::initialize()
+{
+    int nextId = 1;
+    if(lib->bassGroup.patches.size() > 0)
+    {
+        addSectionHeading("Bass");
+        addSeparator();
+        for(auto f : lib->bassGroup.patches)
+        {
+            std::unique_ptr<juce::XmlElement> currentXml = juce::parseXML(f);
+            if(currentXml != nullptr)
+            {
+                if(currentXml->hasAttribute("HexFmPatchName"))
+                {
+                    auto presetName = currentXml->getStringAttribute("HexFmPatchName");
+                    patchNames.add(presetName);
+                    addItem(presetName, nextId);
+                    ++nextId;
+                }
+            }
+        }
+    }
+    
+    if(lib->leadGroup.patches.size() > 0)
+    {
+        addSectionHeading("Lead");
+        addSeparator();
+        for(auto f : lib->leadGroup.patches)
+        {
+            std::unique_ptr<juce::XmlElement> currentXml = juce::parseXML(f);
+            if(currentXml != nullptr)
+            {
+                if(currentXml->hasAttribute("HexFmPatchName"))
+                {
+                    auto presetName = currentXml->getStringAttribute("HexFmPatchName");
+                    patchNames.add(presetName);
+                    addItem(presetName, nextId);
+                    ++nextId;
+                }
+            }
+        }
+    }
+    
+    if(lib->chordGroup.patches.size() > 0)
+    {
+        addSectionHeading("Chord");
+        addSeparator();
+        for(auto f : lib->chordGroup.patches)
+        {
+            std::unique_ptr<juce::XmlElement> currentXml = juce::parseXML(f);
+            if(currentXml != nullptr)
+            {
+                if(currentXml->hasAttribute("HexFmPatchName"))
+                {
+                    auto presetName = currentXml->getStringAttribute("HexFmPatchName");
+                    patchNames.add(presetName);
+                    addItem(presetName, nextId);
+                    ++nextId;
+                }
+            }
+        }
+    }
+    
+    if(lib->padGroup.patches.size() > 0)
+    {
+        addSectionHeading("Pad");
+        addSeparator();
+        for(auto f : lib->padGroup.patches)
+        {
+            std::unique_ptr<juce::XmlElement> currentXml = juce::parseXML(f);
+            if(currentXml != nullptr)
+            {
+                if(currentXml->hasAttribute("HexFmPatchName"))
+                {
+                    auto presetName = currentXml->getStringAttribute("HexFmPatchName");
+                    patchNames.add(presetName);
+                    addItem(presetName, nextId);
+                    ++nextId;
+                }
+            }
+        }
+    }
+}
+
+
 PatchLoader::PatchLoader(HexFmAudioProcessor* proc, juce::Component* patchDlg) :
 processor(proc),
 saveDialogComponent(patchDlg)
@@ -32,8 +117,6 @@ saveDialogComponent(patchDlg)
     
     //auto fldr = presetFolder.getFileName().toUTF8();
     //printf("Presets are at: %s\n", fldr);
-    
-    getPresetsFromFolder();
     
     addAndMakeVisible(&patchSelector);
     addAndMakeVisible(&nextPatchButton);
@@ -61,38 +144,6 @@ void PatchLoader::resized()
     saveButton.setBounds(44 * dY, dY, 6 * dY, 4 * dY);
 }
 
-void PatchLoader::getPresetsFromFolder()
-{
-    patchSelector.clear();
-    patchNames.clear();
-    auto files = presetFolder.findChildFiles(juce::File::findFiles, true);
-    auto numFiles = files.size();
-    if(numFiles > 0)
-    {
-        for(int i = 0; i < numFiles; ++i)
-        {
-            auto currentFile = files.getUnchecked(i);
-            std::unique_ptr<juce::XmlElement> currentXml = juce::parseXML(currentFile);
-            if(currentXml != nullptr)
-            {
-                if(currentXml->hasAttribute("HexFmPatchName"))
-                {
-                    auto presetName = currentXml->getStringAttribute("HexFmPatchName");
-                    patchNames.add(presetName);
-                    patchSelector.addItem(presetName, 1 + i);
-                    
-                }
-            }
-    }
-    if(patchNames.size() > 0)
-    {
-        patchSelector.setSelectedId(1);
-        loadPreset(patchSelector.getText());
-        printf("%d available patches\n", patchNames.size());
-        printf("default patch found\n");
-    }
-}
-}
 void PatchLoader::savePreset(juce::String name, juce::String type)
 {
     auto fileName = juce::File::createLegalFileName(name);
@@ -110,11 +161,7 @@ void PatchLoader::savePreset(juce::String name, juce::String type)
         xml->setAttribute("HexFmPatchName", name);
         xml->setAttribute("HexFmPatchType", type);
         xml->writeTo(file);
-        if(isNew)
-        {
-            patchNames.add(name);
-            patchSelector.addItem(name, patchSelector.getNumItems() + 1);
-        }
+        patchSelector.reInitList();
     }
 }
 void PatchLoader::loadPreset(juce::String presetName)

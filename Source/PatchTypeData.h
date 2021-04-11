@@ -54,7 +54,30 @@ struct PatchGroup
     void loadFilesForType(juce::File& folder)
     {
         auto allFiles = folder.findChildFiles(juce::File::TypesOfFileToFind::findFiles, true);
-        
+        for(auto f : allFiles)
+        {
+            std::unique_ptr<juce::XmlElement> currentXml = juce::parseXML(f);
+            if(currentXml != nullptr)
+            {
+                if(currentXml->hasAttribute("HexFmPatchType"))
+                {
+                    auto checkType = currentXml->getStringAttribute("HexFmPatchType");
+                    if(checkType == PatchTypeStrings[(int)type])
+                        patches.push_back(f);
+                    
+                }
+            }
+        }
+    }
+    juce::String nameOfLastPatch()
+    {
+        if(patches.size() > 0)
+        {
+            std::unique_ptr<juce::XmlElement> currentXml = juce::parseXML(patches[patches.size() - 1]);
+            if(currentXml->hasAttribute("HexFmPatchName"))
+                return currentXml->getStringAttribute("HexFmPatchName");
+        }
+        return "";
     }
 };
 
@@ -71,7 +94,6 @@ struct PatchLibrary
         auto patchFolder = appFolder.getChildFile("HexFM_Patches");
         if(patchFolder.exists() && patchFolder.isDirectory())
         {
-            printf("patch folder exists\n");
             patchFolder.setAsCurrentWorkingDirectory();
         }
         else
@@ -81,6 +103,40 @@ struct PatchLibrary
             printf("patch folder created\n");
         }
         presetFolder = patchFolder;
+        bassGroup.loadFilesForType(presetFolder);
+        leadGroup.loadFilesForType(presetFolder);
+        chordGroup.loadFilesForType(presetFolder);
+        padGroup.loadFilesForType(presetFolder);
+    }
+    PatchGroup* getGroup(juce::String& typeStr)
+    {
+        PatchType type = PatchType::lead;
+        int idx = 0;
+        for(auto s : PatchTypeStrings)
+        {
+            if(s == typeStr)
+                type = (PatchType)idx;
+            ++idx;
+        }
+        switch(type)
+        {
+            case PatchType::bass:
+            {
+                return &bassGroup;
+            }
+            case PatchType::lead:
+            {
+                return &leadGroup;
+            }
+            case PatchType::chord:
+            {
+                return &chordGroup;
+            }
+            case PatchType::pad:
+            {
+                return &padGroup;
+            }
+        }
     }
     PatchGroup bassGroup;
     PatchGroup leadGroup;

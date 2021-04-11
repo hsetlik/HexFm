@@ -13,14 +13,33 @@
 #include "PluginProcessor.h"
 #include "PatchTypeData.h"
 
-class PatchMenu : public juce::Component
+class PatchSelector : public juce::ComboBox
 {
 public:
-    PatchMenu();
-    ~PatchMenu(){}
-    
+    PatchSelector() : lib(std::make_unique<PatchLibrary>())
+    {
+        initialize();
+    }
+    ~PatchSelector(){}
+    void initialize();
+    void reInitList()
+    {
+        clear();
+        lib.reset(new PatchLibrary());
+        initialize();
+    }
+    int getIndexWithText(juce::String text)
+    {
+        for(int i = 0; i < getNumItems(); ++i)
+        {
+            if(getItemText(i) == text)
+                return i;
+        }
+        return getNumItems() - 1;
+    }
+    juce::StringArray patchNames;
 private:
-    juce::ComboBox allPatchNames;
+    std::unique_ptr<PatchLibrary> lib;
 };
 
 class PatchLoader : public juce::Component, juce::Button::Listener, juce::ComboBox::Listener
@@ -29,12 +48,6 @@ public:
     PatchLoader(HexFmAudioProcessor* proc, juce::Component* patchDlg);
     ~PatchLoader() {}
     void resized() override;
-    void loadNames(juce::StringArray patchNames)
-    {
-        patchSelector.addItemList(patchNames, 1);
-    }
-    //TODO:
-    void getPresetsFromFolder();
     void savePreset(juce::String name, juce::String type);
     void loadPreset(juce::String name);
     void comboBoxChanged(juce::ComboBox* box) override;
@@ -90,7 +103,9 @@ public:
             saveDialogComponent->resized();
         }
     }
-    juce::ComboBox patchSelector;
+    
+    
+    PatchSelector patchSelector;
     
     HexFmAudioProcessor* processor;
 private:
