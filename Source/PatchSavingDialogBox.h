@@ -12,6 +12,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "PatchManagerComponent.h"
+#include "PatchTypeData.h"
 #include "GlobalColor.h"
 
 class PatchDialogBox : public juce::Component, juce::Button::Listener
@@ -26,8 +27,13 @@ public:
     {
         return nameField.getText();
     }
+    juce::String getNewPatchType()
+    {
+        return typeBox.getText();
+    }
     juce::TextButton savePatchButton;
     juce::TextButton cancelButton;
+    juce::ComboBox typeBox;
 private:
     PatchLoader* patchLoader;
     juce::TextEditor nameField;

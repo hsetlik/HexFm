@@ -11,6 +11,17 @@
 #pragma once
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "PatchTypeData.h"
+
+class PatchMenu : public juce::Component
+{
+public:
+    PatchMenu();
+    ~PatchMenu(){}
+    
+private:
+    juce::ComboBox allPatchNames;
+};
 
 class PatchLoader : public juce::Component, juce::Button::Listener, juce::ComboBox::Listener
 {
@@ -24,7 +35,7 @@ public:
     }
     //TODO:
     void getPresetsFromFolder();
-    void savePreset(juce::String name);
+    void savePreset(juce::String name, juce::String type);
     void loadPreset(juce::String name);
     void comboBoxChanged(juce::ComboBox* box) override;
     //
@@ -35,6 +46,28 @@ public:
     juce::String getCurrentPresetName()
     {
         return patchSelector.getText();
+    }
+    juce::String getCurrentPresetType()
+    {
+        auto fArray = presetFolder.findChildFiles(juce::File::TypesOfFileToFind::findFiles, true);
+        juce::String output = "Bass";
+        auto pName = getCurrentPresetName();
+        for(auto f : fArray)
+        {
+            std::unique_ptr<juce::XmlElement> currentXml = juce::parseXML(f);
+            if(currentXml != nullptr)
+            {
+                if(currentXml->hasAttribute("HexFmPatchType"))
+                {
+                    auto checkName = currentXml->getStringAttribute("HexFmPatchName");
+                    if(checkName == pName)
+                    {
+                        output = currentXml->getStringAttribute("HexFmPatchType");
+                    }
+                }
+            }
+        }
+        return output;
     }
     void buttonClicked(juce::Button* button) override
     {

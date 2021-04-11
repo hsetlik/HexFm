@@ -93,7 +93,7 @@ void PatchLoader::getPresetsFromFolder()
     }
 }
 }
-void PatchLoader::savePreset(juce::String name)
+void PatchLoader::savePreset(juce::String name, juce::String type)
 {
     auto fileName = juce::File::createLegalFileName(name);
     if(presetFolder.exists())
@@ -108,6 +108,7 @@ void PatchLoader::savePreset(juce::String name)
         auto state = processor->tree.copyState();
         std::unique_ptr<juce::XmlElement> xml = state.createXml();
         xml->setAttribute("HexFmPatchName", name);
+        xml->setAttribute("HexFmPatchType", type);
         xml->writeTo(file);
         if(isNew)
         {

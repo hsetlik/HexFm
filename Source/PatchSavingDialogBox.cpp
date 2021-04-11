@@ -24,6 +24,15 @@ PatchDialogBox::PatchDialogBox(PatchLoader* loader) : patchLoader(loader)
     
     addAndMakeVisible(&cancelButton);
     cancelButton.setButtonText("Cancel");
+    
+    addAndMakeVisible(&typeBox);
+    int idx = 1;
+    for(auto t : PatchTypeStrings)
+    {
+        typeBox.addItem(t, idx);
+        ++idx;
+    }
+    typeBox.setSelectedId(1);
 }
 
 void PatchDialogBox::paint(juce::Graphics &g)
@@ -42,13 +51,20 @@ void PatchDialogBox::paint(juce::Graphics &g)
 void PatchDialogBox::resized()
 {
     int w = getWidth() / 18;
-    int h = getHeight() / 8;
+    int h = getHeight() / 12;
     
     nameField.setBounds(w, 3.5 * h, 16 * w, h);
     savePatchButton.setBounds(9 * w, 5 * h, 5 * w, 1.5 * h);
     cancelButton.setBounds(15 * w, 5 * h, 2 * w, 1.5 * h);
+    typeBox.setBounds(w, 5 * h, 3 * w, 1.5 * h);
     auto name = patchLoader->getCurrentPresetName();
+    auto type = patchLoader->getCurrentPresetType();
     nameField.setText(name);
+    for(int i = 0; i < typeBox.getNumItems(); ++i)
+    {
+        if(typeBox.getItemText(i) == type)
+            typeBox.setSelectedItemIndex(i);
+    }
 }
 
 void PatchDialogBox::buttonClicked(juce::Button *button)
@@ -56,7 +72,7 @@ void PatchDialogBox::buttonClicked(juce::Button *button)
     if(button == &savePatchButton)
     {
         auto patchName = nameField.getText();
-        patchLoader->savePreset(patchName);
+        patchLoader->savePreset(patchName, typeBox.getText());
     }
         nameField.clear();
         setEnabled(false);
