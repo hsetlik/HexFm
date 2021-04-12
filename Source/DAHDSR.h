@@ -45,7 +45,7 @@ public:
     void triggerOn()
     {
         trigger = true;
-        samplesInPhase = floor(ParamStatic::opDelayTime[index] * (sampleRate / 1000));
+        samplesInPhase = floor(delayTime * (sampleRate / 1000));
         samplesIntoPhase = 0;
         currentPhase = delayPhase;
     }
@@ -53,13 +53,22 @@ public:
     {
         return *tree->getRawParameterValue(str);
     }
+    void updateParams()
+    {
+        delayTime = valueOf(delayId);
+        attackTime = valueOf(attackId);
+        holdTime = valueOf(holdId);
+        decayTime = valueOf(decayId);
+        sustainLevel = valueOf(sustainId);
+        releaseTime = valueOf(releaseId);
+    }
     void triggerOff()
     {
         trigger = false;
         currentPhase = releasePhase;
         samplesIntoPhase = 0;
-        samplesInPhase = ParamStatic::opReleaseTime[index] * (sampleRate / 1000);
-        factor = exp((log(minLevel) - log(ParamStatic::opSustainLevel[index])) /samplesInPhase);
+        samplesInPhase = releaseTime * (sampleRate / 1000);
+        factor = exp((log(minLevel) - log(sustainLevel)) /samplesInPhase);
     }
     void setSampleRate(double value) {sampleRate = value;}
     float process(float input);
@@ -88,4 +97,11 @@ private:
     juce::String decayId;
     juce::String sustainId;
     juce::String releaseId;
+private:
+    float delayTime = 0.0f;
+    float attackTime = 20.0f;
+    float holdTime = 0.0f;
+    float decayTime = 100.0f;
+    float sustainLevel = 0.6f;
+    float releaseTime = 40.0f;
 };

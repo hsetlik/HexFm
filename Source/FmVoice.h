@@ -71,22 +71,6 @@ public:
         if(velocity == 0)
             clearCurrentNote();
     }
-    void updateLfoTarget(std::atomic<float>* value, int lfo)
-    {
-        lfoBank[lfo]->currentTarget = *value;
-    }
-    void updateLfoRate(std::atomic<float>* value, int lfo)
-    {
-        lfoBank[lfo]->currentRate = *value;
-    }
-    void updateLfoWave(std::atomic<float>* value, int lfo)
-    {
-        lfoBank[lfo]->currentWaveType = *value;
-    }
-    void updateLfoLevel(std::atomic<float>* value, int lfo)
-    {
-        lfoBank[lfo]->currentLevel = *value;
-    }
     void applyLfo(int index);
     void setRoutingFromGrid(juce::AudioProcessorValueTreeState* pTree, std::vector<std::vector<juce::String>> grid);
     void setSampleRate(double newRate)
@@ -110,8 +94,12 @@ public:
     {
         setSampleRate(newRate);
     }
+    float getValue(juce::String str)
+    {
+        return *tree->getRawParameterValue(str);
+    }
+    void updateParams();
     int voiceIndex;
-    std::vector<std::vector<int>> routingParams;
     int numJumps;
     int operatorCount;
     float fundamental;
@@ -126,6 +114,12 @@ public:
     float lfoValue;
     float lfoMax;
     float lfoMin;
+private:
+    int op1Index, op2Index;
+    juce::String opRoutingIds[TOTAL_OPERATORS][TOTAL_OPERATORS];
+    juce::String opAudibleIds[TOTAL_OPERATORS];
+    int opRouting[TOTAL_OPERATORS][TOTAL_OPERATORS];
+    int opAudible[TOTAL_OPERATORS];
 };
 
 
@@ -133,7 +127,7 @@ class FmSynth : public juce::Synthesiser
 {
 public:
     juce::AudioProcessorValueTreeState* tree;
-    FmSynth(int operators, int lfos, int numVoices, juce::AudioProcessorValueTreeState* t) : tree(t), juce::Synthesiser(), numOperators(operators), numLfos(lfos)
+    FmSynth(int operators, int lfos, int nVoices, juce::AudioProcessorValueTreeState* t) : juce::Synthesiser(), tree(t), numOperators(operators), numLfos(lfos), numVoices(nVoices)
     {
         for(int i = 0; i < numVoices; ++i)
         {
@@ -141,7 +135,7 @@ public:
         }
         addSound(new FmSound());
     }
-    FmVoice* getFmVoice(int i)
+    FmVoice* getFmVoice(int& i)
     {
         return dynamic_cast<FmVoice*>(voices.getUnchecked(i));
     }
@@ -149,7 +143,16 @@ public:
     {
         return &voices;
     }
+    void updateParams()
+    {
+        for(idx = 0; idx < numVoices; ++idx)
+        {
+            getFmVoice(idx)->updateParams();
+        }
+    }
 private:
+    int idx;
     int numOperators;
     int numLfos;
+    int numVoices;
 };

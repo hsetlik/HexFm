@@ -39,6 +39,14 @@ public:
     {
         return *tree->getRawParameterValue(str);
     }
+    void updateParams()
+    {
+        envelope.updateParams();
+        pan = getValue(panId);
+        level = getValue(levelId);
+        ratio = getValue(ratioId);
+        modIndex = getValue(modIndexId);
+    }
     int getIndex()
     {
         return index;
@@ -63,11 +71,15 @@ public:
     }
     void updatePan()
     {
-        panValue = (ParamStatic::opPanValue[index] + 1.0f) / 2.0f;
+        panValue = (pan + 1.0f) / 2.0f;
         gainR = panValue;
         gainL = 1.0f - panValue;
         lastOutputL = lastOutputSample * gainL;
         lastOutputR = lastOutputSample * gainR;
+    }
+    void setAM(float value)
+    {
+        amplitudeMod = value;
     }
     float sample(float fundamental);
     float lastOutputSample;
@@ -82,9 +94,6 @@ public:
     float rawSample;
     float panValue;
 private:
-    float ratio;
-    float modIndex;
-    float level;
     int index;
     SineTableOscillator wtOsc;
     float minRatio;
@@ -94,5 +103,10 @@ private:
     juce::String levelId;
     juce::String ratioId;
     juce::String amplitudeId;
+    float pan;
+    float ratio;
+    float modIndex;
+    float level;
+    float amplitudeMod;
     
 };

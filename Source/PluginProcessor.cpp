@@ -270,6 +270,7 @@ bool HexFmAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) co
 
 void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
+    /*
     ParamStatic::setRouting(&tree, routingIds);
     lfoIndex = 0;
      for(auto i : ParamStatic::lfoLevel)
@@ -298,7 +299,10 @@ void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
         ParamStatic::opReleaseTime[opIndex] = *tree.getRawParameterValue(releaseIds[opIndex]);
         ++opIndex;
     }
+     */
+    
     buffer.clear();
+    synth.updateParams();
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
 
