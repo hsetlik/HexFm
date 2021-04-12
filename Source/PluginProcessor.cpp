@@ -329,6 +329,13 @@ void HexFmAudioProcessor::setStateInformation (const void* data, int sizeInBytes
                 if (xmlState->hasTagName (tree.state.getType()))
                     tree.replaceState (juce::ValueTree::fromXml (*xmlState));
 }
+
+void HexFmAudioProcessor::applyBandLimiting(juce::AudioBuffer<float> &buffer)
+{
+    //perform forward fft
+    //zero bins above nyquist
+    //reverse fft
+}
 //==============================================================================
 
 //==============================================================================
