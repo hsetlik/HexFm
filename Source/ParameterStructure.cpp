@@ -10,7 +10,7 @@
 
 #include "ParameterStructure.h"
 
-bool ParamStatic::routingHasChanged = false;
+AtomicParam<int> ParamStatic::routingHasChanged;
 
 AtomicParam<float> ParamStatic::opDelayTime[TOTAL_OPERATORS];
 AtomicParam<float> ParamStatic::opAttackTime[TOTAL_OPERATORS];

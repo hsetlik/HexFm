@@ -112,16 +112,42 @@ public:
 class AlgorithmGraph : public juce::Component, public juce::Timer
 {
 public:
-    AlgorithmGraph()
+    juce::AudioProcessorValueTreeState* tree;
+    AlgorithmGraph(juce::AudioProcessorValueTreeState* t) : tree(t)
     {
         setRepaintsOnMouseActivity(false);
         for(int i = 0; i < 6; ++i)
         {
             opInfo.add(new OpInfo(i));
         }
+        for(int o = 0; o < TOTAL_OPERATORS; ++o)
+        {
+            auto oStr = juce::String(o);
+            opAudibleIds[o] = "audibleParam" + oStr;
+            for(int i = 0; i < TOTAL_OPERATORS; ++i)
+            {
+                auto iStr = juce::String(i);
+                opRoutingIds[o][i] = oStr + "to" + iStr + "Param";
+            }
+        }
         startTimerHz(24);
         pathColor = juce::Colours::black;
         background = UXPalette::darkGray1;
+    }
+    float getValue(juce::String& str)
+    {
+        return *tree->getRawParameterValue(str);
+    }
+    void updateParams()
+    {
+        for(int o = 0; o < TOTAL_OPERATORS; ++o)
+        {
+            opAudible[o] = (int)getValue(opAudibleIds[o]);
+            for(int i = 0; i < TOTAL_OPERATORS; ++i)
+            {
+                opRouting[o][i] = (int)getValue(opRoutingIds[o][i]);
+            }
+        }
     }
     void timerCallback() override;
     void resized() override;
@@ -161,4 +187,9 @@ public:
     juce::OwnedArray<OperatorBox> opBoxes;
     juce::Colour pathColor;
     juce::Colour background;
+    
+    juce::String opAudibleIds[TOTAL_OPERATORS];
+    juce::String opRoutingIds[TOTAL_OPERATORS][TOTAL_OPERATORS];
+    int opRouting[TOTAL_OPERATORS][TOTAL_OPERATORS];
+    int opAudible[TOTAL_OPERATORS];
 };

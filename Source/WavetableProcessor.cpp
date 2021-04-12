@@ -12,6 +12,8 @@
 
 float SineTableOscillator::getSample(double frequency)
 {
+    if(frequency > nyquist)
+        frequency = nyquist;
     posDelta = 1.0f / (sampleRate / frequency);
     if(!isnan(posDelta) && !isinf(posDelta))
         position += posDelta;

@@ -74,7 +74,7 @@ struct ParamStatic
     static AtomicParam<float> opModIndex[TOTAL_OPERATORS];
     static AtomicParam<float> opRatioMod[TOTAL_OPERATORS];
     static AtomicParam<float> opPanValue[TOTAL_OPERATORS];
-    static bool routingHasChanged;
+    static AtomicParam<int> routingHasChanged;
     
     static float workingFundamental;
     static AtomicParam<float> lfoRate[TOTAL_LFOS];

@@ -39,10 +39,10 @@ void AlgorithmGraph::addPath(std::pair<int, int> from, std::pair<int, int> to)
 void AlgorithmGraph::timerCallback()
 {
      
-    if(ParamStatic::routingHasChanged)
+    if(ParamStatic::routingHasChanged.get() == 1)
     {
         repaint();
-        ParamStatic::routingHasChanged = false;
+        ParamStatic::routingHasChanged = 0;
     }
 }
 
@@ -66,7 +66,7 @@ void AlgorithmGraph::updateOpInfo()
     {
         for(int d = 0; d < 6; ++d)
         {
-            if(ParamStatic::opRouting[s][d].get())
+            if(opRouting[s][d])
             {
                 VectorUtil::addIfUnique(opInfo[d]->sources, opInfo[s]);
                 VectorUtil::addIfUnique(opInfo[s]->dests, opInfo[d]);
@@ -80,7 +80,7 @@ void AlgorithmGraph::updateOpInfo()
     for(auto op : toDraw)
     {
         //bottom row is any operator we can hear
-        if(ParamStatic::opAudible[op->index].get())
+        if(opAudible[op->index])
         {
             bottomLevel.push_back(op);
         }
@@ -155,6 +155,7 @@ int AlgorithmGraph::calculateRows()
 }
 void AlgorithmGraph::paint(juce::Graphics &g)
 {
+    updateParams();
     auto fBounds = getLocalBounds().toFloat();
     AlgorithmGridConstants::topLeftX = fBounds.getX();
     AlgorithmGridConstants::topLeftY = fBounds.getY();

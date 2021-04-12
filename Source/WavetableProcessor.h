@@ -16,7 +16,7 @@
 class SineTableOscillator
 {
 public:
-    SineTableOscillator() : fData(new float[TABLESIZE]), position(0.0f), sampleRate(44100.f)
+    SineTableOscillator() : fData(new float[TABLESIZE]), position(0.0f), sampleRate(44100.f), nyquist(22050.0f)
     {
         auto dX = juce::MathConstants<float>::twoPi / TABLESIZE;
         for(int i = 0; i < TABLESIZE; ++i)
@@ -28,6 +28,7 @@ public:
     void setSampleRate(double rate)
     {
         sampleRate = rate;
+        nyquist = sampleRate / 2.0f;
     }
     float getSample(double frequency);
 private:
@@ -36,6 +37,7 @@ private:
     float posDelta;
     float output;
     double sampleRate;
+    double nyquist;
     int bottomSampleIndex;
     float sampleDiff;
     float skew;

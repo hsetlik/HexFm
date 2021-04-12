@@ -33,7 +33,7 @@ ModulationGrid::ModulationGrid(int numOperators)
 
 void ModulationGrid::buttonClicked(juce::Button *b)
 {
-    ParamStatic::routingHasChanged = true;
+    ParamStatic::routingHasChanged = 1;
 }
 
 ModulationGrid::~ModulationGrid()

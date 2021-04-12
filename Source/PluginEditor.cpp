@@ -15,7 +15,8 @@ AudioProcessorEditor (&p),
 modGrid(numOperators),
 patchLoader(&p, &saveDialog),
 saveDialog(&patchLoader),
-audioProcessor (p)
+algGraph(&p.tree),
+audioProcessor(p)
 {
     operatorColor = Color::RGBColor(51, 81, 90);
     for(int i = 0; i < numOperators; ++i)
