@@ -87,6 +87,8 @@ void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startS
         if(fabs(opSum - lastOpSample) > 0.2f)
             ++numJumps;
         lastOpSample = opSum;
+        if(!isActive())
+            clearCurrentNote();
     }
 }
 void FmVoice::applyLfo(int index)

@@ -73,6 +73,12 @@ public:
     void setSampleRate(double value) {sampleRate = value;}
     float process(float input);
     envPhase getPhase() {return currentPhase;}
+    bool isActive()
+    {
+        if(currentPhase == envPhase::noteOff)
+            return false;
+        return true;
+    }
     double output;
 private:
     //data

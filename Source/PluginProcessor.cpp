@@ -121,7 +121,14 @@ HexFmAudioProcessor::HexFmAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ),  tree(*this, nullptr, "synthParams", createLayout(numOperators)), synth(6, 4, 6, &tree)
+                       ),
+tree(*this, nullptr, "synthParams", createLayout(numOperators)),
+synth(6, 4, 6, &tree),
+fwdFFT(10),
+invFFT(10),
+bufferSize(getBlockSize()),
+fftArray1(new float[bufferSize]),
+fftArray2(new float[2 * bufferSize])
 #endif
 {
     for(int i = 0; i < 4; ++i)
@@ -228,6 +235,7 @@ void HexFmAudioProcessor::changeProgramName (int index, const juce::String& newN
 //==============================================================================
 void HexFmAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    bufferSize = samplesPerBlock;
     juce::ignoreUnused(samplesPerBlock);
     synth.setCurrentPlaybackSampleRate(sampleRate);
     maxiSettings::setup((int)sampleRate, 2, samplesPerBlock);
@@ -270,34 +278,12 @@ bool HexFmAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) co
 
 void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    /*
-    ParamStatic::setRouting(&tree, routingIds);
-    
-    for(lfoIndex = 0; lfoIndex < TOTAL_LFOS; ++lfoIndex)
-     {
-         ParamStatic::lfoTarget[lfoIndex] = (int)*tree.getRawParameterValue(lfoTargetIds[lfoIndex]);
-         ParamStatic::lfoWave[lfoIndex] = (int)*tree.getRawParameterValue(lfoWaveIds[lfoIndex]);
-         ParamStatic::lfoRate[lfoIndex].setFrom(tree.getRawParameterValue(lfoRateIds[lfoIndex]));
-         ParamStatic::lfoLevel[lfoIndex] = *tree.getRawParameterValue(lfoLevelIds[lfoIndex]);
-         ParamStatic::lfoRatioMode[lfoIndex] = *tree.getRawParameterValue(lfoRatioModeIds[lfoIndex]);
-     }
-    for(opIndex = 0; opIndex < TOTAL_OPERATORS; ++opIndex)
+    if(bufferSize != buffer.getNumSamples())
     {
-        ParamStatic::opRatio[opIndex].setFrom(tree.getRawParameterValue(ratioIds[opIndex]));
-        ParamStatic::opLevel[opIndex].setFrom(tree.getRawParameterValue(levelIds[opIndex]));
-        ParamStatic::opModIndex[opIndex].setFrom(tree.getRawParameterValue(modIndexIds[opIndex]));
-        ParamStatic::opAudible[opIndex] = (int)*tree.getRawParameterValue(audibleIds[opIndex]);
-        ParamStatic::opPanValue[opIndex].setFrom(tree.getRawParameterValue(panIds[opIndex]));
-        
-        ParamStatic::opDelayTime[opIndex].setFrom(tree.getRawParameterValue(delayIds[opIndex]));
-        ParamStatic::opAttackTime[opIndex].setFrom(tree.getRawParameterValue(attackIds[opIndex]));
-        ParamStatic::opHoldTime[opIndex].setFrom(tree.getRawParameterValue(holdIds[opIndex]));
-        ParamStatic::opDecayTime[opIndex].setFrom(tree.getRawParameterValue(decayIds[opIndex]));
-        ParamStatic::opSustainLevel[opIndex].setFrom(tree.getRawParameterValue(sustainIds[opIndex]));
-        ParamStatic::opReleaseTime[opIndex].setFrom(tree.getRawParameterValue(releaseIds[opIndex]));
+        bufferSize = buffer.getNumSamples();
+        fftArray1 = new float[bufferSize];
+        fftArray2 = new float[2 * bufferSize];
     }
-     */
-    
     buffer.clear();
     synth.updateParams();
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());

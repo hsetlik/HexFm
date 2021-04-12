@@ -34,17 +34,6 @@ public:
     {
         printf("Voice #: %d -- %d total jumps\n", voiceIndex, numJumps);
     }
-    bool isActive()
-    {
-        for(Operator* i : operators)
-        {
-            if(i->envelope.getPhase() != DAHDSR::noteOff)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
     bool canPlaySound(juce::SynthesiserSound* sound)
     {
         return dynamic_cast<FmSound*>(sound) != nullptr;
@@ -68,8 +57,9 @@ public:
             i->envelope.triggerOff();
         }
         allowTailOff = true;
-        if(velocity == 0)
+        if(velocity == 0 || !isActive())
             clearCurrentNote();
+        
     }
     void applyLfo(int index);
     void setRoutingFromGrid(juce::AudioProcessorValueTreeState* pTree, std::vector<std::vector<juce::String>> grid);
@@ -97,6 +87,15 @@ public:
     float getValue(juce::String str)
     {
         return *tree->getRawParameterValue(str);
+    }
+    bool isActive()
+    {
+        for(auto op : operators)
+        {
+            if(op->envelope.isActive())
+                return true;
+        }
+        return false;
     }
     void updateParams();
     int voiceIndex;
