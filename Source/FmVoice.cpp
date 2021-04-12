@@ -12,34 +12,44 @@
 
 
 
-FmVoice::FmVoice(int numOperators, int index) :  voiceIndex(index), operatorCount(numOperators), fundamental(1.0f)
+FmVoice::FmVoice(int numOperators, int index, juce::AudioProcessorValueTreeState* t) : tree(t), voiceIndex(index), operatorCount(numOperators), fundamental(1.0f)
 {
     lfoMax = std::numeric_limits<float>::min();
     lfoMin = std::numeric_limits<float>::max();
     numJumps = 0;
-    for(int i = 0; i < numOperators; ++i)
+    for(int o = 0; o < numOperators; ++o)
     {
-        operators.add(new Operator(i, voiceIndex));
-        std::vector<int> ints;
-        for(int n = 0; n < numOperators; ++n)
+        operators.add(new Operator(o, voiceIndex, tree));
+        auto oStr = juce::String(o);
+        opAudibleIds[o] = "audibleParam" + oStr;
+        for(int i = 0; i < numOperators; ++i)
         {
-            int newVal = 0;
-            ints.push_back(newVal);
+            auto iStr = juce::String(i);
+            opRoutingIds[o][i] = oStr + "to" + iStr + "Param";
         }
-        routingParams.push_back(ints);
     }
     for(int n = 0; n < totalLfos; ++n)
     {
-        lfoBank.add(new LfoProcessor(n));
+        lfoBank.add(new LfoProcessor(n, tree));
+    }
+    
+}
+void FmVoice::updateParams()
+{
+    for(op1Index = 0; op1Index < TOTAL_OPERATORS; ++op1Index)
+    {
+        operators[op1Index]->updateParams();
+        opAudible[op1Index] = getValue(opAudibleIds[op1Index]);
+        if(op1Index < TOTAL_LFOS)
+            lfoBank[op1Index]->updateParams();
+        for(op2Index = 0; op2Index < TOTAL_OPERATORS; ++op2Index)
+        {
+            opRouting[op1Index][op2Index] = (int)getValue(opRoutingIds[op1Index][op2Index]);
+        }
     }
 }
-float lastSample = 0.0f;
-int numBuffers = 0;
-int op1Index = 0;
-int op2Index = 0;
 void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples)
 {
-    ParamStatic::workingFundamental = fundamental;
     for(int i = startSample; i < (startSample + numSamples); ++i)
     {
         for(int lfo = 0; lfo < 4; ++ lfo)
@@ -57,12 +67,12 @@ void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startS
             op2Index = 0;
             for(Operator* d : operators)
             {
-                if(ParamStatic::opRouting[op1Index][op2Index].get())
+                if(opRouting[op1Index][op2Index])
                     { d->modOffset += o->lastOutputSample;}
                 ++op2Index;
             }
             opSample = o->sample(fundamental);
-            if(ParamStatic::opAudible[o->getIndex()].get())
+            if(opAudible[o->getIndex()])
             {
                 opSum += opSample;
                 sumL += o->lastOutputL;
@@ -72,10 +82,9 @@ void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startS
             ++op1Index;
         }
         outputBuffer.addSample(0, i, sumL);
-        if(outputBuffer.getNumChannels() > 0)
-            outputBuffer.addSample(1, i, sumR);
+        outputBuffer.addSample(1, i, sumR);
         
-        if(fabs(opSum - lastOpSample) > 0.3f)
+        if(fabs(opSum - lastOpSample) > 0.2f)
             ++numJumps;
         lastOpSample = opSum;
     }
@@ -84,14 +93,20 @@ void FmVoice::applyLfo(int index)
 {
     LfoProcessor* thisLfo = lfoBank[index];
     lfoValue = thisLfo->getSampleValue();
-    if(ParamStatic::lfoTarget[index] > 0)
+    /*
+    if(lfoValue < lfoMin)
+        lfoMin = lfoValue;
+    if(lfoValue > lfoMax)
+        lfoMax = lfoValue;
+     */
+    if(thisLfo->target > 0)
     {
-      if(ParamStatic::lfoTarget[index].get() % 2 != 0)
-          ParamStatic::opAmplitudeMod[(ParamStatic::lfoTarget[index].get() / 2)] = ((1.0f + lfoValue) / 2.0f);
+      if(thisLfo->target % 2 != 0)
+          operators[(thisLfo->target / 2)]->setAM((1.0f + lfoValue) / 2.0f);
       else
       {
-          auto targetOp = ParamStatic::lfoTarget[index].get() / 2;
-          operators[targetOp - 1]->modulateRatio(lfoValue, ParamStatic::lfoRatioMode[index].get());
+          auto targetOp = thisLfo->target / 2;
+          operators[targetOp - 1]->modulateRatio(lfoValue, thisLfo->ratioModType);
       }
     }
 }

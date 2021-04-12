@@ -12,8 +12,8 @@
 
 float Operator::sample(float fundamental) 
 {
-    rawSample = wtOsc.getSample((fundamental * ParamStatic::opRatio[index].get()) + (modOffset * ParamStatic::opModIndex[index].get()));
-    lastOutputSample = envelope.process(rawSample) * ( 1.0f - ParamStatic::opAmplitudeMod[index].get());
+    rawSample = wtOsc.getSample((fundamental * ratio) + (modOffset * modIndex));
+    lastOutputSample = envelope.process(rawSample) * ( 1.0f - amplitudeMod);
     updatePan();
     return lastOutputSample;
 }
@@ -47,5 +47,5 @@ void Operator::modulateRatio(float value, int mode)
             break;
         }
     }
-    ParamStatic::opRatio[index] = ratio + modValue;
+    ratio = ratio + modValue;
 }

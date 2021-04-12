@@ -13,6 +13,7 @@
 #include "maximilian.h"
 #include "SampleAndHoldOscillator.h"
 #include "ParameterStructure.h"
+#include "WavetableProcessor.h"
 //const to set the synth's total availible number of LFOs
 /* GUIDE TO TARGET NUMBERS
     Operator : Parameter : id
@@ -45,9 +46,15 @@ const int totalLfos = 4;
 class LfoProcessor
 {
 public:
+    juce::AudioProcessorValueTreeState* tree;
     //functions
-    LfoProcessor(int index);
+    LfoProcessor(int index, juce::AudioProcessorValueTreeState* t);
     ~LfoProcessor() {}
+    void updateParams();
+    float getValue(juce::String str)
+    {
+        return *tree->getRawParameterValue(str);
+    }
     float getSampleValue();
     //data
     int currentTarget;
@@ -56,8 +63,20 @@ public:
     float currentLevel;
     int getIndex() {return lfoIndex;}
     float lastValue;
+    float rate;
+    float level;
+    int target;
+    int wave;
+    int ratioModType;
 private:
+    juce::String rateId;
+    juce::String levelId;
+    juce::String targetId;
+    juce::String waveId;
+    juce::String ratioModId;
     maxiOsc lfo_osc;
     RandomOscillator randOsc;
     int lfoIndex;
+    
+    
 };

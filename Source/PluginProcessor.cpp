@@ -121,7 +121,7 @@ HexFmAudioProcessor::HexFmAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ),  tree(*this, nullptr, "synthParams", createLayout(numOperators)), synth(6, 4, 6)
+                       ),  tree(*this, nullptr, "synthParams", createLayout(numOperators)), synth(6, 4, 6, &tree)
 #endif
 {
     for(int i = 0; i < 4; ++i)
@@ -270,6 +270,7 @@ bool HexFmAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) co
 
 void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
+    /*
     ParamStatic::setRouting(&tree, routingIds);
     
     for(lfoIndex = 0; lfoIndex < TOTAL_LFOS; ++lfoIndex)
@@ -295,7 +296,10 @@ void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
         ParamStatic::opSustainLevel[opIndex].setFrom(tree.getRawParameterValue(sustainIds[opIndex]));
         ParamStatic::opReleaseTime[opIndex].setFrom(tree.getRawParameterValue(releaseIds[opIndex]));
     }
+     */
+    
     buffer.clear();
+    synth.updateParams();
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
 

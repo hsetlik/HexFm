@@ -16,16 +16,16 @@ float DAHDSR::process(float input)
         {
             case delayPhase:
             {
-                if(ParamStatic::opDelayTime[index] > 0)
+                if(valueOf(delayId) > 0)
                 {
                     if(samplesIntoPhase == 0)
-                        samplesInPhase = phaseSafe(floor(ParamStatic::opDelayTime[index].get() * (sampleRate / 1000)));
+                        samplesInPhase = phaseSafe(floor(delayTime * (sampleRate / 1000)));
                     samplesIntoPhase += 1;
                     if(samplesIntoPhase >= samplesInPhase)
                     {
                         currentPhase = attackPhase;
                         samplesIntoPhase = 0;
-                        samplesInPhase = phaseSafe(floor(ParamStatic::opAttackTime[index].get() * (sampleRate / 1000)));
+                        samplesInPhase = phaseSafe(floor(attackTime * (sampleRate / 1000)));
                         factor = exp((log(1.0f) - log(minLevel)) /samplesInPhase);
                     }
                     output = 0.0f;
@@ -33,7 +33,7 @@ float DAHDSR::process(float input)
                 else
                 {
                     currentPhase = attackPhase;
-                    samplesInPhase = phaseSafe(floor(ParamStatic::opAttackTime[index].get() * (sampleRate / 1000)));
+                    samplesInPhase = phaseSafe(floor(attackTime * (sampleRate / 1000)));
                     factor = exp((log(1.0f) - log(minLevel)) /samplesInPhase);
                     samplesIntoPhase = 0;
                 }
@@ -49,30 +49,30 @@ float DAHDSR::process(float input)
                 {
                     currentPhase = holdPhase;
                     samplesIntoPhase = 0;
-                    samplesInPhase = ParamStatic::opHoldTime[index].get() * (sampleRate / 1000);
+                    samplesInPhase = valueOf(holdId) * (sampleRate / 1000);
                 }
                 break;
             }
             case holdPhase:
             {
-                if(ParamStatic::opHoldTime[index].get() != 0)
+                if(holdTime != 0)
                 {
                     samplesIntoPhase += 1;
                     if(samplesIntoPhase > samplesInPhase)
                     {
                         currentPhase = decayPhase;
                         samplesIntoPhase = 0;
-                        samplesInPhase = phaseSafe(ParamStatic::opDecayTime[index].get() * (sampleRate / 1000));
-                        factor = exp((log(ParamStatic::opSustainLevel[index].get()) - log(1.0f)) /samplesInPhase);
+                        samplesInPhase = phaseSafe(decayTime * (sampleRate / 1000));
+                        factor = exp((log(sustainLevel) - log(1.0f)) /samplesInPhase);
                     }
                     output = 1.0f;
-                }
+            }
                 else
                 {
                     currentPhase = decayPhase;
                     samplesIntoPhase = 0;
-                    samplesInPhase = phaseSafe(ParamStatic::opDecayTime[index].get() * (sampleRate / 1000));
-                    factor = exp((log(ParamStatic::opSustainLevel[index].get()) - log(1.0f)) /samplesInPhase);;
+                    samplesInPhase = phaseSafe(decayTime * (sampleRate / 1000));
+                    factor = exp((log(sustainLevel) - log(1.0f)) /samplesInPhase);;
                 }
                 break;
             }
@@ -84,13 +84,13 @@ float DAHDSR::process(float input)
                 {
                     currentPhase = sustainPhase;
                     samplesIntoPhase = 0;
-                    output = ParamStatic::opSustainLevel[index].get();
+                    output = sustainLevel;
                 }
                 break;
             }
             case sustainPhase:
             {
-                output = ParamStatic::opSustainLevel[index].get();
+                output = sustainLevel;
                 break;
             }
             case releasePhase:
