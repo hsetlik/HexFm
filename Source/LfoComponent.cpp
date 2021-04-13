@@ -82,11 +82,13 @@ LfoComponent::LfoComponent(int index) : lfoIndex(index), selector(index)
     rateSlider.setRange(0.0f, 20.0f);
     rateSlider.setSliderStyle(juce::Slider::Rotary);
     rateSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 45, 15);
+    rateSlider.setLookAndFeel(&look);
     
     addAndMakeVisible(&levelSlider);
     levelSlider.setRange(0.0f, 1.0f);
     levelSlider.setSliderStyle(juce::Slider::Rotary);
     levelSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 45, 15);
+    levelSlider.setLookAndFeel(&look);
     
     addAndMakeVisible(&waveSelector);
     addAndMakeVisible(&targetSelector);
@@ -155,12 +157,12 @@ void LfoComponent::resized()
 {
     int n = getWidth() / 24;
     levelSlider.setBounds(2 * n, 2 * n, 5 * n, 7 * n);
-    rateSlider.setBounds(2 * n, 13 * n, 5 * n, 7 * n);
+    rateSlider.setBounds(2 * n, 14 * n, 5 * n, 7 * n);
     
     selector.setBounds(8 * n, 8 * n, 97, 33);
     
-    waveSelector.setBounds(7 * n, 4.5 * n, 10 * n, 2 * n);
-    targetSelector.setBounds(8 * n, 12 * n, 14 * n, 2 * n);
+    waveSelector.setBounds(8 * n, 4.5 * n, 10 * n, 2 * n);
+    targetSelector.setBounds(8 * n, 16.5 * n, 14 * n, 2 * n);
 }
 
 void LfoComponent::paint(juce::Graphics &g)

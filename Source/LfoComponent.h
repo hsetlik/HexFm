@@ -13,6 +13,7 @@
 #include "maximilian.h"
 #include "RGBColor.h"
 #include "GlobalColor.h"
+#include "CustomLnF.h"
 class LfoModeSelector : public juce::Component, juce::Button::Listener
 {
 public:
@@ -51,7 +52,11 @@ class LfoComponent : public juce::Component, juce::ComboBox::Listener
 public:
     //functions
     LfoComponent(int index);
-    ~LfoComponent() {}
+    ~LfoComponent()
+    {
+        rateSlider.setLookAndFeel(nullptr);
+        levelSlider.setLookAndFeel(nullptr);
+    }
     void attachAll(juce::AudioProcessorValueTreeState* tree);
     void comboBoxChanged(juce::ComboBox* c) override;
     void paint(juce::Graphics& g) override;
@@ -65,7 +70,7 @@ private:
     juce::Slider levelSlider;
     
     LfoModeSelector selector;
-    
+    LnF1 look;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> targetAttach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> waveTypeAttach;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> rateAttach;
