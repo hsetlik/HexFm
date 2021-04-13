@@ -38,7 +38,7 @@ panLabel(&panSlider, "")
 {
     attachAll(pTree);
     addAndMakeVisible(&levelSlider);
-    levelSlider.setLookAndFeel(&look1); //override the vertical bar draw method next
+    levelSlider.setLookAndFeel(&look1);
     addAndMakeVisible(&ratioSlider);
     ratioSlider.setLookAndFeel(&look1);
     addAndMakeVisible(&modIndexSlider);
