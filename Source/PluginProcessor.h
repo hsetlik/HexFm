@@ -87,11 +87,7 @@ private:
     int voiceIndex;
     FmSynth synth;
     
-    juce::dsp::FFT fwdFFT;
-    juce::dsp::FFT invFFT;
-    int bufferSize;
-    float* fftArray1;
-    float* fftArray2;
+    juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> fixedFilter;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HexFmAudioProcessor)
 };

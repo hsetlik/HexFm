@@ -124,11 +124,7 @@ HexFmAudioProcessor::HexFmAudioProcessor()
                        ),
 tree(*this, nullptr, "synthParams", createLayout(numOperators)),
 synth(6, 4, 6, &tree),
-fwdFFT(10),
-invFFT(10),
-bufferSize(getBlockSize()),
-fftArray1(new float[bufferSize]),
-fftArray2(new float[2 * bufferSize])
+fixedFilter(juce::dsp::IIR::Coefficients<float>::makeHighShelf(44100.0f, 44100.0f * 0.35f, 1.0f, 0.00001f))
 #endif
 {
     for(int i = 0; i < 4; ++i)
@@ -235,7 +231,6 @@ void HexFmAudioProcessor::changeProgramName (int index, const juce::String& newN
 //==============================================================================
 void HexFmAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    bufferSize = samplesPerBlock;
     juce::ignoreUnused(samplesPerBlock);
     synth.setCurrentPlaybackSampleRate(sampleRate);
     maxiSettings::setup((int)sampleRate, 2, samplesPerBlock);
@@ -244,6 +239,13 @@ void HexFmAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
         auto* voice = dynamic_cast<FmVoice*>(i);
         voice->setSampleRate(sampleRate);
     }
+    juce::dsp::ProcessSpec spec;
+    spec.sampleRate = sampleRate;
+    spec.maximumBlockSize = samplesPerBlock;
+    spec.numChannels = getTotalNumOutputChannels();
+    
+    fixedFilter.prepare(spec);
+    fixedFilter.reset();
 }
 
 void HexFmAudioProcessor::releaseResources()
@@ -278,15 +280,12 @@ bool HexFmAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) co
 
 void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    if(bufferSize != buffer.getNumSamples())
-    {
-        bufferSize = buffer.getNumSamples();
-        fftArray1 = new float[bufferSize];
-        fftArray2 = new float[2 * bufferSize];
-    }
     buffer.clear();
     synth.updateParams();
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+    
+    juce::dsp::AudioBlock<float> block(buffer);
+    fixedFilter.process(juce::dsp::ProcessContextReplacing<float>(block));
 }
 
 //==============================================================================
