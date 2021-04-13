@@ -23,7 +23,10 @@ LfoModeSelector::LfoModeSelector(int index) : modeSelectorIndex(index)
     addAndMakeVisible(bothButton);
     addAndMakeVisible(downButton);
     addAndMakeVisible(choiceHandler);
-    choiceHandler.setVisible(false);
+    upButton.addListener(this);
+    bothButton.addListener(this);
+    downButton.addListener(this);
+    //choiceHandler.setVisible(false);
     auto none = juce::Colours::transparentBlack;
     upButton.setImages(true, true, true, upOffImg, 1.0f, none, upOffImg, 1.0f, none, upOnImg, 1.0f, none);
     upButton.setClickingTogglesState(true);
@@ -62,6 +65,7 @@ void LfoModeSelector::resized()
     upButton.setBounds(0, 0, bWidth, getHeight());
     bothButton.setBounds(bWidth, 0, bWidth, getHeight());
     downButton.setBounds(2 * bWidth, 0, bWidth, getHeight());
+    choiceHandler.toBack();
 }
 
 void LfoModeSelector::attach(juce::AudioProcessorValueTreeState *tree)

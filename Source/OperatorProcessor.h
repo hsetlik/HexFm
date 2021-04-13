@@ -19,16 +19,14 @@ class Operator
 {
 public:
     juce::AudioProcessorValueTreeState* tree;
-    Operator(int opIndex, int voiceIndex, juce::AudioProcessorValueTreeState* t) : tree(t), lastOutputSample(0.0f), envelope(opIndex, tree), voice(voiceIndex), ratio(1.0f), index(opIndex)
+    Operator(int opIndex, int voiceIndex, juce::AudioProcessorValueTreeState* t) : tree(t), lastOutputSample(0.0f), envelope(opIndex, tree), voice(voiceIndex), baseRatio(1.0f), index(opIndex)
     {
-        minRatio = std::numeric_limits<float>::max();
-        maxRatio = std::numeric_limits<float>::min();
         auto iStr = juce::String(opIndex);
         panId = "panParam" + iStr;
         levelId = "levelParam" + iStr;
         ratioId = "ratioParam" + iStr;
         modIndexId = "indexParam" + iStr;
-        
+        workingRatio = baseRatio;
     }
     ~Operator()
     {
@@ -44,7 +42,8 @@ public:
         envelope.updateParams();
         pan = getValue(panId);
         level = getValue(levelId);
-        ratio = getValue(ratioId);
+        baseRatio = getValue(ratioId);
+        workingRatio = baseRatio;
         modIndex = getValue(modIndexId);
     }
     int getIndex()
@@ -81,6 +80,10 @@ public:
     {
         amplitudeMod = value;
     }
+    static float lerp(float min, float max, float value)
+    {
+        return min + ((max - min) * value);
+    }
     float sample(float fundamental);
     float lastOutputSample;
     float gainL;
@@ -96,17 +99,19 @@ public:
 private:
     int index;
     SineTableOscillator wtOsc;
-    float minRatio;
-    float maxRatio;
     juce::String panId;
     juce::String modIndexId;
     juce::String levelId;
     juce::String ratioId;
     juce::String amplitudeId;
     float pan;
-    float ratio;
+    float baseRatio;
+    float workingRatio;
     float modIndex;
     float level;
     float amplitudeMod;
+    float fundamental;
+    float maxRatioOffset;
+    float minRatio;
     
 };

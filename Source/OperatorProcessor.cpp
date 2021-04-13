@@ -10,9 +10,10 @@
 
 #include "OperatorProcessor.h"
 
-float Operator::sample(float fundamental) 
+float Operator::sample(float fund)
 {
-    rawSample = wtOsc.getSample((fundamental * ratio) + (modOffset * modIndex));
+    fundamental = fund;
+    rawSample = wtOsc.getSample((fund * workingRatio) + (modOffset * modIndex)) * level;
     lastOutputSample = envelope.process(rawSample) * ( 1.0f - amplitudeMod);
     updatePan();
     return lastOutputSample;
@@ -20,32 +21,37 @@ float Operator::sample(float fundamental)
 
 void Operator::modulateRatio(float value, int mode)
 {
-    //value is between 0 and 1
-    //min ratio is 0.1f, max is 10.0f
-    auto maxIncrease = 10.0f - ratio;
-    auto maxDecrease = ratio - 0.1f;
-    float modValue;
+    //value is between 0 and 0.6f (just a bit of limiting)
+    //value *= 0.6f;
     switch(mode)
     {
         case 0: //upwards only
         {
-            modValue = maxIncrease * value;
+            maxRatioOffset = baseRatio;
+            workingRatio =  baseRatio + (maxRatioOffset * value);
             break;
         }
         case 1: // both directions
         {
-            auto biValue = (value * 2.0f) - 1.0f; //track value to range -1, 1
-            if(biValue > 0.0f)
-                modValue = maxIncrease * biValue;
-            else
-                modValue = maxDecrease * biValue;
+            if(value > 0.5f)
+            {
+                value = (value - 0.5f) * 2.0f;
+                maxRatioOffset = baseRatio;
+                workingRatio =  baseRatio + (maxRatioOffset * value);
+            }
+            if(value < 0.5f)
+            {
+                value *= 2.0f;
+                maxRatioOffset = baseRatio / 2.0f;
+                workingRatio = baseRatio - (maxRatioOffset * (1.0f - value));
+            }
             break;
         }
         case 2: //downwards only
         {
-            modValue =  -maxDecrease * value;
+            maxRatioOffset = baseRatio / 2.0f;
+            workingRatio = baseRatio - (maxRatioOffset * (1.0f - value));
             break;
         }
     }
-    ratio = ratio + modValue;
 }
