@@ -46,9 +46,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
         auto sustainName = "Operator " + iStr + " sustain";
         auto releaseId = "releaseParam" + iStr;
         auto releaseName = "Operator " + iStr + " release";
-        juce::NormalisableRange<float> timeRange1(1.0f, 20000.0f, 0.1f, 0.5f);
+        juce::NormalisableRange<float> timeRange1(1.0f, 20000.0f, 0.5f, 0.5f);
         timeRange1.setSkewForCentre(1000.0f);
-        juce::NormalisableRange<float> timeRange2(1.0f, 20000.0f, 0.1f, 0.5f);
+        juce::NormalisableRange<float> timeRange2(1.0f, 20000.0f, 0.5f, 0.5f);
         timeRange2.setSkewForCentre(5000.0f);
         layout.add(std::make_unique<juce::AudioParameterFloat>(delayId, delayName, timeRange2, 0.0f));
         layout.add(std::make_unique<juce::AudioParameterFloat>(attackId, attackName, timeRange1, 20.0f));

@@ -28,12 +28,29 @@ void OperatorBox::paint(juce::Graphics &g)
 
 void AlgorithmGraph::addPath(std::pair<int, int> from, std::pair<int, int> to)
 {
-    paths.add(new juce::Path());
-    auto path = paths.getLast();
-    auto p1 = getCellCenter(from.first, from.second);
-    auto p3 = getCellCenter(to.first, to.second);
-    path->startNewSubPath(p1.first, p1.second);
-    path->lineTo(p3.first, p3.second);
+    if(from != to)
+    {
+        paths.add(new juce::Path());
+        auto path = paths.getLast();
+        auto p1 = getCellCenter(from.first, from.second);
+        auto p3 = getCellCenter(to.first, to.second);
+        path->startNewSubPath(p1.first, p1.second);
+        path->lineTo(p3.first, p3.second);
+    }
+    if(from == to)
+    {
+        auto p1 = getCellCenter(from.first, from.second);
+        auto leftX = p1.first - (AlgorithmGridConstants::cellSideLength * 0.8f);
+        auto topY = p1.second - (AlgorithmGridConstants::cellSideLength * 0.8f);
+        auto p2 = std::make_pair(leftX, p1.second);
+        auto p3 = std::make_pair(leftX, topY);
+        paths.add(new juce::Path());
+        auto path = paths.getLast();
+        path->startNewSubPath(p1.first, p1.second);
+        path->lineTo(p2.first, p2.second);
+        path->lineTo(p3.first, p3.second);
+        path->closeSubPath();
+    }
 }
 
 void AlgorithmGraph::timerCallback()
@@ -208,7 +225,8 @@ void AlgorithmGraph::paint(juce::Graphics &g)
         {
             auto endPoint = std::make_pair(dest->gridX, dest->gridY);
             addPath(startPoint, endPoint);
-            g.strokePath(*paths.getLast(), strokeWeight);
+            auto path = *paths.getLast();
+            g.strokePath(path, strokeWeight);
         }
     }
     for(auto op : opBoxes)

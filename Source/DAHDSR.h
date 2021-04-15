@@ -86,8 +86,7 @@ private:
     {
         if(input > 0)
             return input;
-        else
-            return 1;
+        return 1;
     }
     envPhase currentPhase;
     unsigned long long samplesIntoPhase;
