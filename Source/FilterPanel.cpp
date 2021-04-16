@@ -9,7 +9,7 @@
 */
 
 #include "FilterPanel.h"
-FilterPanel::FilterPanel() : cutoffLabel(&cutoffSlider, ""), resonanceLabel(&resonanceSlider, "")
+FilterPanel::FilterPanel() : cutoffLabel(&cutoffSlider, "", 12.0f), resonanceLabel(&resonanceSlider, "", 12.0f)
 {
     addAndMakeVisible(&cutoffSlider);
     cutoffSlider.setSliderStyle(juce::Slider::Rotary);
@@ -17,6 +17,7 @@ FilterPanel::FilterPanel() : cutoffLabel(&cutoffSlider, ""), resonanceLabel(&res
     cutoffSlider.setRange(0.0f, 15000.0f);
     cutoffSlider.setValue(2500.0f);
     addAndMakeVisible(&cutoffLabel);
+    cutoffSlider.setTooltip("Filter Cutoff");
     
     addAndMakeVisible(&resonanceSlider);
     resonanceSlider.setSliderStyle(juce::Slider::Rotary);
@@ -24,11 +25,13 @@ FilterPanel::FilterPanel() : cutoffLabel(&cutoffSlider, ""), resonanceLabel(&res
     resonanceSlider.setRange(0.0f, 20.0f);
     resonanceSlider.setValue(1.0f);
     addAndMakeVisible(&resonanceLabel);
+    resonanceSlider.setTooltip("Filter Resonance");
     
     addAndMakeVisible(&filterToggle);
     filterToggle.setButtonText("Filter Bypass");
     filterToggle.setClickingTogglesState(true);
-    filterToggle.setColour(juce::TextButton::buttonColourId, UXPalette::lightRed);
+    filterToggle.setColour(juce::TextButton::buttonOnColourId, UXPalette::lightRed);
+    filterToggle.addListener(this);
     
     addAndMakeVisible(&filterType);
     filterType.setButtonText("Low Pass");
@@ -43,14 +46,29 @@ FilterPanel::FilterPanel() : cutoffLabel(&cutoffSlider, ""), resonanceLabel(&res
 
 void FilterPanel::buttonClicked(juce::Button *b)
 {
-    auto str = filterType.getButtonText();
-    if(str == "Low Pass")
+    if(b == &filterType)
     {
-        filterType.setButtonText("High Pass");
+        auto str = filterType.getButtonText();
+        if(str == "Low Pass")
+        {
+            filterType.setButtonText("High Pass");
+        }
+        else
+        {
+            filterType.setButtonText("Low Pass");
+        }
     }
-    else
+    if(b == &filterToggle)
     {
-        filterType.setButtonText("Low Pass");
+        auto str = filterToggle.getButtonText();
+        if(str == "Filter Bypass")
+        {
+            filterToggle.setButtonText("Filter On");
+        }
+        else
+        {
+            filterToggle.setButtonText("Filter Bypass");
+        }
     }
 }
 

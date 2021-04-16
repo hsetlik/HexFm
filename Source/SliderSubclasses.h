@@ -8,9 +8,9 @@
 class EnvLabel : public juce::Label, public juce::Slider::Listener
 {
 public:
-    EnvLabel(juce::Slider* sliderToAttach, juce::String suff) : attachSlider(sliderToAttach), suffix(suff)
+    EnvLabel(juce::Slider* sliderToAttach, juce::String suff, float fontSize = 8.0f) : attachSlider(sliderToAttach), suffix(suff)
     {
-        auto robotoLightItalic = juce::Font("Roboto Light", 8.0f, 0).withStyle(juce::Font::FontStyleFlags::italic);
+        auto robotoLightItalic = juce::Font("Roboto Light", fontSize, 0).withStyle(juce::Font::FontStyleFlags::italic);
         setEditable(true);
         setFont(robotoLightItalic);
         attachSlider->addListener(this);

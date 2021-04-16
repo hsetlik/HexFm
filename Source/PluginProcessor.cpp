@@ -117,8 +117,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
     auto toggleId = "filterToggleParam";
     auto toggleName = "Bypass Filter";
     
-    layout.add(std::make_unique<juce::AudioParameterFloat>(cutoffId, cutoffName, 0.01f, 15000.0f , 2500.0f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>(resonanceId, resonanceName, 0.001f, 20.0f , 1.0f));
+    juce::NormalisableRange<float>  cutoffRange(1.0f, 15000.0f, 0.5f, 0.5f);
+    cutoffRange.setSkewForCentre(700.0f);
+    
+    juce::NormalisableRange<float>  resonanceRange(0.0f, 20.0f, 0.01f, 0.01f);
+   resonanceRange.setSkewForCentre(2.0f);
+    
+    layout.add(std::make_unique<juce::AudioParameterFloat>(cutoffId, cutoffName, cutoffRange, 2500.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>(resonanceId, resonanceName, resonanceRange, 1.0f));
     layout.add(std::make_unique<juce::AudioParameterBool>(typeId, typeName, false));
     layout.add(std::make_unique<juce::AudioParameterBool>(toggleId, toggleName, false));
     
