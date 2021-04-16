@@ -33,6 +33,7 @@ public:
         trigger = false;
         samplesIntoPhase = 0;
         currentPhase = noteOff;
+        output = 0.0f;
         auto iStr = juce::String(ind);
         delayId = "delayParam" + iStr;
         attackId = "attackParam" + iStr;
@@ -42,16 +43,25 @@ public:
         releaseId = "releaseParam" + iStr;
     }
     ~DAHDSR() {}
+    static envPhase nextPhase(envPhase input)
+    {
+        if(input != noteOff)
+            return (envPhase)(input + 1);
+        else
+            return noteOff;
+    }
     void triggerOn()
     {
         trigger = true;
-        samplesInPhase = floor(delayTime * (sampleRate / 1000));
-        samplesIntoPhase = 0;
-        currentPhase = delayPhase;
+        enterPhase(delayPhase);
     }
     float valueOf(juce::String& str)
     {
         return *tree->getRawParameterValue(str);
+    }
+    std::atomic<float>* ptrValue(juce::String str)
+    {
+        return tree->getRawParameterValue(str);
     }
     void updateParams()
     {
@@ -65,11 +75,17 @@ public:
     void triggerOff()
     {
         trigger = false;
-        currentPhase = releasePhase;
-        samplesIntoPhase = 0;
-        samplesInPhase = releaseTime * (sampleRate / 1000);
-        factor = exp((log(minLevel) - log(sustainLevel)) /samplesInPhase);
+        enterPhase(releasePhase);
     }
+    void updatePhase()
+    {
+        if(samplesIntoPhase > samplesInPhase || samplesInPhase < 1)
+        {
+            enterPhase(nextPhase(currentPhase));
+        }
+    }
+    void enterPhase(envPhase newPhase);
+    float factorFor(float startLevel, float endLevel, float lengthMs);
     void setSampleRate(double value) {sampleRate = value;}
     float process(float input);
     envPhase getPhase() {return currentPhase;}
@@ -79,7 +95,7 @@ public:
             return false;
         return true;
     }
-    double output;
+    float output;
 private:
     //data
     static unsigned long long phaseSafe(unsigned long long input) //to avoid divide-by-zero errors
@@ -91,7 +107,7 @@ private:
     envPhase currentPhase;
     unsigned long long samplesIntoPhase;
     unsigned long long samplesInPhase;
-    double factor;
+    float factor;
     float minLevel = 0.00001f;
     double sampleRate;
     int index;
@@ -109,4 +125,7 @@ private:
     float decayTime = 100.0f;
     float sustainLevel = 0.6f;
     float releaseTime = 40.0f;
+    
+    float startLevel;
+    float endLevel;
 };

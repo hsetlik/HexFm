@@ -10,111 +10,87 @@
 
 #include "DAHDSR.h"
 
+float DAHDSR::factorFor(float startLevel, float endLevel, float lengthMs)
+{
+    if(startLevel == 0.0f)
+        startLevel = minLevel;
+    if(endLevel == 0.0f)
+        endLevel = minLevel;
+    unsigned long phaseLengthSamples = lengthMs * (sampleRate / 1000);
+    return exp((log(endLevel) - log(startLevel)) / phaseLengthSamples);
+}
+
+void DAHDSR::enterPhase(envPhase newPhase)
+{
+    currentPhase = newPhase;
+    samplesIntoPhase = 0;
+    switch(newPhase)
+    {
+        case delayPhase:
+        {
+            startLevel = minLevel;
+            endLevel = minLevel;
+            samplesInPhase = delayTime * (sampleRate / 1000);
+            factor = factorFor(startLevel, endLevel, delayTime);
+            break;
+        }
+        case attackPhase:
+        {
+            startLevel = minLevel;
+            endLevel = 1.0f;
+            samplesInPhase = attackTime * (sampleRate / 1000);
+            factor = factorFor(startLevel, endLevel, attackTime);
+            break;
+        }
+        case holdPhase:
+        {
+            startLevel = 1.0f;
+            endLevel = 1.0f;
+            samplesInPhase = holdTime * (sampleRate / 1000);
+            factor = factorFor(startLevel, endLevel, holdTime);
+            break;
+        }
+        case decayPhase:
+        {
+            startLevel = 1.0f;
+            endLevel = sustainLevel;
+            samplesInPhase = decayTime * sampleRate / 1000;
+            factor = factorFor(startLevel, endLevel, decayTime);
+            break;
+        }
+        case sustainPhase:
+        {
+            startLevel = sustainLevel;
+            endLevel = sustainLevel;
+            samplesInPhase = 1000000;
+            factor = 1.0f;
+            break;
+        }
+        case releasePhase:
+        {
+            startLevel = sustainLevel;
+            endLevel = minLevel;
+            samplesInPhase = releaseTime * sampleRate / 1000;
+            factor = factorFor(startLevel, endLevel, releaseTime);
+            break;
+        }
+        case noteOff:
+        {
+            startLevel = minLevel;
+            endLevel = minLevel;
+            samplesInPhase = 100000000;
+            factor = 0.0f;
+            break;
+        }
+    }
+    output = startLevel;
+    updatePhase();
+}
+
 float DAHDSR::process(float input)
 {
-        switch(currentPhase)
-        {
-            case delayPhase:
-            {
-                if(valueOf(delayId) > 0)
-                {
-                    if(samplesIntoPhase == 0)
-                        samplesInPhase = phaseSafe(floor(delayTime * (sampleRate / 1000)));
-                    samplesIntoPhase += 1;
-                    if(samplesIntoPhase >= samplesInPhase)
-                    {
-                        currentPhase = attackPhase;
-                        samplesIntoPhase = 0;
-                        samplesInPhase = phaseSafe(floor(attackTime * (sampleRate / 1000)));
-                        factor = exp((log(1.0f) - log(minLevel)) /samplesInPhase);
-                    }
-                    output = 0.0f;
-                }
-                else
-                {
-                    currentPhase = attackPhase;
-                    samplesInPhase = phaseSafe(floor(attackTime * (sampleRate / 1000)));
-                    factor = exp((log(1.0f) - log(minLevel)) /samplesInPhase);
-                    samplesIntoPhase = 0;
-                }
-                break;
-            }
-            case attackPhase:
-            {
-                if(samplesIntoPhase == 0)
-                    output = minLevel;
-                output = output * factor;
-                samplesIntoPhase++;
-                if(samplesIntoPhase >= samplesInPhase)
-                {
-                    currentPhase = holdPhase;
-                    samplesIntoPhase = 0;
-                    samplesInPhase = valueOf(holdId) * (sampleRate / 1000);
-                }
-                break;
-            }
-            case holdPhase:
-            {
-                if(holdTime != 0)
-                {
-                    samplesIntoPhase += 1;
-                    if(samplesIntoPhase > samplesInPhase)
-                    {
-                        currentPhase = decayPhase;
-                        samplesIntoPhase = 0;
-                        samplesInPhase = phaseSafe(decayTime * (sampleRate / 1000));
-                        factor = exp((log(sustainLevel) - log(1.0f)) /samplesInPhase);
-                    }
-                    output = 1.0f;
-            }
-                else
-                {
-                    currentPhase = decayPhase;
-                    samplesIntoPhase = 0;
-                    samplesInPhase = phaseSafe(decayTime * (sampleRate / 1000));
-                    factor = exp((log(sustainLevel) - log(1.0f)) /samplesInPhase);;
-                }
-                break;
-            }
-            case decayPhase:
-            {
-                output = output * factor;
-                samplesIntoPhase += 1;
-                if(samplesIntoPhase >= samplesInPhase)
-                {
-                    currentPhase = sustainPhase;
-                    samplesIntoPhase = 0;
-                    output = sustainLevel;
-                }
-                break;
-            }
-            case sustainPhase:
-            {
-                output = sustainLevel;
-                break;
-            }
-            case releasePhase:
-            {
-                output = output * factor;
-                samplesIntoPhase += 1;
-                if(samplesIntoPhase >= samplesInPhase)
-                    currentPhase = noteOff;
-                break;
-            }
-            case noteOff:
-            {
-                samplesIntoPhase = 0;
-                output = 0.0f;
-                break;
-            }
-            default:
-                break;
-        }
-    if(isnan(output))
-    {
-        output = 0.0f;
-        printf("Envelope output is nan\n");
-    }
-        
+    updatePhase();
+    ++samplesIntoPhase;
+    output *= factor;
     return input * output;
 }

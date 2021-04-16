@@ -204,15 +204,17 @@ void AlgorithmGraph::paint(juce::Graphics &g)
     int idx = 0;
     for(auto i : gridRows)
     {
-        juce::String str = "In Row " + juce::String(idx) + ": ";
+        //juce::String str = "In Row " + juce::String(idx) + ": ";
+        /*
         for(auto op : i)
         {
             auto numStr = juce::String(op->index);
             numStr += ", ";
             str += numStr;
         }
-        str += "\n";
-        printf("%s", str.toRawUTF8());
+         */
+        //str += "\n";
+        //printf("%s", str.toRawUTF8());
         if(i.size() > largestDimension)
             largestDimension = (int)i.size();
         ++idx;
