@@ -81,13 +81,37 @@ private:
     std::vector<juce::String> releaseIds;
     std::vector<juce::String> panIds;
     std::vector<std::vector<juce::String>> routingIds;
+    void updateFilter()
+    {
+        filterCutoff = *tree.getRawParameterValue("cutoffParam");
+        filterResonance = *tree.getRawParameterValue("resonanceParam");
+        filterIsHighPass = (bool)*tree.getRawParameterValue("filterTypeParam");
+        isFilterOn = (bool)*tree.getRawParameterValue("filterToggleParam");
+        
+        if(filterIsHighPass)
+        {
+            *synthFilter.state = *juce::dsp::IIR::Coefficients<float>::makeHighPass(lastSampleRate, filterCutoff, filterResonance);
+        }
+        else
+        {
+            *synthFilter.state = *juce::dsp::IIR::Coefficients<float>::makeLowPass(lastSampleRate, filterCutoff, filterResonance);
+        }
+    }
     
     int lfoIndex;
     int opIndex;
     int voiceIndex;
     FmSynth synth;
     
+    float filterCutoff;
+    float filterResonance;
+    bool filterIsHighPass;
+    bool isFilterOn;
+    
+    double lastSampleRate;
+    
     juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> fixedFilter;
+    juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> synthFilter;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HexFmAudioProcessor)
 };

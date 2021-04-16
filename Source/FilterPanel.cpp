@@ -32,6 +32,7 @@ FilterPanel::FilterPanel() : cutoffLabel(&cutoffSlider, ""), resonanceLabel(&res
     
     addAndMakeVisible(&filterType);
     filterType.setButtonText("Low Pass");
+    filterType.setClickingTogglesState(true);
     filterType.addListener(this);
     
     cutoffSlider.setLookAndFeel(&look);

@@ -117,8 +117,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
     auto toggleId = "filterToggleParam";
     auto toggleName = "Bypass Filter";
     
-    layout.add(std::make_unique<juce::AudioParameterFloat>(cutoffId, cutoffName, 0.0f, 15000.0f , 2500.0f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>(resonanceId, resonanceName, 0.0f, 20.0f , 1.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>(cutoffId, cutoffName, 0.01f, 15000.0f , 2500.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>(resonanceId, resonanceName, 0.001f, 20.0f , 1.0f));
     layout.add(std::make_unique<juce::AudioParameterBool>(typeId, typeName, false));
     layout.add(std::make_unique<juce::AudioParameterBool>(toggleId, toggleName, false));
     
@@ -138,7 +138,8 @@ HexFmAudioProcessor::HexFmAudioProcessor()
                        ),
 tree(*this, nullptr, "synthParams", createLayout(numOperators)),
 synth(6, 4, 6, &tree),
-fixedFilter(juce::dsp::IIR::Coefficients<float>::makeHighShelf(44100.0f, 44100.0f * 0.35f, 1.0f, 0.00001f))
+fixedFilter(juce::dsp::IIR::Coefficients<float>::makeHighShelf(44100.0f, 44100.0f * 0.35f, 1.0f, 0.00001f)),
+synthFilter(juce::dsp::IIR::Coefficients<float>::makeLowPass(44100.0f, 2500.0f, 1.0f))
 #endif
 {
     for(int i = 0; i < 4; ++i)
@@ -246,6 +247,7 @@ void HexFmAudioProcessor::changeProgramName (int index, const juce::String& newN
 void HexFmAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     juce::ignoreUnused(samplesPerBlock);
+    lastSampleRate = sampleRate;
     synth.setCurrentPlaybackSampleRate(sampleRate);
     maxiSettings::setup((int)sampleRate, 2, samplesPerBlock);
     for(juce::SynthesiserVoice* i : *synth.voiceArray())
@@ -260,6 +262,10 @@ void HexFmAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     
     fixedFilter.prepare(spec);
     fixedFilter.reset();
+    
+    synthFilter.prepare(spec);
+    synthFilter.reset();
+    
 }
 
 void HexFmAudioProcessor::releaseResources()
@@ -299,6 +305,11 @@ void HexFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
     
     juce::dsp::AudioBlock<float> block(buffer);
+    updateFilter();
+    if(isFilterOn)
+    {
+        synthFilter.process(juce::dsp::ProcessContextReplacing<float>(block));
+    }
     fixedFilter.process(juce::dsp::ProcessContextReplacing<float>(block));
 }
 
