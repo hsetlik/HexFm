@@ -70,6 +70,7 @@ struct OpInfo
     int gridX;
     int gridY;
     bool isActive = false;
+    bool hasSelfMod = false;
     int modOrder = std::numeric_limits<int>::max();
     bool operator ==(const OpInfo test)
     {

@@ -40,15 +40,17 @@ void AlgorithmGraph::addPath(std::pair<int, int> from, std::pair<int, int> to)
     if(from == to)
     {
         auto p1 = getCellCenter(from.first, from.second);
-        auto leftX = p1.first - (AlgorithmGridConstants::cellSideLength * 0.8f);
-        auto topY = p1.second - (AlgorithmGridConstants::cellSideLength * 0.8f);
+        auto leftX = p1.first - (AlgorithmGridConstants::cellSideLength * 0.4f);
+        auto topY = p1.second - (AlgorithmGridConstants::cellSideLength * 0.4f);
         auto p2 = std::make_pair(leftX, p1.second);
         auto p3 = std::make_pair(leftX, topY);
+        auto p4 = std::make_pair(p1.first, topY);
         paths.add(new juce::Path());
         auto path = paths.getLast();
         path->startNewSubPath(p1.first, p1.second);
         path->lineTo(p2.first, p2.second);
         path->lineTo(p3.first, p3.second);
+        path->lineTo(p4.first, p4.second);
         path->closeSubPath();
     }
 }
@@ -85,12 +87,25 @@ void AlgorithmGraph::updateOpInfo()
         {
             if(opRouting[s][d])
             {
-                VectorUtil::addIfUnique(opInfo[d]->sources, opInfo[s]);
-                VectorUtil::addIfUnique(opInfo[s]->dests, opInfo[d]);
-                opInfo[s]->isActive = true;
-                opInfo[d]->isActive = true;
-                VectorUtil::addIfUnique(toDraw, opInfo[d]);
-                VectorUtil::addIfUnique(toDraw, opInfo[s]);
+                if(s != d)
+                {
+                    //opInfo[s]->hasSelfMod = false;
+                    VectorUtil::addIfUnique(opInfo[d]->sources, opInfo[s]);
+                    VectorUtil::addIfUnique(opInfo[s]->dests, opInfo[d]);
+                    opInfo[s]->isActive = true;
+                    opInfo[d]->isActive = true;
+                    VectorUtil::addIfUnique(toDraw, opInfo[d]);
+                    VectorUtil::addIfUnique(toDraw, opInfo[s]);
+                }
+                if(s == d)
+                {
+                    opInfo[s]->hasSelfMod = true;
+                    opInfo[s]->isActive = true;
+                    opInfo[d]->isActive = true;
+                    VectorUtil::addIfUnique(toDraw, opInfo[d]);
+                    VectorUtil::addIfUnique(toDraw, opInfo[s]);
+                }
+                
             }
         }
     }
@@ -122,7 +137,7 @@ int AlgorithmGraph::calculateRows()
             checkForSilent = true;
         for(auto op : toDraw)
         {
-            if(op->dests.size() < 1)
+            if(op->dests.size() < 1  && !opAudible[op->index])
             {
                 VectorUtil::addIfUnique(bottomLevel, op);
                 silentFound = true;
@@ -158,8 +173,13 @@ int AlgorithmGraph::calculateRows()
                 {
                     for(auto dest : op->dests)
                     {
-                        if(!VectorUtil::contains(bottomLevel, dest)) //we have to account for the bottom level: only lower row that's already determined
+                        if(!VectorUtil::contains(bottomLevel, dest) && dest != op)
+                            //we have to account for the bottom level: only lower row that's already determined
+                        {
                             VectorUtil::addIfUnique(*newRow, dest);
+                        }
+                        if(dest == op)
+                            printf("Self-modulator\n");
                     }
                 }
                 currentLevel = newRow;
@@ -181,9 +201,10 @@ void AlgorithmGraph::paint(juce::Graphics &g)
     updateOpInfo();
     int rowCount = calculateRows();
     int largestDimension = rowCount;
+    int idx = 0;
     for(auto i : gridRows)
     {
-        juce::String str = "In This Row: ";
+        juce::String str = "In Row " + juce::String(idx) + ": ";
         for(auto op : i)
         {
             auto numStr = juce::String(op->index);
@@ -191,9 +212,10 @@ void AlgorithmGraph::paint(juce::Graphics &g)
             str += numStr;
         }
         str += "\n";
-        //printf("%s", str.toRawUTF8());
+        printf("%s", str.toRawUTF8());
         if(i.size() > largestDimension)
             largestDimension = (int)i.size();
+        ++idx;
     }
     //printf("\n");
     //increment the largest dimension so we have a bit of space around the edges
@@ -221,6 +243,11 @@ void AlgorithmGraph::paint(juce::Graphics &g)
     for(auto source : toDraw)
     {
         auto startPoint = std::make_pair(source->gridX, source->gridY);
+        if(source->hasSelfMod)
+        {
+            addPath(startPoint, startPoint);
+            g.strokePath(*paths.getLast(), strokeWeight);
+        }
         for(auto dest : source->dests)
         {
             auto endPoint = std::make_pair(dest->gridX, dest->gridY);
