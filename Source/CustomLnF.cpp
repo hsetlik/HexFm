@@ -68,7 +68,26 @@ void LnF1::drawLinearSlider(juce::Graphics &g, int x, int y, int width, int heig
                            thumbWidth,
                            thumbHeight,
                            corner);
-    
-    
-    
+}
+
+
+void LnF1::drawButtonBackground(juce::Graphics &g, juce::Button &b, const juce::Colour &backgroundColour, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown)
+{
+   if(!b.getToggleState())
+       g.setColour(UXPalette::darkGray4);
+    else
+        g.setColour(UXPalette::lightGray);
+    auto fBounds = b.getLocalBounds().toFloat();
+    g.fillRoundedRectangle(fBounds, 5.0f);
+}
+
+void LnF1::drawButtonText(juce::Graphics &g, juce::TextButton &t, bool shouldDrawHighlighted, bool shouldDrawDown)
+{
+    auto fBounds = t.getLocalBounds().toFloat();
+    auto delta = fBounds.getHeight() / 6.5f;
+    fBounds = fBounds.reduced(delta);
+    buttonFont = juce::Font(buttonFontName, 15.0f, 0);
+    g.setFont(buttonFont);
+    g.setColour(juce::Colours::white);
+    g.drawFittedText(t.getButtonText(), fBounds.toType<int>(), juce::Justification::centred, 1);
 }
