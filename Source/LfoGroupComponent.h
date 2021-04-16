@@ -11,6 +11,7 @@
 #pragma once
 #include <JuceHeader.h>
 #include "LfoComponent.h"
+#include "FilterPanel.h"
 #include "WaveGraph.h"
 
 class LfoGroupComponent : public juce::TabbedComponent
@@ -26,6 +27,7 @@ public:
             auto tabName = "LFO " + juce::String(i + 1);
             addTab(tabName, tabColor, children.getLast(), false);
         }
+        addTab("Filter", tabColor, &fPanel, false);
     }
     ~LfoGroupComponent() {}
     void attachChildren(juce::AudioProcessorValueTreeState* pTree)
@@ -34,7 +36,9 @@ public:
         {
             children[i]->attachAll(pTree);
         }
+        fPanel.attach(pTree);
     }
 private:
     juce::OwnedArray<LfoComponent> children;
+    FilterPanel fPanel;
 };

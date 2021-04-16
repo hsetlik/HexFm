@@ -108,6 +108,20 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
         layout.add(std::make_unique<juce::AudioParameterChoice>(targetId, targetName, targets, 0));
         layout.add(std::make_unique<juce::AudioParameterChoice>(waveId, waveName, waveTypes, 0));
     }
+    auto cutoffId = "cutoffParam";
+    auto cutoffName = "Filter Cutoff";
+    auto resonanceId = "resonanceParam";
+    auto resonanceName = "Filter Resonance";
+    auto typeId = "filterTypeParam";
+    auto typeName = "Filter Type";
+    auto toggleId = "filterToggleParam";
+    auto toggleName = "Bypass Filter";
+    
+    layout.add(std::make_unique<juce::AudioParameterFloat>(cutoffId, cutoffName, 0.0f, 15000.0f , 2500.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>(resonanceId, resonanceName, 0.0f, 20.0f , 1.0f));
+    layout.add(std::make_unique<juce::AudioParameterBool>(typeId, typeName, false));
+    layout.add(std::make_unique<juce::AudioParameterBool>(toggleId, toggleName, false));
+    
     return layout;
 }
 
@@ -313,13 +327,6 @@ void HexFmAudioProcessor::setStateInformation (const void* data, int sizeInBytes
             if (xmlState.get() != nullptr)
                 if (xmlState->hasTagName (tree.state.getType()))
                     tree.replaceState (juce::ValueTree::fromXml (*xmlState));
-}
-
-void HexFmAudioProcessor::applyBandLimiting(juce::AudioBuffer<float> &buffer)
-{
-    //perform forward fft
-    //zero bins above nyquist
-    //reverse fft
 }
 //==============================================================================
 
