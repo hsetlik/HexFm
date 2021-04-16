@@ -176,22 +176,22 @@ void OperatorComponent::resized()
 
 void OperatorComponent::paint(juce::Graphics &g)
 {
-    int n = getWidth() / 24;
+    int n = getLocalBounds().getWidth() / 24;
     auto iLabelBox = juce::Rectangle<int>{int(4.5 * n), int(4.5 * n), 6 * n, 2 * n};
     auto rLabelBox = juce::Rectangle<int>{int(11.5 * n), int(4.5 * n), 6 * n, 2 * n};
     auto lLabelBox = juce::Rectangle<int>{19 * n, 13 * n, 4 * n, 2 * n};
     auto pLabelBox = juce::Rectangle<int>{19 * n, int(4.5 * n), 4 * n, 2 * n};
-    g.setFont(juce::Font("VCR OSD Mono", 15.0f, 0));
+    g.setFont(juce::Font(UXPalette::operatorLabelFontName, 25.0f, 0));
     g.setColour(juce::Colours::white);
     //g.fillRect(indexLabel.getBounds());
-    auto nameRect = juce::Rectangle<int> {n * 3, n / 6, 10 * n, 6 * n};
+    auto nameRect = juce::Rectangle<int> {n , n * (11 / 10), 14 * n, 4 * n};
     auto labelText = "Operator " + juce::String(opIndex + 1);
-    g.drawText(labelText, nameRect, juce::Justification::centred);
+    g.drawFittedText(labelText, nameRect, juce::Justification::centred, 1);
     auto iText = "INDEX";
     auto rText = "RATIO";
     auto lText = "LEVEL";
     auto pText = "PAN";
-    g.setFont(juce::Font("LCD", 11.0f, 0));
+    g.setFont(juce::Font("Bebas Neue", 14.0f, 0));
     g.drawText(iText, iLabelBox, juce::Justification::centredBottom);
     g.drawText(rText, rLabelBox, juce::Justification::centredBottom);
     g.drawText(lText, lLabelBox, juce::Justification::centredBottom);

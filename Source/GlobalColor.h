@@ -20,5 +20,7 @@ static juce::Colour lightRed = Color::RGBColor(226, 76, 85);
 static juce::Colour darkRed = lightRed.darker(0.45f);
 static juce::Colour lightOrange = Color::RGBColor(249, 171, 62);
 static juce::Colour highlight = Color::RGBColor(255, 236, 95);
+static juce::Colour nearBlack = Color::RGBColor(24, 24, 25);
+static juce::String operatorLabelFontName = "Neuropol";
 };
 
