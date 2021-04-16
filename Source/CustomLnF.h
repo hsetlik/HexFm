@@ -40,15 +40,28 @@ public:
 class OutputButtonLnF : public juce::LookAndFeel_V4
 {
 public:
-    OutputButtonLnF()
-    {
-        setDefaultSansSerifTypefaceName("");
-    }
-    
     juce::Font getTextButtonFont(juce::TextButton &, int buttonHeight) override
     {
-        return juce::Font("Bebas Neue", 15.0f, 0);
+        return juce::Font("Bebas Neue", buttonHeight, 0);
     }
+    void drawButtonBackground (juce::Graphics &g, juce::Button &b, const juce::Colour &backgroundColour, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override
+    {
+        g.setColour(UXPalette::lightGray);
+        if(b.getToggleState())
+            g.setColour(UXPalette::lightRed);
+        g.fillRoundedRectangle(b.getLocalBounds().toFloat(), 6.0f);
+    }
+    void drawButtonText(juce::Graphics& g, juce::TextButton& t, bool shouldDrawHighlighted, bool shouldDrawDown) override
+    {
+        auto fBounds = t.getLocalBounds().toFloat();
+        auto str = t.getButtonText();
+        auto delta = fBounds.getHeight() / 8.0f;
+        fBounds = fBounds.reduced(delta);
+        g.setColour(juce::Colours::white);
+        g.setFont(getTextButtonFont(t, fBounds.getHeight()));
+        g.drawText(str, fBounds, juce::Justification::centred);
+    }
+    
 };
 
 class TabbedButtonLnF : public juce::LookAndFeel_V4
