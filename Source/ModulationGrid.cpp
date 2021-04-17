@@ -75,8 +75,7 @@ void ModulationGrid::paint(juce::Graphics &g)
     g.fillAll(background);
     auto textColor = juce::Colours::white;
     g.setColour(textColor);
-    auto labelFont = juce::Font("VCR OSD Mono", 12.0f, 0);
-    g.setFont(labelFont);
+    g.setFont(UXPalette::futuraMediumItalic(12.0f));
     auto buttonsBox = getLocalBounds().reduced(18);
     auto area = getLocalBounds();
     int n = area.getWidth() / 8;

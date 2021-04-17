@@ -21,6 +21,11 @@ static juce::Colour darkRed = lightRed.darker(0.45f);
 static juce::Colour lightOrange = Color::RGBColor(249, 171, 62);
 static juce::Colour highlight = Color::RGBColor(255, 236, 95);
 static juce::Colour nearBlack = Color::RGBColor(24, 24, 25);
-static juce::String operatorLabelFontName = "Neuropol";
+static juce::Font futuraMediumItalic(float size)
+{
+    return juce::Font("Futura Medium", size, 0).withStyle(juce::Font::FontStyleFlags::italic);
+}
+static juce::String operatorLabelFontName = "SquareFont Outline";
+static juce::String modGridFontName = "Roboto Light";
 };
 
