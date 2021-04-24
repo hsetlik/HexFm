@@ -34,7 +34,7 @@ public:
     {
         printf("Voice #: %d -- %d total jumps\n", voiceIndex, numJumps);
     }
-    bool canPlaySound(juce::SynthesiserSound* sound)
+    bool canPlaySound(juce::SynthesiserSound* sound) override
     {
         return dynamic_cast<FmSound*>(sound) != nullptr;
     }
@@ -42,7 +42,7 @@ public:
     void startNote (int midiNoteNumber,
                     float velocity,
                     juce::SynthesiserSound *sound,
-                    int currentPitchWheelPosition)
+                    int currentPitchWheelPosition) override
     {
         fundamental = convert::mtof(midiNoteNumber);
         for(Operator* i : operators)
@@ -50,7 +50,7 @@ public:
             i->envelope.triggerOn();
         }
     }
-    void stopNote (float velocity, bool allowTailOff)
+    void stopNote (float velocity, bool allowTailOff) override
     {
         for(Operator* i : operators)
         {
@@ -70,17 +70,17 @@ public:
             i->updateSampleRate(newRate);
         }
     }
-    void pitchWheelMoved(int newPitchWheelVal) {}
+    void pitchWheelMoved(int newPitchWheelVal) override {}
     //=============================================
-    void controllerMoved(int controllerNumber, int controllerValue) {}
+    void controllerMoved(int controllerNumber, int controllerValue) override{}
     //===============================================
-    void aftertouchChanged (int newAftertouchValue) {}
+    void aftertouchChanged (int newAftertouchValue) override{}
     //==============================================
-    void channelPressureChanged (int newChannelPressureValue) {}
+    void channelPressureChanged (int newChannelPressureValue) override{}
     //===============================================
-    void renderNextBlock (juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples);
+    void renderNextBlock (juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples) override;
     //==============================================
-    void setCurrentPlaybackSampleRate (double newRate)
+    void setCurrentPlaybackSampleRate (double newRate) override
     {
         setSampleRate(newRate);
     }
