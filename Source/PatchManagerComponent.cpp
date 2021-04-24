@@ -104,14 +104,14 @@ saveDialogComponent(patchDlg)
     auto patchFolder = appFolder.getChildFile("HexFM_Patches");
     if(patchFolder.exists() && patchFolder.isDirectory())
     {
-        printf("patch folder exists\n");
+        //printf("patch folder exists\n");
         patchFolder.setAsCurrentWorkingDirectory();
     }
     else
     {
         patchFolder.createDirectory();
         patchFolder.setAsCurrentWorkingDirectory();
-        printf("patch folder created\n");
+        //printf("patch folder created\n");
     }
     presetFolder = patchFolder;
     

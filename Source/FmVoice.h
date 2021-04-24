@@ -32,7 +32,7 @@ public:
     FmVoice(int numOperators, int index, juce::AudioProcessorValueTreeState* t);
     ~FmVoice()
     {
-        printf("Voice #: %d -- %d total jumps\n", voiceIndex, numJumps);
+        //printf("Voice #: %d -- %d total jumps\n", voiceIndex, numJumps);
     }
     bool canPlaySound(juce::SynthesiserSound* sound) override
     {

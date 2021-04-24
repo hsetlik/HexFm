@@ -100,7 +100,6 @@ struct PatchLibrary
         {
             patchFolder.createDirectory();
             patchFolder.setAsCurrentWorkingDirectory();
-            printf("patch folder created\n");
         }
         presetFolder = patchFolder;
         bassGroup.loadFilesForType(presetFolder);

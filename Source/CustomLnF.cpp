@@ -49,11 +49,6 @@ void LnF1::drawLinearSlider(juce::Graphics &g, int x, int y, int width, int heig
     auto thumbHeight = (fBounds.getHeight() - slider.getTextBoxHeight()) * 0.1f;
     auto thumbY = (1.0f - fPos) * ((fBounds.getHeight() - slider.getTextBoxHeight()) - thumbHeight - 5);
     thumbY += 5;
-    
-    /*
-    printf("Slider Position: %f\n", sliderPos);
-    printf("Thumb is at: %f\n", thumbY);
-     */
     //draw the background
     g.setColour(UXPalette::darkGray1);
     g.fillRoundedRectangle(x + xOffsetBkgnd,

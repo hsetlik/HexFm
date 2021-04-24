@@ -178,8 +178,6 @@ int AlgorithmGraph::calculateRows()
                         {
                             VectorUtil::addIfUnique(*newRow, dest);
                         }
-                        if(dest == op)
-                            printf("Self-modulator\n");
                     }
                 }
                 currentLevel = newRow;
