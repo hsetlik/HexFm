@@ -10,9 +10,38 @@
 
 #include "PatchManagerComponent.h"
 
+void PatchSelector::addPatch(std::unique_ptr<juce::XmlElement> &currentXml, int idNum)
+{
+    if(currentXml != nullptr)
+    {
+        if(currentXml->hasAttribute("HexFmPatchName"))
+        {
+            auto presetName = currentXml->getStringAttribute("HexFmPatchName");
+            patchNames.add(presetName);
+            addItem(presetName, idNum);
+        }
+    }
+}
+void PatchSelector::selectNewest()
+{
+    int newestIndex = 0;
+    for(int i = 0; i < patchNames.size(); ++i)
+    {
+        if(!lastPatchNames.contains(patchNames[i]))
+        {
+            newestIndex = i;
+            setSelectedItemIndex(newestIndex);
+            setText(getItemText(newestIndex));
+            lastPatchNames = patchNames;
+            return;
+        }
+    }
+}
+
 void PatchSelector::initialize()
 {
     int nextId = 1;
+    patchNames.clear();
     if(lib->bassGroup.patches.size() > 0)
     {
         addSectionHeading("Bass");
@@ -20,16 +49,8 @@ void PatchSelector::initialize()
         for(auto f : lib->bassGroup.patches)
         {
             std::unique_ptr<juce::XmlElement> currentXml = juce::parseXML(f);
-            if(currentXml != nullptr)
-            {
-                if(currentXml->hasAttribute("HexFmPatchName"))
-                {
-                    auto presetName = currentXml->getStringAttribute("HexFmPatchName");
-                    patchNames.add(presetName);
-                    addItem(presetName, nextId);
-                    ++nextId;
-                }
-            }
+            addPatch(currentXml, nextId);
+            ++nextId;
         }
     }
     
@@ -40,16 +61,8 @@ void PatchSelector::initialize()
         for(auto f : lib->leadGroup.patches)
         {
             std::unique_ptr<juce::XmlElement> currentXml = juce::parseXML(f);
-            if(currentXml != nullptr)
-            {
-                if(currentXml->hasAttribute("HexFmPatchName"))
-                {
-                    auto presetName = currentXml->getStringAttribute("HexFmPatchName");
-                    patchNames.add(presetName);
-                    addItem(presetName, nextId);
-                    ++nextId;
-                }
-            }
+            addPatch(currentXml, nextId);
+            ++nextId;
         }
     }
     
@@ -60,16 +73,8 @@ void PatchSelector::initialize()
         for(auto f : lib->chordGroup.patches)
         {
             std::unique_ptr<juce::XmlElement> currentXml = juce::parseXML(f);
-            if(currentXml != nullptr)
-            {
-                if(currentXml->hasAttribute("HexFmPatchName"))
-                {
-                    auto presetName = currentXml->getStringAttribute("HexFmPatchName");
-                    patchNames.add(presetName);
-                    addItem(presetName, nextId);
-                    ++nextId;
-                }
-            }
+            addPatch(currentXml, nextId);
+            ++nextId;
         }
     }
     
@@ -80,16 +85,8 @@ void PatchSelector::initialize()
         for(auto f : lib->padGroup.patches)
         {
             std::unique_ptr<juce::XmlElement> currentXml = juce::parseXML(f);
-            if(currentXml != nullptr)
-            {
-                if(currentXml->hasAttribute("HexFmPatchName"))
-                {
-                    auto presetName = currentXml->getStringAttribute("HexFmPatchName");
-                    patchNames.add(presetName);
-                    addItem(presetName, nextId);
-                    ++nextId;
-                }
-            }
+            addPatch(currentXml, nextId);
+            ++nextId;
         }
     }
 }

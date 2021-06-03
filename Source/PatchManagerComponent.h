@@ -19,14 +19,19 @@ public:
     PatchSelector() : lib(std::make_unique<PatchLibrary>())
     {
         initialize();
+        lastPatchNames = patchNames;
     }
     ~PatchSelector(){}
     void initialize();
+    void selectNewest();
+    void addPatch(std::unique_ptr<juce::XmlElement>& element, int idNum);
     void reInitList()
     {
         clear();
         lib.reset(new PatchLibrary());
         initialize();
+        selectNewest();
+        
     }
     int getIndexWithText(juce::String text)
     {
@@ -38,6 +43,7 @@ public:
         return getNumItems() - 1;
     }
     juce::StringArray patchNames;
+    juce::StringArray lastPatchNames;
 private:
     std::unique_ptr<PatchLibrary> lib;
 };
