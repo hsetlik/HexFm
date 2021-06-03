@@ -37,7 +37,11 @@ PatchDialogBox::PatchDialogBox(PatchLoader* loader) : patchLoader(loader)
 
 void PatchDialogBox::paint(juce::Graphics &g)
 {
-    g.fillAll(UXPalette::darkGray2);
+    g.fillAll(UXPalette::nearBlack);
+    auto cushion = getHeight() / 14.0f;
+    auto lightArea = getLocalBounds().toFloat().reduced(cushion);
+    g.setColour(UXPalette::darkGray1);
+    g.fillRect(lightArea);
     auto labelFont = UXPalette::square(12.0f);
     g.setFont(labelFont);
     g.setColour(juce::Colours::white);
