@@ -170,7 +170,7 @@ void LfoComponent::paint(juce::Graphics &g)
     auto n = getWidth() / 24;
     auto lLabelBox = juce::Rectangle<int> {2 * n, int(0.5 * n), 5 * n, 2 * n};
     auto rLabelBox = juce::Rectangle<int> {2 * n, int(12 * n), 5 * n, 2 * n};
-    g.setFont(juce::Font("VCR OSD Mono", 13.0f, 0));
+    g.setFont(UXPalette::square(13.0f));
     g.setColour(juce::Colours::white);
     g.drawText("Level", lLabelBox, juce::Justification::centredBottom);
     g.drawText("Rate", rLabelBox, juce::Justification::centredBottom);

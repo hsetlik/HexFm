@@ -81,7 +81,7 @@ void LnF1::drawButtonText(juce::Graphics &g, juce::TextButton &t, bool shouldDra
     auto fBounds = t.getLocalBounds().toFloat();
     auto delta = fBounds.getHeight() / 6.5f;
     fBounds = fBounds.reduced(delta);
-    buttonFont = juce::Font(buttonFontName, 15.0f, 0);
+    buttonFont.setHeight(15.0f);
     g.setFont(buttonFont);
     g.setColour(juce::Colours::white);
     g.drawFittedText(t.getButtonText(), fBounds.toType<int>(), juce::Justification::centred, 1);

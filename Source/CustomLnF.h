@@ -13,9 +13,9 @@
 class LnF1 : public juce::LookAndFeel_V4
 {
 public:
-    LnF1() : buttonFontName("Bebas Neue")
+    LnF1()
     {
-        setDefaultSansSerifTypefaceName("Bebas Neue");
+        buttonFont = UXPalette::bebasNeue(8.0f);
     }
     void drawRotarySlider (juce::Graphics& g, int x, int y, int width, int height, float sliderPos,
                            const float rotaryStartAngle, const float rotaryEndAngle, juce::Slider& s) override;
@@ -23,7 +23,6 @@ public:
     void drawButtonBackground (juce::Graphics &, juce::Button &b, const juce::Colour &backgroundColour, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override;
     void drawButtonText(juce::Graphics& g, juce::TextButton& t, bool shouldDrawHighlighted, bool shouldDrawDown) override;
 private:
-    juce::String buttonFontName;
     juce::Font buttonFont;
 };
 
@@ -42,7 +41,7 @@ class OutputButtonLnF : public juce::LookAndFeel_V4
 public:
     juce::Font getTextButtonFont(juce::TextButton &, int buttonHeight) override
     {
-        return juce::Font("Bebas Neue", buttonHeight, 0);
+        return UXPalette::bebasNeue((float)buttonHeight);
     }
     void drawButtonBackground (juce::Graphics &g, juce::Button &b, const juce::Colour &backgroundColour, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override
     {
@@ -73,7 +72,7 @@ public:
     }
     juce::Font getTabButtonFont (juce::TabBarButton &, float height) override
     {
-        return juce::Font("Bebas Neue", height, 0);
+        return UXPalette::bebasNeue(height);
     }
     void createTabButtonShape(juce::TabBarButton& b, juce::Path& path, bool isMouseOver, bool isMouseDown) override
     {

@@ -38,13 +38,13 @@ PatchDialogBox::PatchDialogBox(PatchLoader* loader) : patchLoader(loader)
 void PatchDialogBox::paint(juce::Graphics &g)
 {
     g.fillAll(UXPalette::darkGray2);
-    auto labelFont = juce::Font("VCR OSD Mono", 12.0f, 0);
+    auto labelFont = UXPalette::square(12.0f);
     g.setFont(labelFont);
     g.setColour(juce::Colours::white);
     int w = getWidth() / 18;
     int h = getHeight() / 8;
     auto textBox = juce::Rectangle<int> {w, h, 8 * w, 2 * h};
-    g.drawText("Patch Name:", textBox, juce::Justification::centred);
+    g.drawText("Patch Name:", textBox, juce::Justification::left);
 }
 
 

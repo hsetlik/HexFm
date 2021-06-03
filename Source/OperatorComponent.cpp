@@ -181,7 +181,7 @@ void OperatorComponent::paint(juce::Graphics &g)
     auto rLabelBox = juce::Rectangle<int>{int(11.5 * n), int(4.5 * n), 6 * n, 2 * n};
     auto lLabelBox = juce::Rectangle<int>{19 * n, 13 * n, 4 * n, 2 * n};
     auto pLabelBox = juce::Rectangle<int>{19 * n, int(4.5 * n), 4 * n, 2 * n};
-    g.setFont(juce::Font(UXPalette::operatorLabelFontName, 25.0f, 0));
+    g.setFont(UXPalette::squareOutline(25.0f));
     g.setColour(juce::Colours::white);
     //g.fillRect(indexLabel.getBounds());
     auto nameRect = juce::Rectangle<int> {n , n * (11 / 10), 14 * n, 4 * n};
@@ -191,7 +191,7 @@ void OperatorComponent::paint(juce::Graphics &g)
     auto rText = "RATIO";
     auto lText = "LEVEL";
     auto pText = "PAN";
-    g.setFont(juce::Font("Bebas Neue", 14.0f, 0));
+    g.setFont(UXPalette::bebasNeue(14.0f));
     g.drawText(iText, iLabelBox, juce::Justification::centredBottom);
     g.drawText(rText, rLabelBox, juce::Justification::centredBottom);
     g.drawText(lText, lLabelBox, juce::Justification::centredBottom);

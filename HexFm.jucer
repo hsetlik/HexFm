@@ -6,6 +6,18 @@
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="f8EfdE" name="HexFm">
     <GROUP id="{DC7DA288-18E4-8EA7-1D3D-9542BABB314D}" name="Source">
+      <GROUP id="{DDF0CD31-452F-A270-D101-9711F5544DF1}" name="Fonts">
+        <FILE id="GeYyUM" name="BebasNeue-Regular.otf" compile="0" resource="1"
+              file="Source/Fonts/BebasNeue-Regular.otf"/>
+        <FILE id="HfI4Rx" name="Futura Medium Italic.otf" compile="0" resource="1"
+              file="Source/Fonts/Futura Medium Italic.otf"/>
+        <FILE id="g2W55g" name="Roboto-Light.ttf" compile="0" resource="1"
+              file="Source/Fonts/Roboto-Light.ttf"/>
+        <FILE id="Rgix3F" name="Roboto-LightItalic.ttf" compile="0" resource="1"
+              file="Source/Fonts/Roboto-LightItalic.ttf"/>
+        <FILE id="raWgB9" name="Square.ttf" compile="0" resource="1" file="Source/Fonts/Square.ttf"/>
+        <FILE id="RPKn9q" name="Squareo.ttf" compile="0" resource="1" file="Source/Fonts/Squareo.ttf"/>
+      </GROUP>
       <GROUP id="{2C3B5696-203C-F91C-2504-0D9453629D94}" name="PNGs">
         <FILE id="yurrz7" name="bothOff.png" compile="0" resource="1" file="PNGs/bothOff.png"/>
         <FILE id="Zzs1UN" name="bothOn.png" compile="0" resource="1" file="PNGs/bothOn.png"/>

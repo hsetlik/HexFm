@@ -10,7 +10,7 @@ class EnvLabel : public juce::Label, public juce::Slider::Listener
 public:
     EnvLabel(juce::Slider* sliderToAttach, juce::String suff, float fontSize = 8.0f) : attachSlider(sliderToAttach), suffix(suff)
     {
-        auto robotoLightItalic = juce::Font("Roboto Light", fontSize, 0).withStyle(juce::Font::FontStyleFlags::italic);
+        auto robotoLightItalic = UXPalette::robotoLightItalic(fontSize);
         setEditable(true);
         setFont(robotoLightItalic);
         attachSlider->addListener(this);
@@ -31,8 +31,7 @@ public:
     ~EnvLabel() {}
     void setFontSize(float size)
     {
-        auto robotoLightItalic = juce::Font("Roboto Light", size, 0).withStyle(juce::Font::FontStyleFlags::italic);
-        setFont(robotoLightItalic);
+        setFont(UXPalette::robotoLightItalic(size));
     }
     void sliderValueChanged(juce::Slider* slider) override
     {

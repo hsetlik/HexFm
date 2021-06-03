@@ -20,7 +20,7 @@ void OperatorBox::paint(juce::Graphics &g)
     g.setColour(fillColor);
     g.fillRect(filledBounds);
     g.setColour(textColor);
-    g.setFont(juce::Font("VCR OSD Mono", AlgorithmGridConstants::opTextSize, 0)); //TODO: pick a better font
+    g.setFont(UXPalette::square(AlgorithmGridConstants::opTextSize)); //TODO: pick a better font
     auto textBounds = filledBounds.reduced(5.0f);
     auto idxString = juce::String(std::to_string(index + 1));
     g.drawText(idxString, textBounds, juce::Justification::centred);
