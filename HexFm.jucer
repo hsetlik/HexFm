@@ -80,6 +80,7 @@
               file="Source/LfoGroupComponent.h"/>
       </GROUP>
       <GROUP id="{7E985CFD-2F8E-2A87-C0F5-C64EED65ED45}" name="Synthesis">
+        <FILE id="DgL1HF" name="FFT.h" compile="0" resource="0" file="Source/FFT.h"/>
         <FILE id="D5olNn" name="WavetableData.h" compile="0" resource="0" file="Source/WavetableData.h"/>
         <FILE id="DsuaAU" name="WavetableProcessor.cpp" compile="1" resource="0"
               file="Source/WavetableProcessor.cpp"/>

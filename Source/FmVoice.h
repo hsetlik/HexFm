@@ -28,11 +28,11 @@ public:
 class FmVoice : public juce::SynthesiserVoice
 {
 public:
-    juce::AudioProcessorValueTreeState* tree;
+    juce::AudioProcessorValueTreeState* const tree;
     FmVoice(int numOperators, int index, juce::AudioProcessorValueTreeState* t);
     ~FmVoice()
     {
-        //printf("Voice #: %d -- %d total jumps\n", voiceIndex, numJumps);
+        printf("%ld loud samples\n", numLoudSamples);
     }
     bool canPlaySound(juce::SynthesiserSound* sound) override
     {
@@ -99,6 +99,7 @@ public:
     }
     void updateParams();
     int voiceIndex;
+    long numLoudSamples;
     int numJumps;
     int operatorCount;
     float fundamental;
@@ -125,7 +126,7 @@ private:
 class FmSynth : public juce::Synthesiser
 {
 public:
-    juce::AudioProcessorValueTreeState* tree;
+    juce::AudioProcessorValueTreeState* const tree;
     FmSynth(int operators, int lfos, int nVoices, juce::AudioProcessorValueTreeState* t) : juce::Synthesiser(), tree(t), numOperators(operators), numLfos(lfos), numVoices(nVoices)
     {
         for(int i = 0; i < numVoices; ++i)

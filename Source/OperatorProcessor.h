@@ -19,7 +19,14 @@ class Operator
 {
 public:
     juce::AudioProcessorValueTreeState* tree;
-    Operator(int opIndex, int voiceIndex, juce::AudioProcessorValueTreeState* t) : tree(t), lastOutputSample(0.0f), envelope(opIndex, tree), voice(voiceIndex), baseRatio(1.0f), index(opIndex)
+    Operator(int opIndex, int voiceIndex, juce::AudioProcessorValueTreeState* t) :
+    tree(t),
+    lastOutputSample(0.0f),
+    envelope(opIndex, tree),
+    voice(voiceIndex),
+    modOffset(0.0f),
+    index(opIndex),
+    baseRatio(1.0f)
     {
         auto iStr = juce::String(opIndex);
         panId = "panParam" + iStr;

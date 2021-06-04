@@ -11,15 +11,8 @@
 #pragma once
 #include <JuceHeader.h>
 #include "WavetableData.h"
-#define TABLESIZE 512
+#include "FFT.h"
 
-enum WaveType
-{
-    Sine,
-    Square,
-    Saw,
-    Tri
-};
 class OscBase
 { //! abstract base class to provide getSample() and sample rate functionality
 public:
@@ -48,48 +41,96 @@ public:
             sineData[i] = std::sin(dPhase * i);
         }
     }
+    void setSampleRate(double rate)override
+    {
+        sampleRate = rate;
+    }
     float getSample(double frequency) override
     {
-        phaseDelta = frequency / sampleRate;
+        phaseDelta = (float)(frequency / sampleRate);
         phase += phaseDelta;
         if(phase > 1.0f)
             phase -= 1.0f;
-        lowerIndex = (int)floor(phase *  TABLESIZE);
+        lowerIndex = floor(phase *  TABLESIZE);
         skew = (phase * TABLESIZE) - lowerIndex;
         upperIndex = (lowerIndex == TABLESIZE - 1) ? 0 : lowerIndex + 1;
-        return sineData[lowerIndex] + ((sineData[upperIndex] - sineData[lowerIndex]) * skew);
+        output = sineData[lowerIndex] + ((sineData[upperIndex] - sineData[lowerIndex]) * skew);
+        return output;
     }
 private:
-    std::array<float, TABLESIZE> sineData;
+    float output;
+    float sineData[TABLESIZE];
 };
+//! simple struct to hold a wavetable
+struct Wavetable
+{
+    float table[TABLESIZE];
+    float minFreq;
+    float maxFreq;
+};
+
+class WavetableFrame
+{//! WavetableFrame class from Octane works by itself as a simple oscillator
+public:
+    WavetableFrame(WaveType type);
+    float getSample(double hz);
+    void setSampleRate(double rate)
+    {
+        sampleRate = rate;
+    }
+    void createTables(int size, float* real, float* imag);
+    float makeTable(float* waveReal, float* waveImag, int numSamples, float scale, float bottomFreq, float topFreq);
+    Wavetable* tableForHz(double hz);
+private:
+    juce::OwnedArray<Wavetable> tables;
+    float phase;
+    float phaseDelta;
+    double sampleRate;
+    int tablesAdded;
+    int bottomIndex;
+    float bSample;
+    float tSample;
+    float skew;
+};
+
+class BandLimitedOsc : public OscBase
+{
+public:
+    BandLimitedOsc(WaveType type);
+    float getSample(double frequency) override
+    {
+        return frame.getSample(frequency);
+    }
+    void setSampleRate(double rate) override
+    {
+        sampleRate = rate;
+        frame.setSampleRate(rate);
+    }
+private:
+    WavetableFrame frame;
+};
+
 
 class VoiceOscillator
 {
 public:
-    VoiceOscillator() : fData(new float[TABLESIZE]), position(0.0f), sampleRate(44100.f), nyquist(22050.0f)
+    VoiceOscillator() :
+    currentWaveType(Sine),
+    pOsc(std::make_unique<SineOsc>())
     {
-        auto dX = juce::MathConstants<float>::twoPi / TABLESIZE;
-        for(int i = 0; i < TABLESIZE; ++i)
-        {
-            fData[i] = std::sin(dX * i);
-        }
+        
     }
     ~VoiceOscillator() {}
     void setSampleRate(double rate)
     {
-        sampleRate = rate;
-        nyquist = sampleRate / 2.0f;
+        pOsc->setSampleRate(rate);
     }
-    float getSample(double frequency);
+    float getSample(double frequency)
+    {
+        return pOsc->getSample(frequency);
+    }
 private:
-    float* fData;
-    float position;
-    float posDelta;
-    float output;
-    double sampleRate;
-    double nyquist;
-    int bottomSampleIndex;
-    float sampleDiff;
-    float skew;
+    WaveType currentWaveType;
+    std::unique_ptr<OscBase> pOsc;
 };
 
