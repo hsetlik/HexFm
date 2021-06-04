@@ -58,14 +58,22 @@ private:
 };
 
 
-class WaveButtonSet : public juce::Component
+class WaveButtonSet :
+public juce::Component,
+public juce::Button::Listener,
+public juce::ComboBox::Listener
 {
 public:
-    WaveButtonSet(int opIndex);
+    WaveButtonSet(int opIndex, juce::AudioProcessorValueTreeState* tree);
     void resized() override;
+    void buttonClicked(juce::Button* b) override;
+    void comboBoxChanged(juce::ComboBox* box) override;
 private:
+    WaveType currentType;
     ImageToggle sineButton;
     ImageToggle squareButton;
     ImageToggle sawButton;
     ImageToggle triButton;
+    juce::ComboBox hiddenBox;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> waveAttach;
 };

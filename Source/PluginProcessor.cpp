@@ -174,6 +174,7 @@ synthFilter(juce::dsp::IIR::Coefficients<float>::makeLowPass(44100.0f, 2500.0f, 
         modIndexIds.push_back("indexParam" + iStr);
         audibleIds.push_back("audibleParam" + iStr);
         panIds.push_back("panParam" + iStr);
+        waveIds.push_back("waveParam" + iStr);
         
         delayIds.push_back("delayParam" + iStr);
         attackIds.push_back("attackParam" + iStr);

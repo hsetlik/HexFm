@@ -72,6 +72,7 @@ private:
     std::vector<juce::String> levelIds;
     std::vector<juce::String> modIndexIds;
     std::vector<juce::String> audibleIds;
+    std::vector<juce::String> waveIds;
     
     std::vector<juce::String> delayIds;
     std::vector<juce::String> attackIds;

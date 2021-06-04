@@ -15,7 +15,7 @@
 OperatorComponent::OperatorComponent(int index, juce::AudioProcessorValueTreeState* pTree) :
 opIndex(index),
 envGraph(&delaySlider, &attackSlider, &holdSlider, &decaySlider, &sustainSlider, &releaseSlider),
-waveButtons(index),
+waveButtons(index, pTree),
 levelSlider(index),
 ratioSlider(index),
 ratioLabel(&ratioSlider.slider, ""),
