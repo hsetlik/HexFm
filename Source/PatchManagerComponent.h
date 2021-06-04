@@ -20,6 +20,12 @@ public:
     {
         initialize();
         lastPatchNames = patchNames;
+        int colorId = juce::ComboBox::ColourIds::backgroundColourId;
+        getLookAndFeel().setColour(colorId, UXPalette::darkGray4);
+        colorId = juce::TextButton::ColourIds::buttonColourId;
+        getLookAndFeel().setColour(colorId, UXPalette::darkGray4);
+        colorId = juce::PopupMenu::ColourIds::backgroundColourId;
+        getLookAndFeel().setColour(colorId, UXPalette::darkGray4);
     }
     ~PatchSelector(){}
     void initialize();
@@ -54,6 +60,10 @@ public:
     PatchLoader(HexFmAudioProcessor* proc, juce::Component* patchDlg);
     ~PatchLoader() {}
     void resized() override;
+    void paint(juce::Graphics& g) override
+    {
+        g.fillAll(UXPalette::darkGray5);
+    }
     void savePreset(juce::String name, juce::String type);
     void loadPreset(juce::String name);
     void comboBoxChanged(juce::ComboBox* box) override;

@@ -71,8 +71,7 @@ void ModulationGrid::resized()
 
 void ModulationGrid::paint(juce::Graphics &g)
 {
-    auto background = Color::RGBColor(37, 50, 53);
-    g.fillAll(background);
+    g.fillAll(UXPalette::darkGray5);
     auto textColor = juce::Colours::white;
     g.setColour(textColor);
     g.setFont(UXPalette::futuraMediumItalic(12.0f));

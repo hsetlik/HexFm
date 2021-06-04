@@ -45,8 +45,6 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> modeAttach;
 };
 
-
-
 class LfoComponent : public juce::Component, juce::ComboBox::Listener
 {
 public:
@@ -56,6 +54,8 @@ public:
     {
         rateSlider.setLookAndFeel(nullptr);
         levelSlider.setLookAndFeel(nullptr);
+        waveSelector.setLookAndFeel(nullptr);
+        targetSelector.setLookAndFeel(nullptr);
     }
     void attachAll(juce::AudioProcessorValueTreeState* tree);
     void comboBoxChanged(juce::ComboBox* c) override;

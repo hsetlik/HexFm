@@ -38,7 +38,7 @@ audioProcessor(p)
     modGrid.attachButtons(&audioProcessor.tree);
     addAndMakeVisible(&lfoGroup);
     lfoGroup.attachChildren(&audioProcessor.tree);
-    setSize (1000, 800);
+    setSize (1200, 960);
 }
 
 HexFmAudioProcessorEditor::~HexFmAudioProcessorEditor()
@@ -47,12 +47,11 @@ HexFmAudioProcessorEditor::~HexFmAudioProcessorEditor()
 //==============================================================================
 void HexFmAudioProcessorEditor::paint(juce::Graphics &g)
 {
-    auto background = Color::RGBColor(37, 50, 53);
-    g.fillAll(background);
+    g.fillAll(UXPalette::darkGray5);
     for(int i = 0; i < 6; ++i)
     {
         auto rect = allOps[i]->getBounds();
-        g.setColour(UXPalette::darkGray1);
+        g.setColour(UXPalette::darkGray5);
         g.fillRect(rect);
         auto centerRect = rect.reduced(2);
         g.setColour(UXPalette::darkGray3);
@@ -71,7 +70,7 @@ void HexFmAudioProcessorEditor::resized()
     //w = 250
     int h = getHeight() / 6;
     saveDialog.setBounds(w, 2 * h, 2 * w, 2 * h);
-     //Screen dimensions are set to: 1000, 800
+     //Screen dimensions are set to: 1200, 960
      //overall aspect: 5/4
     dY = getHeight() / 10;
     allOps[0]->setBounds(0, dY, 3 * dY, 4.5 * dY);

@@ -133,7 +133,7 @@ public:
         }
         startTimerHz(24);
         pathColor = juce::Colours::black;
-        background = UXPalette::darkGray1;
+        background = UXPalette::darkGray5;
     }
     float getValue(juce::String& str)
     {

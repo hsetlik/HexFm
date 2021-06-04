@@ -90,8 +90,13 @@ LfoComponent::LfoComponent(int index) : lfoIndex(index), selector(index)
     levelSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 45, 15);
     levelSlider.setLookAndFeel(&look);
     
+    int colorId = juce::ComboBox::ColourIds::backgroundColourId;
+    getLookAndFeel().setColour(colorId, UXPalette::darkGray4);
+    waveSelector.setLookAndFeel(&getLookAndFeel());
+    targetSelector.setLookAndFeel(&getLookAndFeel());
     addAndMakeVisible(&waveSelector);
     addAndMakeVisible(&targetSelector);
+    
     addAndMakeVisible(&selector);
     selector.setVisible(false);
     selector.setEnabled(false);

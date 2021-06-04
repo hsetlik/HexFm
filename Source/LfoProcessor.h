@@ -46,7 +46,7 @@ const int totalLfos = 4;
 class LfoProcessor
 {
 public:
-    juce::AudioProcessorValueTreeState* tree;
+    juce::AudioProcessorValueTreeState* const tree;
     //functions
     LfoProcessor(int index, juce::AudioProcessorValueTreeState* t);
     ~LfoProcessor() {}
