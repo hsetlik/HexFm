@@ -10,7 +10,7 @@
 
 #include "WavetableProcessor.h"
 
-float SineTableOscillator::getSample(double frequency)
+float VoiceOscillator::getSample(double frequency)
 {
     if(frequency > nyquist)
         frequency = nyquist;
