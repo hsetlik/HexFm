@@ -14,6 +14,7 @@
 #include "SliderSubclasses.h"
 #include "DAHDSRGraph.h"
 #include "RGBColor.h"
+#include "WaveTypeSelector.h"
 
 //==============================================================================
 /*
@@ -44,7 +45,7 @@ public:
     int opIndex;
 private:
     DAHDSRGraph envGraph;
-    Color color;
+    WaveButtonSet waveButtons;
     juce::Colour background;
     LevelSlider levelSlider;
     RatioSlider ratioSlider;

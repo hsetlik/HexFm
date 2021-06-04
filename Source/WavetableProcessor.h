@@ -13,6 +13,14 @@
 #include "WavetableData.h"
 #define TABLESIZE 512
 
+enum WaveType
+{
+    Sine,
+    Square,
+    Saw,
+    Tri
+};
+
 class SineTableOscillator
 {
 public:
