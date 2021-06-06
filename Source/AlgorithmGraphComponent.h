@@ -188,7 +188,7 @@ public:
     juce::OwnedArray<OperatorBox> opBoxes;
     juce::Colour pathColor;
     juce::Colour background;
-    
+    //! regular c-arrays for the routing stuff
     juce::String opAudibleIds[TOTAL_OPERATORS];
     juce::String opRoutingIds[TOTAL_OPERATORS][TOTAL_OPERATORS];
     int opRouting[TOTAL_OPERATORS][TOTAL_OPERATORS];
