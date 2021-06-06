@@ -12,7 +12,7 @@
 
 
 
-FmVoice::FmVoice(int numOperators, int index, juce::AudioProcessorValueTreeState* t) : tree(t), voiceIndex(index), numLoudSamples(0), operatorCount(numOperators), fundamental(1.0f)
+FmVoice::FmVoice(int numOperators, int index, juce::AudioProcessorValueTreeState* t) : tree(t), voiceIndex(index), operatorCount(numOperators), fundamental(1.0f)
 {
     lfoMax = std::numeric_limits<float>::min();
     lfoMin = std::numeric_limits<float>::max();
@@ -87,10 +87,8 @@ void FmVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int startS
             }
             ++op1Index;
         }
-        if(fabs(sumL) > 0.3f)
-            ++numLoudSamples;
-        outputBuffer.setSample(0, i, sumL);
-        outputBuffer.setSample(1, i, sumR);
+        outputBuffer.addSample(0, i, sumL);
+        outputBuffer.addSample(1, i, sumR);
         
         if(fabs(opSum - lastOpSample) > 0.2f)
             ++numJumps;

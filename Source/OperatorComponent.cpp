@@ -15,7 +15,6 @@
 OperatorComponent::OperatorComponent(int index, juce::AudioProcessorValueTreeState* pTree) :
 opIndex(index),
 envGraph(&delaySlider, &attackSlider, &holdSlider, &decaySlider, &sustainSlider, &releaseSlider),
-waveButtons(index, pTree),
 levelSlider(index),
 ratioSlider(index),
 ratioLabel(&ratioSlider.slider, ""),
@@ -81,8 +80,6 @@ panLabel(&panSlider, "")
     sustainLabel.setLookAndFeel(&look2);
     releaseLabel.setLookAndFeel(&look2);
     
-    addAndMakeVisible(&waveButtons);
-    
     panSlider.setVisible(false);
     panSlider.setEnabled(false);
     panLabel.setVisible(false);
@@ -142,28 +139,21 @@ void OperatorComponent::resized()
     int n = getWidth() / 24;
     auto fBounds = getBounds().toFloat().reduced(3.0f);
     auto dN = fBounds.getWidth() / 48.0f;
-    auto envSliderY = 62;
-    auto envLabelY = envSliderY + 6;
-    delaySlider.setBounds(dN / 2, envSliderY * dN, 7.5 * dN, 7.5 * dN);
-    attackSlider.setBounds(8.5 * dN, envSliderY * dN, 7.5 * dN, 7.5 * dN);
-    holdSlider.setBounds(17 * dN, envSliderY * dN, 7.5 * dN, 7.5 * dN);
-    decaySlider.setBounds(25 * dN, envSliderY * dN, 7.5 * dN, 7.5 * dN);
-    sustainSlider.setBounds(33 * dN, envSliderY * dN, 7.5 * dN, 7.5 * dN);
-    releaseSlider.setBounds(41 * dN, envSliderY * dN, 7.5 * dN, 7.5 * dN);
+    delaySlider.setBounds(dN / 2, 50 * dN, 7.5 * dN, 7.5 * dN);
+    attackSlider.setBounds(8.5 * dN, 50 * dN, 7.5 * dN, 7.5 * dN);
+    holdSlider.setBounds(17 * dN, 50 * dN, 7.5 * dN, 7.5 * dN);
+    decaySlider.setBounds(25 * dN, 50 * dN, 7.5 * dN, 7.5 * dN);
+    sustainSlider.setBounds(33 * dN, 50 * dN, 7.5 * dN, 7.5 * dN);
+    releaseSlider.setBounds(41 * dN, 50 * dN, 7.5 * dN, 7.5 * dN);
     
-    delayLabel.setBounds(dN / 2, envLabelY * dN, 7.5 * dN, 3 * dN);
-    attackLabel.setBounds(8.5 * dN, envLabelY * dN, 7.5 * dN, 3 * dN);
-    holdLabel.setBounds(16.5 * dN, envLabelY * dN, 7.5 * dN, 3 * dN);
-    decayLabel.setBounds(24.5 * dN, envLabelY * dN, 7.5 * dN, 3 * dN);
-    sustainLabel.setBounds(32.5 * dN, envLabelY * dN, 7.5 * dN, 3 * dN);
-    releaseLabel.setBounds(40.5 * dN, envLabelY * dN, 7.5 * dN, 3 * dN);
+    delayLabel.setBounds(dN / 2, 56 * dN, 7.5 * dN, 3 * dN);
+    attackLabel.setBounds(8.5 * dN, 56 * dN, 7.5 * dN, 3 * dN);
+    holdLabel.setBounds(16.5 * dN, 56 * dN, 7.5 * dN, 3 * dN);
+    decayLabel.setBounds(24.5 * dN, 56 * dN, 7.5 * dN, 3 * dN);
+    sustainLabel.setBounds(32.5 * dN, 56 * dN, 7.5 * dN, 3 * dN);
+    releaseLabel.setBounds(40.5 * dN, 56 * dN, 7.5 * dN, 3 * dN);
     
-    envGraph.setBounds(n, 19 * n, 15 * n, 10 * n);
-    /*
-    printf("n = %d\n", n);
-    printf("button width = %d\n", 3 * n);
-     */
-    waveButtons.setBounds(n, 14 * n, 160, 40);
+    envGraph.setBounds(n, 13 * n, 15 * n, 10 * n);
 
     outputButton.setBounds(16 * n, 1.5 * n, 5.5 * n, 2.5 * n);
     outputButton.changeWidthToFitText();

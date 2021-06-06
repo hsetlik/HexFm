@@ -105,7 +105,7 @@ public:
     float panValue;
 private:
     int index;
-    VoiceOscillator wtOsc;
+    SineTableOscillator wtOsc;
     juce::String panId;
     juce::String modIndexId;
     juce::String levelId;

@@ -32,7 +32,7 @@ public:
     FmVoice(int numOperators, int index, juce::AudioProcessorValueTreeState* t);
     ~FmVoice()
     {
-        printf("%ld loud samples\n", numLoudSamples);
+        //printf("Voice #: %d -- %d total jumps\n", voiceIndex, numJumps);
     }
     bool canPlaySound(juce::SynthesiserSound* sound) override
     {
@@ -99,7 +99,6 @@ public:
     }
     void updateParams();
     int voiceIndex;
-    long numLoudSamples;
     int numJumps;
     int operatorCount;
     float fundamental;

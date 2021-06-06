@@ -13,8 +13,8 @@
 float Operator::sample(float fund)
 {
     fundamental = fund;
-    rawSample = wtOsc.getSample((fund * workingRatio) + (modOffset * modIndex));
-    lastOutputSample = envelope.process(rawSample) * ( 1.0f - amplitudeMod) * level;
+    rawSample = wtOsc.getSample((fund * workingRatio) + (modOffset * modIndex)) * level;
+    lastOutputSample = envelope.process(rawSample) * ( 1.0f - amplitudeMod);
     updatePan();
     return lastOutputSample;
 }
